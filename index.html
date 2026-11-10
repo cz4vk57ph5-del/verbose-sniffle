@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Galaxy Confluence 1.16.5 CRUSCOTTO · base, con supporto a indici senza volume (VIX)</title>
+<style>
+:root{--bg:#0d1020;--card:#151a30;--card2:#10152a;--bd:#2a3150;--tx:#e8ecf8;--mu:#9aa3c0;--g:#35d29a;--r:#ff6b6b;--y:#f2c14e;--a:#5cc8ff;--sky:#070a18;--o:#ff9f43}
+@media (prefers-color-scheme: light){:root{--bg:#f2f4fa;--card:#fff;--card2:#eef1f9;--bd:#d3d9ea;--tx:#1a1d2b;--mu:#586080;--g:#087a3f;--r:#c62828;--y:#8a6700;--a:#00709a;--sky:#0b1030;--o:#b85c00}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.5 system-ui,Segoe UI,sans-serif}
+main{max-width:1180px;margin:0 auto;padding:16px}h1{margin:.2em 0;font-size:1.5rem}h1 small{color:var(--mu);font-weight:400;font-size:.85rem}h2{font-size:1.05rem;margin:0 0 8px}h3{margin:0;font-size:1.1rem}h3 small{color:var(--mu);font-weight:400;font-size:.8rem}
+.panel,.card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:14px;margin:12px 0}.card.dim{border-style:dashed}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.grid.one{grid-template-columns:1fr}@media (max-width:860px){.grid{grid-template-columns:1fr}}
+.card header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+select,input,textarea{max-width:100%}.row>*{max-width:100%;min-width:0}label span{white-space:normal}canvas{width:100%;height:auto;border-radius:8px;display:block;margin:6px 0}.advm{display:none}.radar{margin:6px 0;border:1px solid #2a3470;border-radius:8px;padding:8px 10px;background:var(--card2)}.radar .rdh{display:flex;flex-wrap:wrap;gap:6px 12px;align-items:baseline;justify-content:space-between;border-left:5px solid var(--mu);padding-left:8px}.radar .rdh.g{border-color:#35d29a}.radar .rdh.y{border-color:#f2c14e}.radar .rdh.r{border-color:#ff6b6b}.radar .rdh b{font-size:16px}.radar .act{font-weight:700;font-size:13px}.rp table{border-collapse:collapse;font-size:13px;width:100%}.rp td,.rp th{border:1px solid var(--bd,#2a3470);padding:3px 6px;text-align:right}.rp th:first-child,.rp td:first-child{text-align:left}.rp tr.base td{font-weight:700}.radar .proj{margin:8px 0 2px;padding:8px 10px;border-radius:8px;background:#5cc8ff22;border:2px solid #5cc8ff;font-size:15.5px;line-height:1.45}.radar .proj b{display:block;font-size:13px;letter-spacing:.04em;margin-bottom:2px}.radar .stp{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 4px}.radar .stp span{font-size:12.5px;padding:3px 8px;border-radius:999px;border:1px solid var(--mu);color:var(--mu)}.radar .stp span.done{background:#35d29a33;border-color:#35d29a;color:inherit}.radar .stp span.now{background:#f2c14e44;border-color:#f2c14e;color:inherit;font-weight:700}.radar p{margin:6px 0;font-size:14.5px;line-height:1.45}.radar small{display:block;color:var(--mu)}.comm{margin:6px 0;border:1px solid var(--line,#2a3470);border-radius:8px;padding:4px 10px;background:var(--card2)}.comm summary{cursor:pointer;font-weight:600;padding:4px 0}.comm p{margin:6px 0;font-size:14.5px;line-height:1.45}.comm p b{color:inherit;text-decoration:underline;text-decoration-color:#5cc8ff;text-underline-offset:3px}.comm .w{color:#b8860b;font-weight:600}.comm .tech{margin:4px 0;border-top:1px dashed var(--mu);padding-top:2px}.comm .tech summary{font-weight:500;color:var(--mu);font-size:13px}.comm small{display:block;color:var(--mu);margin:4px 0 6px}.advb{border-left:5px solid var(--mu);padding:8px 10px;border-radius:6px;background:var(--card2);font-size:15px}.advb b{display:block;font-size:19px;margin-bottom:3px}.advb.g{border-color:#35d29a}.advb.r{border-color:#ff6b6b}.advb.y{border-color:#f2c14e}.advb .w{color:#b8860b;font-weight:600}.advb small{display:block;color:var(--mu);margin-top:4px}@media(max-width:640px){.advm{display:block}}
+textarea,input,select,button{font:inherit;color:var(--tx);background:var(--card2);border:1px solid var(--bd);border-radius:8px;padding:6px 9px}textarea{width:100%;font:12px/1.4 ui-monospace,Consolas,monospace}
+button{cursor:pointer}button:hover{border-color:var(--a)}label{color:var(--mu);font-size:.85rem}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:end;margin:8px 0}.row>*{flex:0 0 auto}.row label{display:flex;flex-direction:column;gap:3px}
+.chip{padding:2px 10px;border-radius:99px;font-size:.78rem;border:1px solid var(--bd)}.chip.g{color:var(--g);border-color:var(--g)}.chip.r{color:var(--r);border-color:var(--r)}.chip.y{color:var(--y);border-color:var(--y)}.chip.o{color:var(--o);border-color:var(--o);border-style:dashed}.chip.big{font-size:.95rem;font-weight:700;padding:4px 14px;border-width:2px}
+.badges{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:4px 0 8px}.badges .chip{white-space:normal}
+.pbar{height:10px;border-radius:99px;background:var(--card2);border:1px solid var(--bd);overflow:hidden}.pbar i{display:block;height:100%;background:var(--mu)}.pbar i.g{background:var(--g)}.pbar i.y{background:var(--y)}.pbar i.o{background:var(--o)}.pbar i.r{background:var(--r)}
+.wu{margin:.5em 0 .2em}.kv.wide{grid-template-columns:repeat(auto-fill,minmax(210px,1fr))}.tw{overflow-x:auto}.bal td.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}.bal tr.w td{color:var(--o)}.bal th{padding-top:10px}
+.nl{padding-left:18px;margin:.3em 0}.nl li.e{color:var(--r)}.nl li.w{color:var(--o)}.nl li.i{color:var(--mu)}.auto{display:inline-flex;gap:6px;align-items:center}.auto b.on{color:var(--g)}.auto b.off{color:var(--mu)}.warn{border-left:3px solid var(--o)}.adv>summary{padding:4px 0}.adv .panel{margin:10px 0}.top{align-items:center}.row label.auto{font-size:1.05rem;flex-direction:row;align-items:center;gap:8px}.sum{font-size:1.02rem;margin:.4em 0}.sum b{white-space:nowrap}.chip.i{color:var(--mu)}
+.kv{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:6px 10px;margin:8px 0}.kv div{background:var(--card2);border-radius:8px;padding:5px 8px}.kv span{display:block;color:var(--mu);font-size:.72rem}.kv b{font-variant-numeric:tabular-nums}
+.read{margin:.5em 0;font-size:.93rem}.prov{margin:.2em 0;color:var(--mu);font-size:.82rem}.m{color:var(--mu);font-size:.82rem}.big{font-size:1.25rem;font-weight:700;margin-bottom:4px}
+table{border-collapse:collapse;width:100%;font-size:.85rem;margin:6px 0}th,td{border-bottom:1px solid var(--bd);padding:4px 6px;text-align:left}th{color:var(--mu);font-weight:600}
+.ok{border-left:3px solid var(--g);padding-left:10px}.warn{border-left:3px solid var(--y);padding-left:10px;margin:6px 0}td.g{color:var(--g)}td.r{color:var(--r)}#cov,#eqres,#syn,#ana,#notes{overflow-x:auto}.bad{border-left:3px solid var(--r);padding-left:10px}summary{cursor:pointer;color:var(--a)}
+.tp li{margin:.35em 0}.chip.big{font-size:.95rem;padding:3px 12px}.chip.a{color:var(--a);border-color:var(--a)}.chip.i{color:var(--mu)}.tl{list-style:none;padding:0;font-size:.85rem}.tl .g{color:var(--g)}.tl .r{color:var(--r)}
+</style></head><body><main>
+<h1>Galaxy Confluence <small>1.16.8 CRUSCOTTO · auto e cruscotto del motore Galaxy · il resto è nei dettagli</small></h1>
+<div class="panel" id="symbar"><div class="row"><label>Simbolo<input id="sym" value="VIX+SPY" size="10" placeholder="es. VIX+SPY"></label> <label>Barra delle galassie <select id="symBar" aria-label="Barra delle galassie"><option value="1H">1 ora</option><option value="1m">1 minuto (massimo)</option><option value="5m">5 minuti</option></select></label> <label><input type="checkbox" id="symWall"> Limite fisico di D (0,15–1)</label> <label><input type="checkbox" id="symLive"> Movimento in diretto (barra in corso, provvisorio)</label> <label>Ingresso delle galassie <select id="symInd" aria-label="Ingresso delle galassie"><option value="delta">Delta di volume (indicatore originale)</option><option value="macd">Istogramma MACD+RSI+BB (prezzo)</option><option value="combo">Combinato: istogramma + DIF/DEA (prezzo)</option></select></label> <button type="button" id="symHyb" title="^VIX reale fino all'ultima barra disponibile + ultimi ~15 minuti ricostruiti da SPY">VIX ibrido</button> <button type="button" id="symVixA" title="VIX approssimato dai prezzi di SPY (S&P 500), senza il ritardo di 15 minuti dell'indice">VIX da SPY</button> <select id="symEtf" aria-label="ETF sui future del VIX"><option value="">ETF sui future VIX…</option><option value="VIXY">VIXY · breve termine 1×</option><option value="VXX">VXX · breve termine 1× (ETN)</option><option value="UVXY">UVXY · leva 1,5×</option><option value="UVIX">UVIX · leva 2×</option><option value="VIXM">VIXM · medio termine</option><option value="SVXY">SVXY · INVERSO −0,5×</option><option value="SVIX">SVIX · INVERSO −1×</option></select> <button type="button" id="symVix" title="Indice VIX reale di Yahoo, ritardato di circa 15 minuti">^VIX reale</button> <button type="button" id="symQqq">QQQ</button> <span class="m">Parte da sola con «VIX ibrido» (^VIX reale + ultimi minuti da SPY). Altri formati: VIX~SPY, ^VIX, QQQ.</span></div></div>
+<div class="grid one" id="cards"></div>
+<div class="panel" id="auto5"><div class="row top"><label class="auto"><input type="checkbox" id="auto" checked> <b>AUTO START</b> <b id="autost" class="on">ON</b></label><button id="load" title="Aggiornamento manuale (funzione aggiuntiva: l'app lavora comunque da sola)">Aggiorna ora</button></div><details style="margin-top:.5em"><summary><b>Stato dei dati e avvisi</b> — connessione, barre, warm-up, prossimo aggiornamento</summary><span id="st" class="m" role="status"></span><div id="autoDyn"></div></details></div>
+<details class="panel" id="tech"><summary><b>Dettagli tecnici</b> — lettura, dati e warm-up, avvisi, impostazioni avanzate, test</summary>
+<div class="panel"><h2>Lettura della galassia 1H</h2><div id="syn">—</div></div>
+<div class="panel"><h2>Dettaglio dei dati e del warm-up</h2><div id="diag"></div></div>
+<div class="panel"><h2>Avvisi e anomalie</h2><div id="notes"></div><div class="row"><span id="rbcorr" class="chip o" hidden>⚠ correzioni storiche disponibili</span><button id="rc1H" title="Ricalcola dallo storico locale sostituendo le barre diverse con quelle ricevute; nulla viene scartato; il vecchio stato è copiato in gc2bak">Applica correzioni / ricostruisci dallo storico locale</button><button id="reset">Cancella lo storico locale di questo simbolo…</button></div></div>
+<details class="panel adv"><summary><b>Impostazioni avanzate</b> — Worker, barre inferiori, sessioni, import manuale, indicatore e verifica TradingView</summary>
+<div class="panel"><h2>Indicatore (sorgente di tutti i calcoli) e verifica</h2>
+ <textarea id="code" rows="9" spellcheck="false" aria-label="Codice dell'indicatore"></textarea><div id="ana" style="margin-top:8px"></div>
+ <div class="row"><label>Seed dell'EMA (ta.ema)<select id="seed"><option value="sma">SMA delle prime L barre (default)</option><option value="first">primo valore (da verificare)</option></select></label></div>
+ <div id="eqbadge"></div>
+ <details><summary>Verifica di equivalenza con TradingView</summary>
+  <p class="m">Esporta da TradingView la serie del grafico con i dati dell'indicatore (candela del delta e le linee «Bollinger EMA», «Upper Band», «Lower Band») e incollala qui: colonne <code>time, open, high, low, close, Bollinger EMA, Upper Band, Lower Band</code> (o i nomi open/max/min/last/ema/upper/lower). L'app ricalcola barra per barra con entrambe le ipotesi di seed e riporta gli scarti. Solo se coincide dichiara l'equivalenza.</p>
+  <textarea id="ref" rows="4" placeholder="time,open,high,low,close,Bollinger EMA,Upper Band,Lower Band"></textarea><div class="row"><button id="cmp">Confronta con TradingView</button></div><div id="eqres"></div></details></div>
+<div class="panel"><h2>Dati e Worker</h2>
+ <div class="row">
+  <label><span><input type="radio" name="md" id="modeI"> Import del delta originale (modalità di riferimento)</span></label>
+  <label><span><input type="radio" name="md" id="modeW"> Worker — SPERIMENTALE: delta approssimato da barre inferiori</span></label>
+  <label>Fuso orario<select id="tz"><option>Europe/Rome</option><option>America/New_York</option><option>UTC</option></select></label></div>
+ <div id="mImp"><p class="m">Incolla (o carica) la serie del delta di volume esportata per la timeframe 1H: colonne <code>time, open, max, min, last</code> (anche con i nomi dell'indicatore). CSV o JSON. Servono almeno tante barre quante la lunghezza Bollinger per avere le bande. Le barre dell'ultima ora non chiusa restano provvisorie.</p>
+  <div><label>Serie 1H <input type="file" id="f1H" accept=".csv,.txt,.json"></label><textarea id="t1H" rows="5" placeholder="time,open,max,min,last"></textarea></div>
+  <div class="row"><button id="apply">Applica dati</button></div></div>
+ <div id="mWk" hidden>
+  <div class="row"><label>URL del Worker (https)<input id="wk" size="42" placeholder="https://…workers.dev"></label>
+   <label>Barre inferiori recenti (scelta esplicita)<select id="ltf"><option value="5m">5 min — più fedele (≈ 60 giorni)</option><option value="15m" selected>15 min — più grossolana (≈ 60 giorni)</option></select></label>
+   <label><span><input type="checkbox" id="extPre" checked> pre-market (4:00–9:30 ET = 10:00–15:30 italiane)</span></label><label><span><input type="checkbox" id="extPost" checked> after-hours (16:00–20:00 ET = 22:00–02:00 italiane)</span></label></div>
+  <p class="m" id="ltfinfo"></p>
+  <div class="row"><label><span><input type="checkbox" id="bf" checked> usa lo storico orario (barre da 60 min, fino a 1 anno) per completare il warm-up</span></label></div>
+  <details><summary>Come vengono ricostruite le barre 1H (approssimazione dichiarata)</summary><p class="m"><b>Approssimazione, non il vero volume delta:</b> il volume di ogni barra inferiore prende il segno di close−open (a parità, il segno precedente) e il delta è cumulato dall'inizio della barra 1H. La funzione di TradingView usa dati a 1 minuto/tick: l'equivalenza non è verificata. Le barre 1H partono dall'inizio di ogni sessione (metadati del provider o regola NYSE con ora legale; in assenza, prima barra del giorno, dichiarato NON verificato) e le barre fuori dalle sessioni scelte sono escluse. Una barra 1H è <b>definitiva</b> solo se l'ora è finita, tutte le barre inferiori attese sono arrivate (o è trascorso un tempo di assestamento) e la copertura è ≥ 90%; le barre inferiori non concluse non entrano mai in una barra definitiva e la barra in formazione non entra nel modello. Nelle sessioni estese Yahoo omette le barre senza scambi: un'assenza è trattata come «nessuno scambio» (assunzione dichiarata). Yahoo fornisce ~60 giorni di barre da 5/15 minuti: il warm-up (300 barre 1H) si completa accumulando nello stato locale le barre già elaborate.</p></details></div>
+</div>
+</details>
+<p class="m">Modello (convenzioni, non calibrate su dati): D adimensionale in [0,15–1,00]; Ds(h)=D0+(Dsmax−D0)(1−e^(−h/T)); v ← v+(kF·R−v/τ)·Δh; R=E−G con E=max(last,0)/A, G=max(−last,0)/A, A=max(|banda sup|,|banda inf|). Una osservazione per barra chiusa; la barra in formazione non altera lo stato. Movimento effettivo = segno di v; pressione = segno di R; sul limite fisico il movimento è nullo ma la pressione resta.</p>
+</details>
+</main>
+<script>var GC=(function(){
+'use strict';
+const GC={}, fin=Number.isFinite;
+GC.hash=function(s){ let h1=0x811c9dc5,h2=0x1b873593; for(let i=0;i<s.length;i++){ const c=s.charCodeAt(i); h1^=c; h1=Math.imul(h1,16777619)>>>0; h2=Math.imul(h2^c,2246822519)>>>0; h2=((h2<<13)|(h2>>>19))>>>0; } return h1.toString(16).padStart(8,'0')+h2.toString(16).padStart(8,'0'); };
+GC.IndSrc={
+strip(code){ return String(code).replace(/\r/g,'').replace(/\/\/[^\n]*/g,''); },
+analyze(code){
+const r={ok:false,reasons:[],params:{},uses:[],outputs:[],states:[],codeHash:null,version:null,notes:[]};
+if(!code||!String(code).trim()){ r.reasons.push('nessun codice incollato'); return r; }
+const s=this.strip(code), need=(c,m)=>{ if(!c) r.reasons.push(m); return !!c; };
+r.codeHash=GC.hash(s.replace(/\s+/g,' ').trim());
+const mv=/\/\/\s*@version\s*=\s*(\d+)/.exec(String(code)); r.version=mv?+mv[1]:null;
+const tup=/\[\s*(\w+)\s*,\s*(\w+)\s*,\s*(\w+)\s*,\s*(\w+)\s*\]\s*=\s*ta\.requestVolumeDelta\s*\(\s*(\w+)\s*\)/.exec(s);
+if(!need(tup,'manca [open,max,min,last] = ta.requestVolumeDelta(timeframe)')) return r;
+const [,vO,vX,vN,vL,vTf]=tup;
+const src=new RegExp('(\\w+)\\s*=\\s*(\\w+)\\s*\\?\\s*\\(\\s*(\\w+)\\s*\\+\\s*(\\w+)\\s*\\)\\s*/\\s*2\\s*:\\s*(\\w+)').exec(s);
+if(!need(src&&src[5]===vL&&((src[3]===vX&&src[4]===vN)||(src[3]===vN&&src[4]===vX)),'sorgente delle bande non riconosciuta: attesa  X = flagWick ? (max+min)/2 : last')) return r;
+const [,vSrc,vWick]=src;
+const ema=new RegExp('(\\w+)\\s*=\\s*ta\\.ema\\(\\s*'+vSrc+'\\s*,\\s*(\\w+)\\s*\\)').exec(s);
+const sd=new RegExp('(\\w+)\\s*=\\s*ta\\.stdev\\(\\s*'+vSrc+'\\s*,\\s*(\\w+)\\s*\\)').exec(s);
+if(!need(ema&&sd&&ema[2]===sd[2],'attesi ta.ema e ta.stdev sulla stessa sorgente e con la stessa lunghezza')) return r;
+const [,vEma,vLen]=ema, vStd=sd[1];
+const up=new RegExp('(\\w+)\\s*=\\s*'+vEma+'\\s*\\+\\s*(\\w+)\\s*\\*\\s*'+vStd).exec(s), lo=new RegExp('(\\w+)\\s*=\\s*'+vEma+'\\s*-\\s*(\\w+)\\s*\\*\\s*'+vStd).exec(s);
+if(!need(up&&lo&&up[2]===lo[2],'attese bande  ema ± mult*stdev')) return r;
+const [,vUp,vMult]=up, vLo=lo[1];
+const fn=/(\w+)\s*\(\s*(\w+)\s*,\s*(\w+)\s*,\s*(\w+)\s*\)\s*=>/.exec(s);
+if(!need(fn,'funzione colore (val, upBand, lowBand) non trovata')) return r;
+const [,fName,pv,pu,pl]=fn;
+const colOk=new RegExp('if\\s+'+pv+'\\s*>\\s*0').test(s)&&new RegExp(pv+'\\s*>=\\s*'+pu).test(s)&&new RegExp(pv+'\\s*<=\\s*'+pl).test(s)&&new RegExp(fName+'\\s*\\(\\s*'+vL+'\\s*,\\s*'+vUp+'\\s*,\\s*'+vLo+'\\s*\\)').test(s);
+if(!need(colOk,'logica dei colori non riconosciuta (attesa: segno di last e confronto con le bande)')) return r;
+const num=(v,t)=>{ const m=new RegExp(v+'\\s*=\\s*input\\.'+t+'\\(\\s*([-\\d.]+)').exec(s); return m?+m[1]:null; };
+const len=num(vLen,'int'), mult=num(vMult,'float'), wick=new RegExp(vWick+'\\s*=\\s*input\\.bool\\(\\s*(true|false)').exec(s);
+if(!need(len!=null&&len>=1&&fin(len),'lunghezza Bollinger non leggibile')||!need(mult!=null&&fin(mult),'moltiplicatore non leggibile')||!need(!!wick,'flag wick non leggibile')) return r;
+const cu=/var\s+\w+\s*=\s*if\s+(\w+)/.exec(s), ctf=/(\w+)\s*=\s*input\.timeframe\(\s*"([^"]+)"/.exec(s), cflag=cu?new RegExp(cu[1]+'\\s*=\\s*input\\.bool\\(\\s*(true|false)').exec(s):null;
+const auto=/timeframe\.isintraday\s*"(\w+)"/.exec(s);
+if(!need(ctf&&cflag&&auto,'timeframe inferiore (custom/automatico) non leggibile')) return r;
+r.params={bbLength:Math.round(len),bbMult:mult,useWicks:wick[1]==='true',useCustomTF:cflag[1]==='true',customTF:ctf[2],autoLTF:auto[1]};
+r.uses=['ta.requestVolumeDelta','ta.ema (seed SMA)','ta.stdev (popolazione)'];
+r.outputs=[
+['openVolume','delta di volume all\'apertura della barra (continuo, con segno, unità di volume)'],
+['maxVolume / minVolume','massimo / minimo del delta cumulato nella barra (continui)'],
+['lastVolume','delta alla chiusura della barra: valore guida dei colori (continuo, non normalizzato)'],
+['emaValue, stdDev','EMA e deviazione standard su '+r.params.bbLength+' barre di '+(r.params.useWicks?'(max+min)/2':'lastVolume')],
+['upperBand / lowerBand','ema ± '+r.params.bbMult+'·stdev (non centrate sullo zero)']];
+r.states=[['bull_strong','last > 0 e last ≥ upperBand'],['bull_weak','last > 0 e last < upperBand'],['bear_strong','last ≤ 0 e last ≤ lowerBand'],['bear_weak','last ≤ 0 e last > lowerBand (last = 0 incluso: nessuno stato neutrale nel codice)']];
+r.notes.push('Il delta riparte da zero a ogni barra: ogni barra chiusa è un\'osservazione.','Le bande esistono solo dopo '+r.params.bbLength+' barre valide (stdev).','Timeframe inferiore per grafici intraday (1H, 4H): '+(r.params.useCustomTF?r.params.customTF:r.params.autoLTF)+' minuti.');
+r.ok=true; return r;
+}
+};
+GC.IndCalc=function(p,st){
+const L=p.bbLength, alpha=2/(L+1); st=st||{win:[],n:0,ema:null,seed:0};
+function push(bar){
+const x=p.useWicks?(bar.mx+bar.mn)/2:bar.l;
+st.win.push(x); if(st.win.length>L) st.win.shift(); st.n++;
+if(p.seed==='first'){ st.ema=st.n===1?x:alpha*x+(1-alpha)*st.ema; if(st.n<L) return {ready:false,n:st.n}; }
+else{
+if(st.n<L){ st.seed+=x; return {ready:false,n:st.n}; }
+if(st.n===L){ st.seed+=x; st.ema=st.seed/L; } else st.ema=alpha*x+(1-alpha)*st.ema;
+}
+let m=0; for(const y of st.win) m+=y; m/=L; let v=0; for(const y of st.win) v+=(y-m)*(y-m);
+const std=Math.sqrt(v/L), upper=st.ema+p.bbMult*std, lower=st.ema-p.bbMult*std, val=bar.l;
+const state=val>0?(val>=upper?'bull_strong':'bull_weak'):(val<=lower?'bear_strong':'bear_weak');
+return {ready:true,n:st.n,ema:st.ema,std,upper,lower,state};
+}
+return {push,state:st};
+};
+GC.Series={
+parseTime(x){ if(x==null||x==='') return NaN; if(typeof x==='number') return x>=1e11?x/1000:x; const s=String(x).trim(); if(/^-?\d+(\.\d+)?$/.test(s)){ const n=+s; return n>=1e11?n/1000:n; } const d=Date.parse(s); return isNaN(d)?NaN:d/1000; },
+num(x){ if(x==null) return null; if(typeof x==='number') return fin(x)?x:null; const s=String(x).trim().replace(/\s/g,''); if(s===''||/^(na|nan|null|undefined|-)$/i.test(s)) return null; const n=+s.replace(',','.'); return fin(n)?n:null; },
+parseText(text){
+const out={rows:[],errors:[]}; text=String(text||'').trim(); if(!text){ out.errors.push('testo vuoto'); return out; }
+const alias={t:'time',time:'time',timestamp:'time',date:'time',datetime:'time',o:'o',open:'o',openvolume:'o',max:'mx',high:'mx',maxvolume:'mx',h:'mx',min:'mn',low:'mn',minvolume:'mn',last:'l',close:'l',lastvolume:'l',c:'l',delta:'l',ema:'ema',emavalue:'ema',bollingerema:'ema',basis:'ema',upper:'up',upperband:'up',lower:'lo',lowerband:'lo'};
+let objs=null;
+if(text[0]==='['||text[0]==='{'){ try{ let j=JSON.parse(text); if(!Array.isArray(j)) j=j.data||j.bars||j.rows; if(!Array.isArray(j)) throw 0; objs=j.map(r=>{ if(Array.isArray(r)) return {time:r[0],o:r[1],mx:r[2],mn:r[3],l:r[4],ema:r[5],up:r[6],lo:r[7]}; const o={}; for(const k in r){ const a=alias[k.toLowerCase().replace(/[\s_]/g,'')]; if(a) o[a]=r[k]; } return o; }); }catch(e){ out.errors.push('JSON non valido'); return out; } }
+else{
+const lines=text.split(/\n/).map(l=>l.trim()).filter(Boolean), d=[';','\t',','].find(c=>lines[0].includes(c))||',', cells=lines.map(l=>l.split(d).map(x=>x.trim().replace(/^"|"$/g,'')));
+let map=null, start=0; const h=cells[0].map(c=>alias[c.toLowerCase().replace(/[\s_]/g,'')]);
+if(h.filter(Boolean).length>=4){ map=h; start=1; } else if(isNaN(GC.Series.parseTime(cells[0][0]))&&cells[0].length>=5){ map=['time','o','mx','mn','l']; start=1; } else map=['time','o','mx','mn','l'];
+if(!(map.includes('time')&&map.includes('l')&&map.includes('mx')&&map.includes('mn')&&map.includes('o'))){ out.errors.push('colonne richieste: time, open, max, min, last'); return out; }
+objs=cells.slice(start).map(c=>{ const o={}; map.forEach((k,i)=>{ if(k) o[k]=c[i]; }); return o; });
+}
+for(const o of objs){ const row={t:GC.Series.parseTime(o.time),o:GC.Series.num(o.o),mx:GC.Series.num(o.mx),mn:GC.Series.num(o.mn),l:GC.Series.num(o.l)}; if('ema' in o||'up' in o||'lo' in o){ row.ema=GC.Series.num(o.ema); row.up=GC.Series.num(o.up); row.lo=GC.Series.num(o.lo); } out.rows.push(row); }
+return out;
+},
+mergeSources(fine,coarse,gFine,gCoarse){
+const m=new Map(); for(const b of coarse) m.set(b.t,Object.assign({},b,{g:gCoarse}));
+for(const b of fine){ const o=m.get(b.t), fb=Object.assign({},b,{g:gFine}); if(!o||b.valid||!(o.valid&&o.closed)) m.set(b.t,fb); }
+return [...m.keys()].sort((a,b)=>a-b).map(t=>m.get(t)); },
+normalize(rows,stepSec,opt){
+opt=Object.assign({maxGapSec:120*3600},opt||{});
+const rep={input:rows.length,dup:0,unsorted:false,missing:0,incoherent:0,badTs:0,closures:0,gaps:[]}, map=new Map(); let prev=-Infinity;
+for(const r of rows){ if(!fin(r.t)){ rep.badTs++; continue; } if(r.t<prev) rep.unsorted=true; prev=r.t; if(map.has(r.t)) rep.dup++; map.set(r.t,r); }
+const ts=[...map.keys()].sort((a,b)=>a-b), bars=[];
+for(let i=0;i<ts.length;i++){
+const r=map.get(ts[i]); let valid=[r.o,r.mx,r.mn,r.l].every(x=>x!=null&&fin(x));
+if(!valid) rep.missing++;
+else{ const tol=1e-9*(Math.abs(r.mx)+Math.abs(r.mn)+1); if(r.mx<Math.max(r.o,r.l)-tol||r.mn>Math.min(r.o,r.l)+tol){ valid=false; rep.incoherent++; } }
+bars.push({t:ts[i],o:r.o,mx:r.mx,mn:r.mn,l:r.l,valid,closed:r.closed,cov:r.cov,kind:r.kind,g:r.g,ema:r.ema,up:r.up,lo:r.lo,px:r.px,pxA:r.pxA});
+if(i>0){ const g=ts[i]-ts[i-1]; if(g>stepSec*1.5){ if(g>opt.maxGapSec) rep.gaps.push({from:ts[i-1],to:ts[i]}); else rep.closures++; } }
+}
+return {bars,report:rep};
+}
+};
+GC.Sessions={
+offsetSec(tz,utcMs){ const p=new Intl.DateTimeFormat('en-US',{timeZone:tz,hourCycle:'h23',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit'}).formatToParts(new Date(utcMs)), g=k=>+p.find(x=>x.type===k).value;
+return (Date.UTC(g('year'),g('month')-1,g('day'),g('hour'),g('minute'),g('second'))-Math.floor(utcMs/1000)*1000)/1000; },
+zonedToUtc(y,m,d,hh,mm,tz){ let ms=Date.UTC(y,m-1,d,hh,mm); for(let i=0;i<3;i++) ms=Date.UTC(y,m-1,d,hh,mm)-GC.Sessions.offsetSec(tz,ms)*1000; return ms/1000; },
+localDate(tz,tSec){ const p=new Intl.DateTimeFormat('en-CA',{timeZone:tz,year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date(tSec*1000)); return p; },
+nyseRegular(tz,tSec){ const [y,m,d]=GC.Sessions.localDate(tz,tSec).split('-').map(Number); return [GC.Sessions.zonedToUtc(y,m,d,9,30,tz),GC.Sessions.zonedToUtc(y,m,d,16,0,tz)]; },
+nyseExtended(tz,tSec){ const [y,m,d]=GC.Sessions.localDate(tz,tSec).split('-').map(Number), z=(h,mi)=>GC.Sessions.zonedToUtc(y,m,d,h,mi,tz); return [[z(4,0),z(9,30),'pre'],[z(9,30),z(16,0),'regular'],[z(16,0),z(20,0),'post']]; },
+fromMeta(meta){ const tp=meta&&meta.tradingPeriods; if(!tp) return []; const groups=Array.isArray(tp)?{regular:tp}:tp, out=[];
+for(const kind of ['pre','regular','post']){ const arr=groups[kind]; if(!Array.isArray(arr)) continue; for(const day of arr) for(const s of (Array.isArray(day)?day:[day])) if(s&&fin(s.start)&&fin(s.end)&&s.end>s.start) out.push([s.start,s.end,kind]); }
+return out.sort((a,b)=>a[0]-b[0]); }
+};
+GC.Adapter={
+prepare(ltf,ltfSec,nowSec,capEnd){
+const rep={received:ltf.length,badTs:0,dup:0,conflict:0,unsorted:0,unfinished:0,nullRows:0,modeStep:null,stepMismatch:false}, m=new Map(); let mx=-Infinity;
+for(const b of ltf){ if(!b||typeof b.t!=='number'||!fin(b.t)){ rep.badTs++; continue; } if(b.t<mx) rep.unsorted++; else mx=b.t;
+const old=m.get(b.t); if(old){ if(old.o===b.o&&old.c===b.c&&old.v===b.v) rep.dup++; else rep.conflict++; } m.set(b.t,b); }
+const ts=[...m.keys()].sort((x,y)=>x-y), bars=[], hist=new Map();
+for(let i=0;i<ts.length;i++){ const b=m.get(ts[i]); if(i>0){ const g=ts[i]-ts[i-1]; if(g<=3600) hist.set(g,(hist.get(g)||0)+1); }
+{ let e=b.t+ltfSec; if(capEnd){ const c=capEnd(b.t); if(c!=null&&c<e) e=c; } if(e>nowSec){ rep.unfinished++; continue; } }
+if(!(fin(b.o)&&fin(b.c)&&fin(b.v)&&b.v>=0)) rep.nullRows++;
+bars.push(b); }
+let best=0; for(const [g,c] of hist) if(c>best){ best=c; rep.modeStep=g; } rep.stepMismatch=rep.modeStep!=null&&rep.modeStep!==ltfSec;
+return {bars,rep};
+},
+approxDelta(ltf,stepSec,ltfSec,opt){
+opt=Object.assign({tzOffsetSec:0,tz:null,sessions:null,nowSec:Date.now()/1000,sessEnd:null,minCov:.9,badTol:0,settleSec:ltfSec+120,ext:{pre:false,post:false}},opt||{});
+const raw0=ltf;
+const wantK=k=>k==='regular'||(k==='pre'&&opt.ext.pre)||(k==='post'&&opt.ext.post), wantExt=opt.ext.pre||opt.ext.post;
+let sess=opt.sessions&&opt.sessions.length?opt.sessions.filter(s=>wantK(s[2]||'regular')).sort((a,b)=>a[0]-b[0]):null, mode='metadati';
+if(sess&&!sess.length) sess=null;
+if(sess&&wantExt&&!opt.sessions.some(s=>s[2]&&s[2]!=='regular')) sess=null;
+if(!sess&&opt.tz==='America/New_York'&&raw0.length){ const seen=new Map(); for(const b of raw0){ if(!b||typeof b.t!=='number'||!fin(b.t)) continue; const d=GC.Sessions.localDate(opt.tz,b.t); if(!seen.has(d)) seen.set(d,GC.Sessions.nyseExtended(opt.tz,b.t)); } sess=[...seen.values()].flat().filter(s=>wantK(s[2])).sort((a,b)=>a[0]-b[0]); mode='regola NYSE '+(opt.ext.pre?'4:00':'9:30')+'–'+(opt.ext.post?'20:00':'16:00')+' (ora legale inclusa), non da metadati'; }
+if(!sess) mode='prima barra del giorno (NON verificato con la sessione ufficiale)';
+const sIdx=t=>{ let lo=0,hi=sess.length-1; while(lo<=hi){ const m=(lo+hi)>>1; if(t<sess[m][0]) hi=m-1; else if(t>=sess[m][1]) lo=m+1; else return m; } return -1; };
+const pr=GC.Adapter.prepare(raw0,ltfSec,opt.nowSec,sess?(t=>{ const i=sIdx(t); return i<0?null:sess[i][1]; }):null); ltf=pr.bars;
+const hasVol=ltf.some(b=>b&&fin(b.v)&&b.v>0), rangeMode=opt.volMode==='range'||(opt.volMode==='auto'&&ltf.length>0&&!hasVol);
+const bk=new Map(); let prevDir=0, curDay=null, dayFirst=0, ambig=0, outside=0;
+for(const b of ltf){
+let key,day,sEnd=null;
+if(sess){ const i=sIdx(b.t); if(i<0){ outside++; continue; } day=i; sEnd=sess[i][1]; key=sess[i][0]+Math.floor((b.t-sess[i][0])/stepSec)*stepSec; }
+else{ day=Math.floor((b.t+opt.tzOffsetSec)/86400); if(day!==curDay){ curDay=day; dayFirst=b.t; } key=dayFirst+Math.floor((b.t-dayFirst)/stepSec)*stepSec; }
+let B=bk.get(key); if(!B){ B={t:key,cum:0,mx:0,mn:0,n:0,bad:0,day,sEnd,kind:sess?(sess[day][2]||'regular'):'regular'}; bk.set(key,B); }
+if(fin(b.o)&&fin(b.c)){ const hh=fin(b.hi)?Math.max(b.hi,b.o,b.c):Math.max(b.o,b.c), ll=fin(b.lo)?Math.min(b.lo,b.o,b.c):Math.min(b.o,b.c); if(!(fin(b.hi)&&fin(b.lo))) B.pa=true; if(B.po==null) B.po=b.o; B.pc=b.c; B.ph=B.ph==null?hh:Math.max(B.ph,hh); B.pl=B.pl==null?ll:Math.min(B.pl,ll); }
+if(!(fin(b.o)&&fin(b.c)&&(rangeMode||(fin(b.v)&&b.v>=0)))){ B.bad++; continue; }
+const dir=b.c>b.o?1:b.c<b.o?-1:prevDir; if(b.c===b.o) ambig++; if(b.c!==b.o) prevDir=dir;
+const wgt=rangeMode?((fin(b.hi)&&fin(b.lo))?Math.max(b.hi,b.o,b.c)-Math.min(b.lo,b.o,b.c):Math.abs(b.c-b.o)):b.v;
+B.cum+=dir*wgt; if(B.cum>B.mx) B.mx=B.cum; if(B.cum<B.mn) B.mn=B.cum; B.n++;
+}
+const keys=[...bk.keys()].sort((a,b)=>a-b), out=[], rec=Object.assign({},pr.rep,{outside,used:0,buckets:keys.length,definitive:0,provisional:0,rejected:0,lowCov:0,absentReg:0});
+keys.forEach((k,i)=>{ const B=bk.get(k), last=i===keys.length-1, nxt=last?null:bk.get(keys[i+1]), dayEnd=last||nxt.day!==B.day;
+const endT=B.sEnd!=null?Math.min(B.sEnd,k+stepSec):k+stepSec, exp=B.sEnd!=null?Math.max(1,Math.round((endT-k)/ltfSec)):stepSec/ltfSec;
+const cov=B.n/exp, full=B.bad===0&&B.n>=exp, ethB=B.kind!=='regular';
+const settled=full||opt.nowSec>=endT+opt.settleSec, closed=!last||(opt.nowSec>=endT&&settled)||(opt.sessEnd!=null&&opt.nowSec>=opt.sessEnd+opt.settleSec);
+const covOk=ethB||(B.sEnd==null&&dayEnd)||cov>=opt.minCov, base=B.bad<=opt.badTol&&B.n>0, valid=closed?(base&&covOk):base;
+rec.used+=B.n+B.bad; if(closed){ if(valid){ rec.definitive++; if(!ethB&&cov<1) rec.lowCov++; } else rec.rejected++; } else rec.provisional++;
+if(!last&&!ethB&&nxt.day===B.day&&nxt.kind==='regular'){ const g=Math.round((keys[i+1]-k)/stepSec)-1; if(g>0) rec.absentReg+=g; }
+out.push({t:k,o:0,mx:valid?B.mx:null,mn:valid?B.mn:null,l:valid?B.cum:null,closed,cov,kind:B.kind,n:B.n,exp,full,px:B.po==null?null:[B.po,B.ph,B.pl,B.pc],pxA:!!B.pa});
+});
+out.ambig=ambig; out.outside=outside; out.volMode=rangeMode?'range':'real'; out.rec=rec; out.nExt=out.filter(b=>b.kind!=='regular').length; out.align=mode; out.nSess=sess?sess.length:null; return out;
+}
+};
+GC.Yahoo={
+parse(j,opt){
+opt=Object.assign({sym:null,iv:null},opt||{}); const E=(code,msg)=>({ok:false,code,msg});
+if(j==null||typeof j!=='object'||Array.isArray(j)) return E('malformed','la risposta non è un oggetto JSON');
+const ch=j.chart; if(ch==null||typeof ch!=='object') return E('malformed','manca l\'oggetto «chart» (il Worker non inoltra una risposta Yahoo?)'+(j.error?': '+String(j.error.description||j.error.message||j.error).slice(0,120):''));
+if(ch.error) return E('provider','Yahoo segnala un errore: '+String(ch.error.description||ch.error.code||'sconosciuto').slice(0,160));
+const res=Array.isArray(ch.result)?ch.result[0]:null; if(!res||typeof res!=='object') return E('empty','nessun risultato per questo simbolo/intervallo');
+const meta=res.meta&&typeof res.meta==='object'?res.meta:{};
+if(opt.sym&&meta.symbol&&String(meta.symbol).toUpperCase()!==String(opt.sym).toUpperCase()) return E('symbol','simbolo restituito «'+meta.symbol+'» invece di «'+opt.sym+'»');
+const gnorm=x=>String(x).toLowerCase()==='1h'?'60m':String(x).toLowerCase(); if(opt.iv&&meta.dataGranularity&&gnorm(meta.dataGranularity)!==gnorm(opt.iv)) return E('interval','granularità restituita «'+meta.dataGranularity+'» invece di «'+opt.iv+'»: i dati non vengono usati');
+const ts=res.timestamp; if(ts==null||(Array.isArray(ts)&&ts.length===0)) return E('empty','nessuna barra nell\'intervallo richiesto (mercato chiuso o storico non disponibile)');
+if(!Array.isArray(ts)) return E('malformed','«timestamp» non è una lista');
+const q=res.indicators&&Array.isArray(res.indicators.quote)?res.indicators.quote[0]:null; if(!q||typeof q!=='object') return E('malformed','manca «indicators.quote»');
+for(const f of ['open','close','volume']){ if(!Array.isArray(q[f])) return E('malformed','campo «'+f+'» assente o non è una lista'); if(q[f].length!==ts.length) return E('length','«'+f+'» ha '+q[f].length+' valori contro '+ts.length+' timestamp: serie non allineate, scartata'); }
+const bars=[], st={rows:ts.length,badTs:0,nullRows:0}; const num=x=>typeof x==='number'&&fin(x)?x:null; const qh=Array.isArray(q.high)&&q.high.length===ts.length?q.high:null, ql=Array.isArray(q.low)&&q.low.length===ts.length?q.low:null;
+for(let i=0;i<ts.length;i++){ const t=ts[i]; if(typeof t!=='number'||!fin(t)||t<=0){ st.badTs++; continue; } const o=num(q.open[i]), c=num(q.close[i]), v=num(q.volume[i]); if(o==null||c==null||v==null) st.nullRows++; bars.push({t,o,c,v,hi:qh?num(qh[i]):null,lo:ql?num(ql[i]):null}); }
+if(!bars.length) return E('empty','tutti i timestamp sono non validi');
+return {ok:true,bars,meta,stats:st};
+}
+};
+GC.Prefs={
+KEY:'gc2|mig151',
+migrate(cur,legacy,done){
+const base=cur||legacy||null; if(done) return {prefs:base,migrated:false,changes:[]};
+const p=Object.assign({},base||{}), ch=[]; if(base&&base.mode==='import') ch.push('modalità Import → Worker'); if(base&&base.auto===false) ch.push('AUTO START disattivato → attivo'); if(base&&base.bf===false) ch.push('backfill 60m disattivato → attivo');
+p.mode='worker'; p.auto=true; p.bf=true; return {prefs:p,migrated:true,changes:ch};
+},
+retryMs(attempts){ return [10,30,120,360][Math.max(0,Math.min(attempts-1,3))]*60000; }
+};
+GC.Galaxy={
+cond(o){ return !!o&&o.status==='ok'&&(o.lim!==0||o.movDir!==0); },
+state(x){
+const A=(code,label,why)=>({code,label,why});
+if(x.used<=0&&x.connErr) return A('errore','Errore','dati non disponibili: '+x.connErr);
+if(x.used<=0&&!x.hasData) return A('attesa','In attesa dei dati','nessun dato ancora elaborato');
+if(x.used<x.L) return A('warmup','Warm-up in corso',x.used+'/'+x.L+' barre valide');
+if(!x.lastOk) return A('errore','Errore','ultima osservazione non calcolabile');
+if(x.level!=='ready') return A('pronta','Pronta','indicatore pronto ma dati incompleti/non aggiornati: nessuna attivazione valutata');
+return GC.Galaxy.cond(x.obs)?A('attiva','Attiva','condizione di attivazione presente'):A('nessuna','Nessuna condizione di attivazione','dinamica neutrale');
+}
+};
+GC.Market={
+easter(y){ const a=y%19,b=Math.floor(y/100),c=y%100,d=Math.floor(b/4),e=b%4,f=Math.floor((b+8)/25),g=Math.floor((b-f+1)/3),h=(19*a+b-d-g+15)%30,i=Math.floor(c/4),k=c%4,l=(32+2*e+2*i-h-k)%7,m=Math.floor((a+11*h+22*l)/451),mo=Math.floor((h+l-7*m+114)/31),da=((h+l-7*m+114)%31)+1; return [mo,da]; },
+nth(y,m,wd,n){ const first=new Date(Date.UTC(y,m-1,1)).getUTCDay(); return 1+((wd-first+7)%7)+7*(n-1); },
+lastMon(y,m){ const last=new Date(Date.UTC(y,m,0)); return last.getUTCDate()-((last.getUTCDay()+6)%7); },
+holidays(y){
+const out={}, add=(m,d,n,newYear)=>{ const dt=new Date(Date.UTC(y,m-1,d)), wd=dt.getUTCDay(); let t=dt; if(wd===6){ if(newYear) return; t=new Date(dt.getTime()-86400000); } else if(wd===0) t=new Date(dt.getTime()+86400000); out[t.toISOString().slice(0,10)]=n; };
+add(1,1,'Capodanno',true); add(1,GC.Market.nth(y,1,1,3),'Martin Luther King'); add(2,GC.Market.nth(y,2,1,3),'Presidents Day'); const [em,ed]=GC.Market.easter(y), gf=new Date(Date.UTC(y,em-1,ed)-2*86400000); out[gf.toISOString().slice(0,10)]='Venerdì Santo';
+add(5,GC.Market.lastMon(y,5),'Memorial Day'); add(6,19,'Juneteenth'); add(7,4,'Independence Day'); add(9,GC.Market.nth(y,9,1,1),'Labor Day'); add(11,GC.Market.nth(y,11,4,4),'Thanksgiving'); add(12,25,'Natale'); return out; },
+isHoliday(tz,tSec){ const d=GC.Sessions.localDate(tz,tSec), h=GC.Market.holidays(+d.slice(0,4)); const nx=GC.Market.holidays(+d.slice(0,4)+1); return h[d]||nx[d]||null; },
+earlyClose(tz,tSec){ const d=GC.Sessions.localDate(tz,tSec), y=+d.slice(0,4), hol=GC.Market.holidays(y), dt=new Date(d+'T12:00:00Z'), wd=dt.getUTCDay(); if(wd===0||wd===6||hol[d]) return false;
+const day=(m,dd)=>y+'-'+String(m).padStart(2,'0')+'-'+String(dd).padStart(2,'0'); const th=GC.Market.nth(y,11,4,4); if(d===day(11,th+1)) return true; if(d===day(12,24)) return true; if(d===day(7,3)) return true; return false; },
+sessionsOn(tz,tSec,ext){ const d=GC.Sessions.localDate(tz,tSec), dt=new Date(d+'T12:00:00Z'), wd=dt.getUTCDay(); if(wd===0||wd===6||GC.Market.isHoliday(tz,tSec)) return []; const all=GC.Sessions.nyseExtended(tz,tSec).filter(s=>s[2]==='regular'||(s[2]==='pre'&&ext.pre)||(s[2]==='post'&&ext.post)); if(GC.Market.earlyClose(tz,tSec)) for(const s of all){ const [y,m,dd]=d.split('-').map(Number), c=GC.Sessions.zonedToUtc(y,m,dd,13,0,tz); if(s[2]==='regular'&&s[1]>c) s[1]=c; if(s[2]==='post'){ s[0]=c; s[1]=Math.min(s[1],GC.Sessions.zonedToUtc(y,m,dd,17,0,tz)); } } return all; },
+isOpen(tz,tSec,ext){ return GC.Market.sessionsOn(tz,tSec,ext).some(s=>tSec>=s[0]&&tSec<s[1]); },
+nextOpen(tz,tSec,ext){ for(let k=0;k<12;k++){ const t=tSec+k*86400, ss=GC.Market.sessionsOn(tz,t,ext).filter(s=>s[1]>tSec).sort((a,b)=>a[0]-b[0]); if(ss.length) return Math.max(ss[0][0],tSec); } return null; },
+pollDelay(o){ const tz=o.tz||'America/New_York', ext=o.ext||{pre:true,post:false}, n=o.nowSec, fails=o.fails|0;
+if(fails>0||o.rateLimited){ let d=Math.min(480,60*Math.pow(2,Math.max(0,Math.min(fails-1,3)))); if(o.rateLimited) d=Math.max(d,300); return {ms:d*1000,why:o.rateLimited?'limite di richieste: attesa lunga':'dopo errori: ritardo crescente'}; }
+if(GC.Market.isOpen(tz,n,ext)){ const ss=GC.Market.sessionsOn(tz,n,ext).find(s=>n>=s[0]&&n<s[1]); let d=o.live?5:120; if(ss){ const SS=o.stepSec||3600, k=Math.floor((n-ss[0])/SS), st=(o.settleSec||420)+5; for(const e of [ss[0]+k*SS,Math.min(ss[1],ss[0]+(k+1)*SS)]){ const until=e+st-n; if(until>5&&until<d) d=until; } } return {ms:Math.max(o.live?5:30,Math.round(d))*1000,why:o.live?'mercato aperto, movimento in diretto (ogni 5 s)':'mercato aperto'}; }
+const no=GC.Market.nextOpen(tz,n,ext); const d=no==null?1800:Math.min(1800,Math.max(120,no-n)); return {ms:d*1000,why:no==null?'mercato chiuso':'mercato chiuso: controllo di tanto in tanto fino alla prossima apertura'}; }
+};
+GC.defaultModel={
+common:{D0:.5,Dmin:.15,Dmax:1,Dsmax:.8,FMAX:2,epsFrac:.25,maxGapH:120,staleH:100},
+'1H':{stepH:1,kF:.01,tauV:3,T:120},
+'1m':{stepH:1/60,kF:36,tauV:.05,T:2},
+'5m':{stepH:1/12,kF:1.44,tauV:.25,T:10},
+'4H':{stepH:4,kF:.0006,tauV:12,T:480}
+};
+GC.Engine=function(tf,model,indParams,saved){
+const M=Object.assign({},model.common,model[tf]), epsV=M.epsFrac*M.kF*M.tauV, sh=M.stepH*3600, HIST=800, HISTB=GC.Store.MAXBARS;
+const fresh=()=>({v:2,app:GC.VERSION,tf,lastT:null,lastSig:null,ind:{win:[],n:0,ema:null,seed:0},nDyn:0,D:M.D0,vel:0,acc:0,Ds:M.D0,h:0,obs:[],bars:[],trunc:0,gal:{act:0,since:null,n:0,closed:0,lastClose:null},
+q:{missing:0,discont:0,revised:0,nObs:0,warm:0,scaleNull:0},disc:[]});
+let S=(saved&&GC.Store.adopt(saved,tf))||fresh();
+const Dsf=h=>M.D0+(M.Dsmax-M.D0)*(1-Math.exp(-h/M.T)), dsdt=h=>(M.Dsmax-M.D0)/M.T*Math.exp(-h/M.T);
+const sig=b=>b.valid?[b.o,b.mx,b.mn,b.l].join('|'):'x';
+function dirOf(v){ return v>epsV?1:v<-epsV?-1:0; }
+function push(bar){
+if(S.lastT!=null&&bar.t<=S.lastT){ if(bar.t===S.lastT&&S.lastSig!=null&&sig(bar)!==S.lastSig) S.q.revised++; return {skipped:true,events:[]}; }
+if(S.lastT!=null&&(bar.t-S.lastT)/3600>M.maxGapH){ const q=S.q, d=S.disc.concat([{from:S.lastT,to:bar.t}]), bs=S.bars, tr=S.trunc, gl=S.gal; S=fresh(); S.q=q; S.q.discont++; S.disc=d; S.bars=bs; S.trunc=tr; S.gal=Object.assign({},gl,{act:0,since:null}); }
+S.lastT=bar.t; S.lastSig=sig(bar);
+{ const cv=bar.cov==null||!fin(bar.cov)?null:Math.round(bar.cov*1000)/1000, g=bar.g==null?null:bar.g; S.bars.push(bar.valid?[bar.t,bar.o,bar.mx,bar.mn,bar.l,cv,g]:[bar.t,null,null,null,null,cv,g]); } if(S.bars.length>HISTB){ S.bars.shift(); S.trunc++; }
+const sgv=GC.hash(sig(bar)).slice(0,8), rec=o=>{ o.sg=sgv; S.obs.push(o); if(S.obs.length>HIST) S.obs.shift(); return o; };
+if(!bar.valid){ S.q.missing++; return rec({t:bar.t,status:'mancante'}); }
+const ic=GC.IndCalc(indParams,S.ind), ind=ic.push(bar);
+if(!ind.ready){ S.q.warm=ind.n; return rec({t:bar.t,status:'warmup',n:ind.n}); }
+const A=Math.max(Math.abs(ind.upper),Math.abs(ind.lower));
+if(!fin(A)||A===0){ S.q.scaleNull++; return rec({t:bar.t,status:'scala nulla',state:ind.state}); }
+const E=Math.min(Math.max(bar.l,0)/A,M.FMAX), G=Math.min(Math.max(-bar.l,0)/A,M.FMAX), R=E-G, dt=M.stepH;
+let v=S.vel+(M.kF*R-S.vel/M.tauV)*dt, D=S.D+v*dt;
+let lim=0; if(D>=M.Dmax){ D=M.Dmax; if(v>0){ v=0; lim=1; } } else if(D<=M.Dmin){ D=M.Dmin; if(v<0){ v=0; lim=-1; } }
+const a=(v-S.vel)/dt; S.vel=v; S.D=D; S.acc=a; S.nDyn++; S.h=S.nDyn*dt; S.Ds=Dsf(S.h);
+S.q.nObs++;
+const o={t:bar.t,status:'ok',l:bar.l,state:ind.state,ema:ind.ema,std:ind.std,upper:ind.upper,lower:ind.lower,A,E,G,R,D,v,a,Ds:S.Ds,dsdt:dsdt(S.h),dev:D-S.Ds,h:S.h,lim,wall:D>=M.Dmax?1:D<=M.Dmin?-1:0,movDir:dirOf(v),pressDir:R>=M.epsFrac?1:R<=-M.epsFrac?-1:0,decel:Math.abs(v)>epsV&&v*a<0,faster:v>dsdt(S.h)};
+rec(o); const gl=S.gal, on=GC.Galaxy.cond(o);
+if(on&&!gl.act){ gl.act=1; gl.since=bar.t; gl.n++; } else if(!on&&gl.act){ gl.act=0; gl.closed++; gl.lastClose=bar.t; }
+return o;
+}
+const isClosed=(b,nowSec)=>b.closed!==undefined?b.closed:(b.t+sh<=nowSec);
+function split(bars,nowSec){ const closed=[]; let forming=null; for(const b of bars){ if(isClosed(b,nowSec)) closed.push(b); else forming=b; } return {closed,forming}; }
+function pushSeries(bars,nowSec){
+const sp=split(bars,nowSec); for(const b of sp.closed) push(b); return sp.forming;
+}
+function peek(bar){ const c=GC.Engine(tf,model,indParams,JSON.parse(JSON.stringify(S))); const o=c.push(bar); return o; }
+function compare(bars){
+const L=S.lastT, m=new Map(S.obs.map(o=>[o.t,o.sg])); let overlap=0,differ=0,fresh=0,beyond=0;
+for(const b of bars){ if(L==null||b.t>L){ fresh++; continue; } const g=m.get(b.t); if(g===undefined){ beyond++; continue; } overlap++; if(g!==GC.hash(sig(b)).slice(0,8)) differ++; }
+const first=bars.length?bars[0].t:null, lastB=bars.length?bars[bars.length-1].t:null;
+let kind='prima'; if(L!=null){ kind=differ>0?'correzione':(lastB<L?'piu_vecchi':(fresh>0?(overlap>0||beyond>0?'incrementale':'senza_sovrapposizione'):'nessuna_novita')); }
+return {kind,overlap,differ,fresh,beyond,first,last:lastB};
+}
+const toBar=r=>r[4]==null?{t:r[0],o:null,mx:null,mn:null,l:null,valid:false,cov:r[5],g:r[6]==null?null:r[6]}:{t:r[0],o:r[1],mx:r[2],mn:r[3],l:r[4],valid:true,cov:r[5],g:r[6]==null?null:r[6]};
+function history(){ return S.bars.map(toBar); }
+function counts(){
+const L=indParams.bbLength, valid=S.bars.filter(r=>r[4]!=null), used=S.ind.n, w=used>0?valid.slice(-Math.min(used,L)):[];
+return {processed:S.bars.length,valid:valid.length,missing:S.bars.length-valid.length,used,need:L,windowLowCov:w.filter(r=>r[5]!=null&&r[5]<1).length,
+firstT:S.bars.length?S.bars[0][0]:null,lastT:S.lastT,windowT:w.map(r=>r[0]),windowCoarse:w.filter(r=>r[6]!=null&&r[6]>=3600).length,windowFine:w.filter(r=>r[6]!=null&&r[6]<3600).length,legacy:S.bars.length===0&&S.q.nObs+S.q.warm>0,trunc:S.trunc};
+}
+function origin(downloadedT){
+const c=counts(), set=downloadedT instanceof Set?downloadedT:new Set(downloadedT||[]); if(c.legacy) return {kind:'locale_v1',now:0,local:c.used,n:c.used};
+const now=c.windowT.filter(t=>set.has(t)).length; return {kind:c.windowT.length===0?'nessuna':now===c.windowT.length?'scaricate':now===0?'locale':'misto',now,local:c.windowT.length-now,n:c.windowT.length};
+}
+function dropCoarser(bars){ if(!S.bars.length) return bars; const m=new Map(S.bars.map(r=>[r[0],r[6]==null?0:r[6]])); return bars.filter(b=>{ const g=m.get(b.t); return !(g!==undefined&&g>0&&b.g!=null&&b.g>g); }); }
+function last(){ for(let i=S.obs.length-1;i>=0;i--) if(S.obs[i].status==='ok') return S.obs[i]; return null; }
+function quality(nowSec){
+const lo=S.obs[S.obs.length-1], L=indParams.bbLength, ageH=S.lastT!=null?(nowSec-S.lastT)/3600:null;
+const ready=!!last(), stale=ageH==null||ageH>M.staleH, lastStatus=lo?lo.status:null;
+let state='ok', why=[];
+if(!ready){ state='warmup'; why.push('riscaldamento indicatore: '+S.q.warm+'/'+L+' barre valide (bande non ancora definite)'); }
+if(stale&&ready){ state='non aggiornata'; why.push('ultima barra chiusa di '+ageH.toFixed(1)+' h fa (oltre '+M.staleH+' h)'); }
+if(ready&&lastStatus&&lastStatus!=='ok'){ state='non aggiornata'; why.push('ultima barra: '+lastStatus+' (dinamica ferma all\'ultima osservazione valida)'); }
+return {state,why,ageH,ready,stale,q:S.q,disc:S.disc};
+}
+return {push,pushSeries,split,peek,compare,last,quality,history,counts,origin,dropCoarser,get state(){ return S; },cfg:M,epsV,dirOf,dsdt,Dsf,serialize(){ return JSON.stringify(S); }};
+};
+GC.Sync={
+classify(o1,o4){
+if(!o1||!o4) return {code:'incomplete',label:'Dati insufficienti',text:'Almeno una timeframe non ha ancora una dinamica valida: nessuna lettura di sintesi.',mods:[]};
+const b1=o1.lim||0, b4=o4.lim||0, d1=b1?0:o1.movDir, d4=b4?0:o4.movDir;
+const side=l=>l>0?'massimo':'minimo', pr=o=>o.lim>0?'rialzista':'ribassista';
+let code,label,text;
+if(b1&&b4){ code='blocked'; label='1H e 4H ferme su un limite fisico'; text=`La 1H è ferma sul limite ${side(b1)} (pressione ${pr(o1)}) e la 4H sul limite ${side(b4)} (pressione ${pr(o4)}): il moto è vincolato, non si sta muovendo.`; }
+else if((b1||b4)&&d1===0&&d4===0){ const t=b1?'1H':'4H', o=b1?o1:o4, l=b1?b1:b4; code='blocked'; label=`${t} ferma su un limite fisico`; text=`La ${t} è ferma sul limite ${side(l)} (pressione ${pr(o)}); l'altra timeframe è sotto la soglia di neutralità.`; }
+else if(d1>0&&d4>0){ code='both_up'; label='1H e 4H rialziste'; text='Concordanza tra breve e medio periodo: in entrambe le scale le galassie si allontanano.'; }
+else if(d1<0&&d4<0){ code='both_down'; label='1H e 4H ribassiste'; text='Concordanza negativa: in entrambe le scale le galassie si avvicinano.'; }
+else if(d4>0&&d1<0){ code='up4_down1'; label='4H rialzista, 1H ribassista'; text='Possibile correzione di breve periodo all\'interno di una struttura rialzista.'; }
+else if(d4<0&&d1>0){ code='down4_up1'; label='4H ribassista, 1H rialzista'; text='Possibile rimbalzo di breve periodo all\'interno di una struttura ribassista.'; }
+else if(d1===0&&d4===0){ code='both_flat'; label='Entrambe neutrali'; text='Né la 1H né la 4H hanno un movimento rilevante: la velocità è sotto la soglia di neutralità.'; }
+else { const mv=d1!==0?'1H':'4H', ot=d1!==0?'4H':'1H', blk=(d1!==0?b4:b1); code='one_moving'; label=blk?'Una timeframe in movimento, l\'altra bloccata su un limite':'Una timeframe in movimento, l\'altra ferma'; text=`La ${mv} è in movimento (${(d1!==0?d1:d4)>0?'allontanamento':'avvicinamento'}), la ${ot} ${blk?'è ferma sul limite '+side(blk)+' (pressione '+pr(d1!==0?o4:o1)+')':'è sotto la soglia di neutralità'}.`; }
+const mods=[], dec1=o1.decel&&!b1, dec4=o4.decel&&!b4;
+if(dec1&&!dec4&&d4!==0) mods.push('la 1H sta rallentando mentre la 4H prosegue'); if(dec4&&!dec1&&d1!==0) mods.push('la 4H sta rallentando mentre la 1H prosegue'); if(dec1&&dec4) mods.push('entrambe stanno rallentando');
+for(const [t,o] of [['1H',o1],['4H',o4]]) if(!o.lim&&o.movDir!==0&&o.pressDir!==0&&o.movDir!==o.pressDir) mods.push(`${t}: pressione opposta al movimento (il moto prosegue per inerzia)`);
+return {code,label,text,mods};
+}
+};
+GC.Avg={ compute(obs,nowSec,winSec,minN){ const W=winSec||3600, fn=Number.isFinite; if(!fn(nowSec)) return null; const ok=(obs||[]).filter(o=>o&&o.status==='ok'&&fn(o.t)&&o.t<=nowSec&&fn(o.v)); let w=ok.filter(o=>o.t>=nowSec-W), ext=false; if(minN&&w.length<minN&&ok.length>=1){ w=ok.slice(-minN); ext=true; } if(!w.length) return null;
+const m=a=>a.length?a.reduce((x,y)=>x+y,0)/a.length:NaN, va=w.map(o=>o.v), aa=w.map(o=>o.a).filter(fn);
+return {v:m(va),a:m(aa),vAbs:m(va.map(Math.abs)),aAbs:m(aa.map(Math.abs)),n:w.length,ext,nA:aa.length,t0:w[0].t,t1:w[w.length-1].t,partial:w[0].t>nowSec-W+ (w.length>1?(w[w.length-1].t-w[0].t)/(w.length-1):0)*1.5}; } };
+GC.RenderMath={
+readFlow(st,pressDir){ if(!st) return null; const dir=st.dir, pedal=dir===0?'ferma':st.accel?'rafforzamento':st.brake?'esaurimento':'costante', pd=pressDir>0?1:pressDir<0?-1:0, wind=dir===0||pd===0?'neutra':pd===dir?'concorde':'discorde', score=(pedal==='esaurimento'?2:0)+(wind==='discorde'?2:0), level=score>=4?'rosso':score>=2?'giallo':'verde';
+return {dir,pedal,wind,score,level}; },
+flowPhrase(fl){ if(!fl) return ''; if(fl.dir===0) return 'Auto in folle. Nessun movimento chiaro. Peso '+fl.score+'.'; const mv=fl.dir>0?'Auto in marcia avanti.':'Auto in retromarcia.', sp=fl.pedal==='rafforzamento'?' Sta guadagnando spinta.':fl.pedal==='esaurimento'?' Sta perdendo spinta.':' Andatura costante.', wd=fl.wind==='concorde'?' Vento a favore.':fl.wind==='discorde'?' Vento contrario.':' Vento neutro.'; return mv+sp+wd+' Peso '+fl.score+'.'; },
+accTrend(obs,ref,n,cur){ n=n||5; const s=(obs||[]).filter(o=>o&&o.status==='ok'&&fin(o.a)).slice(-(n-(cur&&fin(cur.a)?1:0))).map(o=>o.a); if(cur&&fin(cur.a)) s.push(cur.a); if(s.length<3||!ref||!fin(ref.a)||ref.a<=0) return null; const ch=(s[s.length-1]-s[0])/ref.a; return {ch,state:ch<-.15?'cala':ch>.15?'sale':'stabile',n:s.length}; },
+carRefs(obs){ const q=k=>{ const a=(obs||[]).slice(-400).map(o=>Math.abs(o[k])).filter(fin).sort((x,y)=>x-y); return a.length?Math.max(1e-9,a[Math.min(a.length-1,Math.floor(.9*a.length))]):1e-9; }; return {v:q('v'),a:q('a')}; },
+carState(o,ref){ if(!o||!ref||!fin(o.v)) return null; const spd=Math.min(1,Math.abs(o.v)/ref.v), lim=!!o.lim, dir=lim||spd<.03?0:Math.sign(o.v), acc=fin(o.a)?Math.max(-1,Math.min(1,o.a/ref.a)):0, along=dir*Math.sign(acc);
+return {spd,dir,acc,lim,brake:dir!==0&&along<0&&Math.abs(acc)>.12,accel:dir!==0&&along>0&&Math.abs(acc)>.12,reverse:dir<0}; },
+carRefs(obs){ const q=k=>{ const a=(obs||[]).slice(-400).map(o=>Math.abs(o[k])).filter(fin).sort((x,y)=>x-y); return a.length?Math.max(1e-9,a[Math.min(a.length-1,Math.floor(.9*a.length))]):1e-9; }; return {v:q('v'),a:q('a')}; },
+carState(o,ref){ if(!o||!ref||!fin(o.v)) return null; const spd=Math.min(1,Math.abs(o.v)/ref.v), lim=!!o.lim, dir=lim||spd<.03?0:Math.sign(o.v), acc=fin(o.a)?Math.max(-1,Math.min(1,o.a/ref.a)):0, along=dir*Math.sign(acc);
+return {spd,dir,acc,lim,brake:dir!==0&&along<0&&Math.abs(acc)>.12,accel:dir!==0&&along>0&&Math.abs(acc)>.12,reverse:dir<0}; },
+breathPeriod(k){ return 8-4.5*Math.min(1,Math.max(0,fin(k)?k:0)); },
+breath(ph){ const b=.5-.5*Math.cos(ph); return b*b*(3-2*b); },
+breathFactor(k,b){ const kk=Math.min(1,Math.max(0,fin(k)?k:0)); return 1+(.15+.2*kk)*(2*b-1); },
+tint(pressDir,path){ const k=fin(path)?Math.min(1,Math.max(0,path)/0.4):0.15; return (pressDir<0?-1:1)*(.12+.88*k); },
+smooth(shown,target,dtMs,tauMs){ if(!fin(shown)) return target; return target+(shown-target)*Math.exp(-dtMs/tauMs); },
+sepPx(D,Dmin,Dmax,minPx,maxPx){ const u=Math.min(1,Math.max(0,(D-Dmin)/(Dmax-Dmin))); return minPx+u*(maxPx-minPx); }
+};
+GC.VERSION='1.16.8';
+GC.Store={
+MAXBARS:8000,
+cfgHash(codeHash,indParams,modelTf,extra){ return GC.hash(JSON.stringify([codeHash,indParams,modelTf,extra||null])); },
+key(sym,tf,h){ return 'gc2|'+sym+'|'+tf+'|'+h; },
+save(st,key,state){ return GC.Store.saveSafe(st,key,state).ok; },
+saveSafe(st,key,state){ try{ const txt=JSON.stringify(state); st.setItem(key,txt); return {ok:true,bytes:txt.length}; }catch(e){ return {ok:false,err:(e&&(e.name==='QuotaExceededError'||/quota/i.test(e.message||'')))?'quota':'negato',msg:String(e&&e.message||e)}; } },
+load(st,key){ const r=GC.Store.inspect((()=>{ try{ return st.getItem(key); }catch(e){ return null; } })(),null); return r.state; },
+validate(S,tf){
+const er=[], isN=x=>typeof x==='number'&&fin(x);
+if(!S||typeof S!=='object'||Array.isArray(S)) return ['stato non è un oggetto'];
+if(tf&&S.tf!==tf) er.push('timeframe «'+S.tf+'» invece di «'+tf+'»');
+if(!(S.lastT===null||isN(S.lastT))) er.push('lastT non valido');
+if(!S.ind||!Array.isArray(S.ind.win)||!S.ind.win.every(isN)||!isN(S.ind.n)||S.ind.n<S.ind.win.length||!(S.ind.ema===null||isN(S.ind.ema))||!isN(S.ind.seed)) er.push('finestra dell\'indicatore non valida');
+for(const k of ['D','vel','acc','Ds','h','nDyn']) if(!isN(S[k])) er.push('campo «'+k+'» non numerico');
+if(!S.q||!['missing','discont','revised','nObs','warm','scaleNull'].every(k=>isN(S.q[k]))) er.push('contatori di qualità non validi');
+if(!Array.isArray(S.obs)) er.push('osservazioni mancanti'); else { let p=-Infinity; for(const o of S.obs){ if(!o||!isN(o.t)||o.t<=p){ er.push('osservazioni non ordinate o non valide'); break; } p=o.t; } if(S.obs.length&&S.lastT!==S.obs[S.obs.length-1].t) er.push('lastT non coincide con l\'ultima osservazione'); }
+if(S.v>=2){ if(!Array.isArray(S.bars)) er.push('storico delle barre mancante'); else { let p=-Infinity; for(const r of S.bars){ if(!Array.isArray(r)||r.length<5||!isN(r[0])||r[0]<=p||(r[4]!=null&&!(isN(r[1])&&isN(r[2])&&isN(r[3])&&isN(r[4])))){ er.push('storico delle barre non ordinato o con valori non validi'); break; } p=r[0]; }
+if(S.bars.length&&S.lastT!==S.bars[S.bars.length-1][0]) er.push('lastT non coincide con l\'ultima barra dello storico'); } }
+if(S.gal!==undefined&&!(S.gal&&typeof S.gal==='object'&&(S.gal.act===0||S.gal.act===1)&&isN(S.gal.n)&&isN(S.gal.closed))) er.push('stato della galassia non valido');
+return er;
+},
+migrate(S){ if(S.v===1){ const o=Object.assign({},S,{v:2,app:S.app||'1.3',bars:[],trunc:0,mig:{from:1}}); return o; } return S; },
+adopt(S,tf){ if(!S||typeof S!=='object'||(S.v!==1&&S.v!==2)||S.tf!==tf) return null; if(GC.Store.validate(S,tf).length) return null; const o=GC.Store.migrate(S);
+if(!o.gal){
+const ok=o.obs.filter(x=>x.status==='ok'); let act=ok.length&&GC.Galaxy.cond(ok[ok.length-1])?1:0, since=null; if(act){ for(let i=ok.length-1;i>=0&&GC.Galaxy.cond(ok[i]);i--) since=ok[i].t; } o.gal={act,since,n:act?1:0,closed:0,lastClose:null,derived:1}; }
+return o; },
+inspect(text,tf){
+if(text==null||text==='') return {status:'absent',state:null,errors:[]};
+let S; try{ S=JSON.parse(text); }catch(e){ return {status:'corrupt',state:null,errors:['JSON non leggibile']}; }
+if(!S||typeof S!=='object'||Array.isArray(S)||typeof S.v!=='number') return {status:'corrupt',state:null,errors:['formato non riconosciuto']};
+if(S.v>2||S.v<1) return {status:'incompatible',state:null,errors:['versione dello stato '+S.v+' (questa app legge 1–2): salvato da una versione diversa']};
+if(tf&&S.tf!==tf) return {status:'incompatible',state:null,errors:['timeframe diverso']};
+const er=GC.Store.validate(S,tf); if(er.length) return {status:'corrupt',state:null,errors:er};
+return S.v===1?{status:'migrated',state:GC.Store.migrate(S),errors:[],from:1}:{status:'ok',state:S,errors:[]};
+},
+otherKeys(st,sym,tf,h){ const out=[]; try{ for(let i=0;i<st.length;i++){ const k=st.key(i); if(k&&k.indexOf('gc2|'+sym+'|'+tf+'|')===0&&k!==GC.Store.key(sym,tf,h)) out.push(k); } }catch(e){} return out; },
+quarantine(st,key,text,stamp){ const qk='gc2q|'+stamp+'|'+key; try{ st.setItem(qk,text); return qk; }catch(e){ return null; } },
+mergeBars(stored,incoming){
+const m=new Map(), sg=b=>b.valid?[b.o,b.mx,b.mn,b.l].join('|'):'x'; let added=0, corrected=0, same=0;
+for(const b of stored) m.set(b.t,b);
+for(const b of incoming){ const o=m.get(b.t); if(!o) added++; else if(sg(o)!==sg(b)) corrected++; else same++; m.set(b.t,b); }
+return {bars:[...m.keys()].sort((a,b)=>a-b).map(t=>m.get(t)),added,corrected,same};
+},
+metaDiff:null
+};
+GC.Engine.replay=function(tf,model,indParams,bars){ const e=GC.Engine(tf,model,indParams,null); for(const b of bars.slice().sort((x,y)=>x.t-y.t)) e.push(b); return e; };
+GC.Diag={
+assess(o){
+const L=o.L, used=o.used|0, r=[]; let level;
+if(used<=0){ level='insufficient'; r.push(o.hasData?'nessuna barra 1H valida e chiusa è stata elaborata dal motore':'nessun dato 1H caricato'); }
+else if(used<L){ level='warmup'; r.push(`${used}/${L} barre 1H valide e chiuse elaborate: le bande esistono solo dalla ${L}ª`); }
+else if(!o.lastOk){ level='incomplete'; r.push('requisito delle '+L+' barre soddisfatto ma l\'ultima osservazione non è calcolabile (scala delle bande nulla o barra mancante)'); }
+else level='ready';
+if(used>=L){
+if(o.windowLowCov>0){ level='incomplete'; r.push(o.windowLowCov+' barre della finestra di '+L+' ricostruite con copertura <100% delle barre inferiori'); }
+if(o.pendingCorrections>0){ level='incomplete'; r.push(o.pendingCorrections+' barre già elaborate risultano corrette nei dati ricevuti (non applicate)'); }
+if(o.stale){ level='incomplete'; r.push('ultima barra elaborata troppo vecchia ('+o.ageH.toFixed(1)+' h)'); }
+if(o.legacy){ r.push('stato migrato dalla 1.3: le singole barre non sono conservate (storico non ricostruibile)'); }
+}
+return {level,need:L,have:used,missing:Math.max(0,L-used),reasons:r};
+}
+};
+GC.Equiv={
+compare(rows,params,opt){
+opt=Object.assign({tolRel:1e-4,seeds:['sma','first']},opt||{});
+const n=GC.Series.normalize(rows,3600,{maxGapSec:1e12}), out={bars:n.bars.length,seeds:{},report:n.report,L:params.bbLength};
+const hasRef=n.bars.some(b=>b.ema!=null||b.up!=null||b.lo!=null);
+if(!hasRef){ out.error='il file non contiene colonne di riferimento (ema / upper / lower)'; return out; }
+for(const seed of opt.seeds){
+const ic=GC.IndCalc(Object.assign({},params,{seed})), r={n:0,nBands:0,maxRel:0,maxAbs:0,maxRelLate:0,nLate:0,stN:0,stOk:0,first:null,seg:[]}; let k=0;
+for(const b of n.bars){ if(!b.valid) continue; const x=ic.push(b); k++; if(!x.ready) continue;
+for(const [mine,ref] of [[x.ema,b.ema],[x.upper,b.up],[x.lower,b.lo]]){ if(ref==null||!fin(ref)) continue; const ab=Math.abs(mine-ref), rl=ab/Math.max(Math.abs(ref),1); r.n++; if(rl>r.maxRel) r.maxRel=rl; if(ab>r.maxAbs) r.maxAbs=ab; if(k>2*params.bbLength){ r.nLate++; if(rl>r.maxRelLate) r.maxRelLate=rl; } }
+if(b.up!=null&&b.lo!=null){ const l=b.l, ref=l>0?(l>=b.up?'bull_strong':'bull_weak'):(l<=b.lo?'bear_strong':'bear_weak'); r.stN++; if(ref===x.state) r.stOk++; }
+if(k%params.bbLength===0||k===n.bars.length) r.seg.push([k,r.maxRel]);
+}
+r.pass=r.n>=params.bbLength&&r.maxRel<=opt.tolRel; out.seeds[seed]=r;
+}
+return out;
+}
+};
+GC.Store.metaDiff=function(prev,cur){ if(!prev) return null; const d=[]; if(prev.codeHash!==cur.codeHash) d.push('codice dell\'indicatore'); if(JSON.stringify(prev.params)!==JSON.stringify(cur.params)) d.push('parametri dell\'indicatore'); if(prev.src!==cur.src) d.push('sorgente/metodo dei dati'); if(prev.model!==cur.model) d.push('parametri del modello'); return d; };
+GC.VixProxy={
+BETA:5, BASE:20,
+fromBars(bars,opt){
+opt=Object.assign({beta:GC.VixProxy.BETA,base:GC.VixProxy.BASE},opt||{}); const fin=Number.isFinite, ok=x=>typeof x==='number'&&fin(x)&&x>0;
+let L0=null; for(const b of bars||[]) if(b&&ok(b.c)){ L0=Math.log(b.c); break; }
+return (bars||[]).map(b=>{ if(!b||L0==null||!ok(b.o)||!ok(b.c)) return Object.assign({},b||{},{o:null,c:null,v:0,hi:null,lo:null});
+const hiS=ok(b.hi)?Math.max(b.hi,b.o,b.c):Math.max(b.o,b.c), loS=ok(b.lo)?Math.min(b.lo,b.o,b.c):Math.min(b.o,b.c), V=x=>opt.base*Math.exp(-opt.beta*(Math.log(x)-L0));
+return {t:b.t,o:V(b.o),c:V(b.c),hi:V(loS),lo:V(hiS),v:0}; });
+},
+hybrid(vixBars,spyBars,opt){
+opt=Object.assign({beta:GC.VixProxy.BETA},opt||{}); const ok=x=>typeof x==='number'&&Number.isFinite(x)&&x>0, V=(vixBars||[]).slice(), S=(spyBars||[]).filter(b=>b&&ok(b.o)&&ok(b.c)).sort((a,b)=>a.t-b.t);
+let last=null; for(const b of V) if(b&&ok(b.o)&&ok(b.c)&&(last==null||b.t>last.t)) last=b;
+const out=V; out.lastRealT=last?last.t:null; out.nTail=0; out.anchor=false; if(!last||!S.length) return out;
+let anc=null; for(const b of S){ if(b.t<=last.t) anc=b; else break; } if(!anc) return out; out.anchor=true;
+const L0=Math.log(anc.c), f=x=>last.c*Math.exp(-opt.beta*(Math.log(x)-L0));
+for(const b of S){ if(b.t<=last.t) continue; const hiS=ok(b.hi)?Math.max(b.hi,b.o,b.c):Math.max(b.o,b.c), loS=ok(b.lo)?Math.min(b.lo,b.o,b.c):Math.min(b.o,b.c); out.push({t:b.t,o:f(b.o),c:f(b.c),hi:f(loS),lo:f(hiS),v:0}); out.nTail++; }
+return out; },
+hybridSource(sym){ const m=/^VIX\+(.+)$/i.exec(String(sym||'').trim()); return m&&m[1].trim()?m[1].trim().toUpperCase():null; },
+source(sym){ const m=/^VIX~(.+)$/i.exec(String(sym||'').trim()); return m&&m[1].trim()?m[1].trim().toUpperCase():null; }
+};
+GC.VixEtf={
+LIST:[
+{s:'VIXY',n:'ProShares VIX Short-Term Futures ETF',lev:1,txt:'future VIX a breve termine, 1×'},
+{s:'VXX',n:'iPath Series B S&P 500 VIX Short-Term Futures ETN',lev:1,txt:'future VIX a breve termine, 1× (ETN: debito della banca emittente)'},
+{s:'UVXY',n:'ProShares Ultra VIX Short-Term Futures ETF',lev:1.5,txt:'future VIX a breve termine, leva 1,5× giornaliera'},
+{s:'UVIX',n:'2x Long VIX Futures ETF',lev:2,txt:'future VIX a breve termine, leva 2× giornaliera'},
+{s:'VIXM',n:'ProShares VIX Mid-Term Futures ETF',lev:1,txt:'future VIX a medio termine, 1× (meno sensibile)'},
+{s:'SVXY',n:'ProShares Short VIX Short-Term Futures ETF',lev:-.5,txt:'INVERSO: future VIX a breve termine, −0,5× giornaliero'},
+{s:'SVIX',n:'-1x Short VIX Futures ETF',lev:-1,txt:'INVERSO: future VIX a breve termine, −1× giornaliero'}],
+info(sym){ const k=String(sym||'').trim().toUpperCase(); return GC.VixEtf.LIST.find(x=>x.s===k)||null; }
+};
+GC.MacdRsiBb=(function(){
+const fin=Number.isFinite, NA=NaN;
+const sma=(a,n)=>{ const r=new Array(a.length).fill(NA); let s=0,c=0; for(let i=0;i<a.length;i++){ if(!fin(a[i])){ s=0; c=0; continue; } s+=a[i]; c++; if(c>n) s-=a[i-n]; if(c>=n) r[i]=s/n; } return r; };
+const ema=(a,n,alpha)=>{ alpha=alpha==null?2/(n+1):alpha; const r=new Array(a.length).fill(NA); let c=0,s=0,p=NA; for(let i=0;i<a.length;i++){ if(!fin(a[i])){ continue; } if(!fin(p)){ s+=a[i]; c++; if(c===n){ p=s/n; r[i]=p; } } else { p=alpha*a[i]+(1-alpha)*p; r[i]=p; } } return r; };
+const rma=(a,n)=>ema(a,n,1/n);
+const wma=(a,n)=>{ const r=new Array(a.length).fill(NA), d=n*(n+1)/2; for(let i=n-1;i<a.length;i++){ let s=0,ok=true; for(let k=0;k<n;k++){ const v=a[i-n+1+k]; if(!fin(v)){ ok=false; break; } s+=v*(k+1); } if(ok) r[i]=s/d; } return r; };
+const stdev=(a,n)=>{ const r=new Array(a.length).fill(NA); for(let i=n-1;i<a.length;i++){ let s=0,ok=true; for(let k=0;k<n;k++){ const v=a[i-n+1+k]; if(!fin(v)){ ok=false; break; } s+=v; } if(!ok) continue; const m=s/n; let q=0; for(let k=0;k<n;k++){ const v=a[i-n+1+k]-m; q+=v*v; } r[i]=Math.sqrt(q/n); } return r; };
+const MA={SMA:sma,EMA:(a,n)=>ema(a,n),'SMMA (RMA)':rma,WMA:wma};
+const DEF={fast:12,slow:26,signal:9,oscMA:'EMA',sigMA:'EMA',rsiLen:14,rsiUp:70,rsiLow:30,bbLen:20,bbMult:2,bbMA:'EMA',W:200};
+function calc(closes,p){
+p=Object.assign({},DEF,p||{}); const c=closes, om=p.oscMA==='SMA'?sma:(a,n)=>ema(a,n), sm=p.sigMA==='SMA'?sma:(a,n)=>ema(a,n);
+const fast=om(c,p.fast), slow=om(c,p.slow), macd=c.map((_,i)=>fin(fast[i])&&fin(slow[i])?fast[i]-slow[i]:NA), signal=sm(macd,p.signal), hist=macd.map((v,i)=>fin(v)&&fin(signal[i])?v-signal[i]:NA);
+const ch=c.map((v,i)=>i?v-c[i-1]:NA), upv=rma(ch.map(x=>fin(x)?Math.max(x,0):NA),p.rsiLen), dnv=rma(ch.map(x=>fin(x)?-Math.min(x,0):NA),p.rsiLen);
+const rsi=c.map((_,i)=>{ const u=upv[i], d=dnv[i]; if(!fin(u)||!fin(d)) return NA; return d===0?100:u===0?0:100-100/(1+u/d); });
+const basis=(MA[p.bbMA]||MA.EMA)(c,p.bbLen), sd=stdev(c,p.bbLen), upper=basis.map((v,i)=>fin(v)&&fin(sd[i])?v+p.bbMult*sd[i]:NA), lower=basis.map((v,i)=>fin(v)&&fin(sd[i])?v-p.bbMult*sd[i]:NA);
+return {macd,signal,hist,rsi,upper,lower}; }
+function color(h,rsi,close,up,lo,p){
+p=Object.assign({},DEF,p||{}); if(!fin(h)||!fin(rsi)||!fin(up)||!fin(lo)||!fin(close)) return null;
+if(h>=0) return rsi>p.rsiUp&&close>up?'nero_su':rsi>p.rsiUp?'verde':'verde_chiaro';
+return rsi<p.rsiLow&&close<lo?'nero_giu':rsi<p.rsiLow?'rosso':'rosa'; }
+function confl(rsi,close,up,lo,p){ p=Object.assign({},DEF,p||{}); if(!fin(rsi)||!fin(up)||!fin(lo)||!fin(close)) return null;
+return rsi>p.rsiUp&&close>up?'ipercomprato':rsi<p.rsiLow&&close<lo?'ipervenduto':'nessuna'; }
+const LABEL={nero_su:'NERO (estremo rialzista: RSI alto e prezzo oltre la banda)',verde:'verde (RSI alto)',verde_chiaro:'verde chiaro',nero_giu:'NERO (estremo ribassista: RSI basso e prezzo sotto la banda)',rosso:'rosso (RSI basso)',rosa:'rosa'};
+function comboWin(closes,end,p){
+p=Object.assign({},DEF,p||{}); if(end+1<p.W) return NaN; const w=closes.slice(end-p.W+1,end+1), r=calc(w,p), n=w.length-1;
+const tr=r.macd.map((m,i)=>fin(m)&&fin(r.signal[i])?(m+r.signal[i])/2:NA), sd=a=>{ const v=a.filter(fin); if(v.length<20) return NA; const m=v.reduce((s,x)=>s+x,0)/v.length; return Math.sqrt(v.reduce((s,x)=>s+(x-m)*(x-m),0)/v.length); };
+const sh=sd(r.hist), st=sd(tr), h=r.hist[n], t=tr[n]; if(!fin(h)||!fin(t)||!fin(sh)||!fin(st)||sh<=0||st<=0) return NaN;
+const wt=fin(p.comboW)?p.comboW:0.5; return wt*h/sh+(1-wt)*t/st; }
+function histWin(closes,end,p){
+p=Object.assign({},DEF,p||{}); if(end+1<p.W) return NA; const w=closes.slice(end-p.W+1,end+1); const r=calc(w,p); return r.hist[w.length-1]; }
+function analyze(code){
+const r={ok:false,reasons:[],params:{},codeHash:null,version:null,outputs:[],states:[],notes:[]};
+if(!code||!String(code).trim()){ r.reasons.push('nessun codice incollato'); return r; }
+const s=GC.IndSrc.strip(code), need=(c,m)=>{ if(!c) r.reasons.push(m); return !!c; };
+r.codeHash=GC.hash(s.replace(/\s+/g,' ').trim()); const mv=/\/\/\s*@version\s*=\s*(\d+)/.exec(String(code)); r.version=mv?+mv[1]:null;
+const dv=(v)=>{ const m=new RegExp('\\b'+v+'\\s*=\\s*input(?:\\.\\w+)?\\(\\s*(?:[^)]*?defval\\s*=\\s*)?(-?[\\d.]+)').exec(s); return m?+m[1]:null; };
+const ds=(v)=>{ const m=new RegExp('\\b'+v+'\\s*=\\s*input\\.string\\([^)]*?defval\\s*=\\s*"([^"]+)"').exec(s)||new RegExp('\\b'+v+'\\s*=\\s*input\\.string\\(\\s*"([^"]+)"').exec(s); return m?m[1]:null; };
+const struct=/fast_ma\s*=\s*\w+\s*==\s*"SMA"\s*\?\s*ta\.sma\(\s*src\s*,\s*fast_length\s*\)\s*:\s*ta\.ema\(\s*src\s*,\s*fast_length\s*\)/.test(s)&&/slow_ma\s*=\s*\w+\s*==\s*"SMA"\s*\?\s*ta\.sma\(\s*src\s*,\s*slow_length\s*\)\s*:\s*ta\.ema\(\s*src\s*,\s*slow_length\s*\)/.test(s)&&/macd\s*=\s*fast_ma\s*-\s*slow_ma/.test(s)&&/signal\s*=\s*\w+\s*==\s*"SMA"\s*\?\s*ta\.sma\(\s*macd\s*,\s*signal_length\s*\)\s*:\s*ta\.ema\(\s*macd\s*,\s*signal_length\s*\)/.test(s)&&/hist\s*=\s*macd\s*-\s*signal/.test(s);
+if(!need(struct,'struttura MACD non riconosciuta: attese  fast_ma/slow_ma (SMA o EMA), macd = fast_ma − slow_ma, signal (SMA o EMA), hist = macd − signal')) return r;
+const rsiOk=/up\s*=\s*ta\.rma\(\s*math\.max\(\s*change\s*,\s*0\s*\)\s*,\s*rsiLengthInput\s*\)/.test(s)&&/down\s*=\s*ta\.rma\(\s*-\s*math\.min\(\s*change\s*,\s*0\s*\)\s*,\s*rsiLengthInput\s*\)/.test(s)&&/rsi\s*=\s*down\s*==\s*0\s*\?\s*100\s*:\s*up\s*==\s*0\s*\?\s*0\s*:\s*100\s*-\s*\(\s*100\s*\/\s*\(\s*1\s*\+\s*up\s*\/\s*down\s*\)\s*\)/.test(s);
+if(!need(rsiOk,'struttura RSI non riconosciuta: attesi up/down con ta.rma e  rsi = down==0 ? 100 : up==0 ? 0 : 100 − 100/(1+up/down)')) return r;
+const bbOk=/devBB\s*=\s*multBB\s*\*\s*ta\.stdev\(\s*srcBB\s*,\s*lengthBB\s*\)/.test(s)&&/upperBB\s*=\s*basisBB\s*\+\s*devBB/.test(s)&&/lowerBB\s*=\s*basisBB\s*-\s*devBB/.test(s)&&/basisBB\s*=\s*ma\(\s*srcBB\s*,\s*lengthBB\s*,\s*maTypeBB\s*\)/.test(s);
+if(!need(bbOk,'struttura Bollinger non riconosciuta: attese  basis = ma(src,len,tipo), dev = mult·ta.stdev, upper/lower = basis ± dev')) return r;
+const srcOk=/\bsrc\s*=\s*input\([^)]*defval\s*=\s*close/.test(s)&&/rsiSourceInput\s*=\s*input\.source\(\s*close/.test(s)&&/srcBB\s*=\s*input\(\s*close/.test(s);
+if(!need(srcOk,'le sorgenti (MACD, RSI, Bollinger) devono essere close: altre sorgenti non sono supportate')) return r;
+const hc=/histColor\s*=\s*if\s+hist\s*>=\s*0/.test(s)&&/rsi\s*>\s*rsiUpper\s+and\s+close\s*>\s*upperBB/.test(s)&&/rsi\s*<\s*rsiLower\s+and\s+close\s*<\s*lowerBB/.test(s);
+if(!need(hc,'logica dei colori dell\'istogramma non riconosciuta')) return r;
+const P={fast:dv('fast_length'),slow:dv('slow_length'),signal:dv('signal_length'),oscMA:ds('sma_source'),sigMA:ds('sma_signal'),rsiLen:dv('rsiLengthInput'),rsiUp:dv('rsiUpper'),rsiLow:dv('rsiLower'),bbLen:dv('lengthBB'),bbMult:dv('multBB'),bbMA:ds('maTypeBB')};
+for(const k of ['fast','slow','signal','rsiLen','rsiUp','rsiLow','bbLen','bbMult']) if(!need(P[k]!=null&&fin(P[k])&&P[k]>0,'parametro non leggibile: '+k)) return r;
+for(const k of ['oscMA','sigMA']) if(!need(P[k]==='SMA'||P[k]==='EMA','tipo di media non supportato ('+k+'='+P[k]+')')) return r;
+if(!need(!!MA[P.bbMA],'tipo di media delle bande non supportato: '+P.bbMA+' (supportati SMA, EMA, SMMA (RMA), WMA; VWMA richiede il volume e non è supportato)')) return r;
+if(!need(P.fast<P.slow,'MACD: la media veloce deve essere più corta della lenta')) return r;
+r.params=Object.assign({},P,{W:DEF.W}); r.ok=true;
+r.outputs=[['hist','istogramma MACD = macd − signal (continuo, con segno, in unità di prezzo): NUOVO ingresso del motore al posto del delta'],['macd, signal','MACD '+P.fast+'/'+P.slow+' ('+P.oscMA+'), segnale '+P.signal+' ('+P.sigMA+')'],['rsi','RSI '+P.rsiLen+' (Wilder, ta.rma): soglie '+P.rsiLow+' / '+P.rsiUp],['upperBB / lowerBB','basis '+P.bbMA+' '+P.bbLen+' ± '+P.bbMult+'·stdev: usate solo per il colore NERO']];
+r.states=[['nero (rialzista)','hist ≥ 0, RSI > '+P.rsiUp+' e chiusura > banda superiore'],['verde','hist ≥ 0 e RSI > '+P.rsiUp],['verde chiaro','hist ≥ 0 negli altri casi'],['nero (ribassista)','hist < 0, RSI < '+P.rsiLow+' e chiusura < banda inferiore'],['rosso','hist < 0 e RSI < '+P.rsiLow],['rosa','hist < 0 negli altri casi']];
+r.notes=['Con questo indicatore le galassie NON descrivono più il volume ma il momento del prezzo (istogramma MACD).','Le bande e le forze del motore (lunghezza 300, moltiplicatore 1) sono quelle di sempre, applicate all\'istogramma.','Ogni barra usa una finestra fissa di '+DEF.W+' chiusure: le prime '+(DEF.W-1)+' barre di ogni serie sono non valide.','Serve il prezzo: in modalità «Importa» (solo delta incollato) questo ingresso non è disponibile.'];
+return r; }
+function applyToBars(bars,p){
+p=Object.assign({},DEF,p||{}); const sorted=(bars||[]).slice().sort((a,b)=>a.t-b.t), idx=[], cl=[];
+sorted.forEach((b,i)=>{ if(b&&b.px&&b.px.length===4&&fin(b.px[3])&&b.px[3]>0){ idx.push(i); cl.push(b.px[3]); } });
+const out=sorted.map(b=>Object.assign({},b)); let nOk=0,last=null;
+for(let i=0;i<out.length;i++){ out[i].valid=false; out[i].l=null; out[i].mx=null; out[i].mn=null; }
+for(let j=0;j<idx.length;j++){ const b=out[idx[j]], src=sorted[idx[j]]; const h=p.combo?comboWin(cl,j,p):histWin(cl,j,p); if(!fin(h)||!src.valid) continue; b.valid=true; b.o=0; b.l=h; b.mx=Math.max(h,0); b.mn=Math.min(h,0); nOk++; if(src.closed) last={i:idx[j],j}; }
+out.nValid=nOk; out.nPx=idx.length; out.info=null;
+if(last){ const w=cl.slice(Math.max(0,last.j-p.W+1),last.j+1), r=calc(w,p), k=w.length-1; out.info={t:out[last.i].t,hist:r.hist[k],macd:r.macd[k],signal:r.signal[k],rsi:r.rsi[k],close:w[k],upper:r.upper[k],lower:r.lower[k],color:color(r.hist[k],r.rsi[k],w[k],r.upper[k],r.lower[k],p),confl:confl(r.rsi[k],w[k],r.upper[k],r.lower[k],p)}; }
+return out; }
+return {DEF,calc,color,confl,LABEL,histWin,comboWin,analyze,applyToBars,_ema:ema,_sma:sma,_rma:rma,_wma:wma,_stdev:stdev};
+})();
+return GC;
+})();
+if(typeof module!=='undefined') module.exports=GC;</script>
+<script>const DEFAULT_CODE="//@version=6\nindicator(\"Volume Delta with Bollinger Bands [EMA]\", format=format.volume, shorttitle=\"VolDeltaBB\")\n\nimport TradingView/ta/8\n\n// \u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\n// \u2023 Inputs\n// \u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\n\n// Timeframe inputs\nuseCustomTimeframeInput = input.bool(false, \"Use custom timeframe for volume delta\", \n     tooltip=\"By default, the timeframe is chosen automatically. When enabled, choose a custom lower timeframe to approximate up and down volume.\")\nlowerTimeframeInput     = input.timeframe(\"1\", \"Custom Lower Timeframe\")\n\nvar lowerTimeframe = if useCustomTimeframeInput\n    lowerTimeframeInput\nelse\n    if timeframe.isseconds\n        \"1S\"\n    else if timeframe.isintraday\n        \"1\"\n    else if timeframe.isdaily\n        \"5\"\n    else\n        \"60\"\n\n// Bollinger inputs\nbbLength   = input.int(300, \"Bollinger Length\", minval=1)\nbbMult     = input.float(1.0, \"Bollinger Multiplier\", minval=0.1)\n\n// Whether to use wicks in Bollinger calculations\nuseWicksForBB = input.bool(false, \"Use Wicks for Bollinger Calculation?\",\n     tooltip=\"If true, Bollinger calculations use the average of maxVolume and minVolume. Otherwise, uses lastVolume (the 'close').\")\n\n// \u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\n// \u2023 Request volume delta from lower timeframe\n// \u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\n[openVolume, maxVolume, minVolume, lastVolume] = ta.requestVolumeDelta(lowerTimeframe)\n\n// If volume data is not available, throw an error\nvar float cumVol = 0.\ncumVol += nz(volume)\nif barstate.islast and cumVol == 0\n    runtime.error(\"The data vendor doesn't provide volume data for this symbol.\")\n\n// \u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\n// \u2023 Determine source for Bollinger calculations\n// \u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\nvolumeForBB = useWicksForBB ? (maxVolume + minVolume) / 2 : lastVolume\n\n// \u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\n// \u2023 Calculate Bollinger Bands (EMA-based)\n// \u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\nemaValue   = ta.ema(volumeForBB, bbLength)\nstdDev     = ta.stdev(volumeForBB, bbLength)\nupperBand  = emaValue + bbMult * stdDev\nlowerBand  = emaValue - bbMult * stdDev\n\n// \u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\n// \u2023 Define function for bar color logic\n// \u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\nf_getBarColor(val, upBand, lowBand) =>\n    if val > 0\n        // Positive bar\n        if val >= upBand\n            color.new(color.teal, 0)    // darker green\n        else\n            color.new(color.teal, 60)   // lighter green\n    else\n        // Negative bar\n        if val <= lowBand\n            color.new(color.red, 0)     // darker red\n        else\n            color.new(color.red, 60)    // lighter red\n\n// Apply the function\nbarColor = f_getBarColor(lastVolume, upperBand, lowerBand)\n\n// \u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\n// \u2023 Plot Volume Delta as candles (with wicks)\n// \u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\nhline(0, 'Zero Line', color=color.new(color.gray, 70))\n\nplotcandle(\n     open = openVolume, \n     high = maxVolume, \n     low = minVolume, \n     close = lastVolume, \n     title = \"Volume Delta\",\n     color = barColor,\n     bordercolor = barColor,\n     wickcolor = barColor)\n\n// \u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\n// \u2023 Plot Bollinger Bands\n// \u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\nplot(emaValue,   color=color.yellow, linewidth=2, title=\"Bollinger EMA\", display=display.none)\nplot(upperBand,  color=color.orange, linewidth=1, title=\"Upper Band\")\nplot(lowerBand,  color=color.orange, linewidth=1, title=\"Lower Band\")\n\n// Fill between upper and lower bands\nfill(\n     plot(upperBand, display=display.none), \n     plot(lowerBand, display=display.none), \n     color=color.new(color.orange, 85), \n     title=\"BB Fill\",\n     display=display.none)";const MACD_CODE="//@version=5  \nindicator(title=\"MACD+RSI+BB\", shorttitle=\"MACD+RSI+BB\", timeframe=\"\", timeframe_gaps=true)  \n\n// Getting inputs  \nshow_macd = input.bool(title=\"Show MACD Line\", defval=true, group=\"MACD Settings\")\nshow_signal = input.bool(title=\"Show Signal Line\", defval=true, group=\"MACD Settings\")\nfast_length = input(title=\"MACD Fast Length\", defval=12, group=\"MACD Settings\")  \nslow_length = input(title=\"MACD Slow Length\", defval=26, group=\"MACD Settings\")  \nsrc = input(title=\"MACD Source\", defval=close, group=\"MACD Settings\")  \nsignal_length = input.int(title=\"MACD Signal Smoothing\", minval=1, maxval=50, defval=9, display=display.data_window, group=\"MACD Settings\")  \nsma_source = input.string(title=\"MACD Oscillator MA Type\", defval=\"EMA\", options=[\"SMA\", \"EMA\"], display=display.data_window, group=\"MACD Settings\")  \nsma_signal = input.string(title=\"MACD Signal Line MA Type\", defval=\"EMA\", options=[\"SMA\", \"EMA\"], display=display.data_window, group=\"MACD Settings\")  \n\nrsiLengthInput = input.int(14, minval=1, title=\"RSI Length\", group=\"RSI Settings\")  \nrsiUpper = input.int(70, minval=1, title=\"RSI Upper\", group=\"RSI Settings\")\nrsiLower = input.int(30, minval=1, title=\"RSI Lower\", group=\"RSI Settings\")\nrsiSourceInput = input.source(close, \"Source\", group=\"RSI Settings\")  \n\nlengthBB = input.int(20, minval=1, title=\"BB Length\", group=\"BB Settings\")\nsrcBB = input(close, title=\"BB Source\", group=\"BB Settings\")\nmultBB = input.float(2.0, minval=0.001, maxval=50, title=\"BB StdDev\", group=\"BB Settings\")\nmaTypeBB = input.string(\"EMA\", \"Basis MA Type\", options=[\"SMA\", \"EMA\", \"SMMA (RMA)\", \"WMA\", \"VWMA\"], group=\"BB Settings\")\n\nma(source, length, _type) =>\n    switch _type\n        \"SMA\" => ta.sma(source, length)\n        \"EMA\" => ta.ema(source, length)\n        \"SMMA (RMA)\" => ta.rma(source, length)\n        \"WMA\" => ta.wma(source, length)\n        \"VWMA\" => ta.vwma(source, length)\n\nbasisBB = ma(srcBB, lengthBB, maTypeBB)\ndevBB = multBB * ta.stdev(srcBB, lengthBB)\nupperBB = basisBB + devBB\nlowerBB = basisBB - devBB\n\nchange = ta.change(rsiSourceInput)  \nup = ta.rma(math.max(change, 0), rsiLengthInput)  \ndown = ta.rma(-math.min(change, 0), rsiLengthInput)  \nrsi = down == 0 ? 100 : up == 0 ? 0 : 100 - (100 / (1 + up / down))  \n\n// Calculating  \nfast_ma = sma_source == \"SMA\" ? ta.sma(src, fast_length) : ta.ema(src, fast_length)  \nslow_ma = sma_source == \"SMA\" ? ta.sma(src, slow_length) : ta.ema(src, slow_length)  \nmacd = fast_ma - slow_ma  \nsignal = sma_signal == \"SMA\" ? ta.sma(macd, signal_length) : ta.ema(macd, signal_length)  \nhist = macd - signal  \n\nalertcondition(hist[1] >= 0 and hist < 0, title='Rising to falling', message='The MACD histogram switched from a rising to falling state')  \nalertcondition(hist[1] <= 0 and hist > 0, title='Falling to rising', message='The MACD histogram switched from a falling to rising state')  \n\nhline(0, \"Zero Line\", color=color.new(#787B86, 50))  \n\nhistColor = if hist >= 0  \n    if rsi > rsiUpper and close > upperBB\n        color.black\n    else if rsi > rsiUpper\n        #4caf50  \n    else  \n        #a5d6a7  \nelse\n    if rsi < rsiLower and close < lowerBB\n        color.black\n    else if rsi < rsiLower\n        #f23645\n    else  \n        #faa1a4\n\nplot(hist, title=\"Histogram\", style=plot.style_columns, color=histColor)  \nplot(show_macd ? macd : na, title=\"MACD\", color=#2962FF)  \nplot(show_signal ? signal : na, title=\"Signal\", color=#FF6D00)\n";</script>
+<script>(function(){
+'use strict';
+const LITE=true;
+const $=id=>document.getElementById(id), fin=Number.isFinite, M=GC.defaultModel, TFS=['1H'], STEP={'1H':3600};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function setHtml(el,h){ if(!el||el._h===h) return; const st=[...el.querySelectorAll('details')].map(d=>[(d.querySelector('summary')||{}).textContent||'',d.open]); el.innerHTML=h; el._h=h; const ds=[...el.querySelectorAll('details')]; ds.forEach((d,k)=>{ const key=(d.querySelector('summary')||{}).textContent||''; const m=st.length===ds.length?st[k]:st.find(x=>x[0]===key); if(m) d.open=m[1]; }); }
+const LS=(()=>{ try{ localStorage.setItem('gc2|t','1'); localStorage.removeItem('gc2|t'); return localStorage; }catch(e){ const m={}; return {getItem:k=>(k in m?m[k]:null),setItem:(k,v)=>{m[k]=v;},removeItem:k=>{delete m[k];},key:i=>Object.keys(m)[i],get length(){return Object.keys(m).length;}}; } })();
+const f=(x,d)=>x==null||!fin(x)?'—':(+x).toFixed(d==null?3:d), fe=x=>x==null||!fin(x)?'—':(Math.abs(x)>=.01||x===0?(+x).toFixed(4):(+x).toExponential(2));
+const fv=x=>x==null||!fin(x)?'—':(+x).toLocaleString('it-IT',{maximumFractionDigits:2});
+const when=t=>t==null?'—':new Date(t*1000).toLocaleString('it-IT',{timeZone:$('tz').value||'Europe/Rome',day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
+const DEFAULT_WORKER='https://yahooproxy.b864v27974.workers.dev';
+const P=()=>Object.assign({},ui.a.params,{seed:$('seed').value||'sma'});
+const ui={wk:{},a:null,eng:{},key:{},snap:{},shown:{},data:{'1H':null},notes:[],dataRep:{},mode:'import',fetchNote:'',restore:{},saved:{},cmp:{},persist:{ok:null},conn:{state:'idle',fails:0},auto:{on:false,timer:null,nextAt:null},busy:false,skipped:0,dl:null,bf:{state:'idle'},meta:{},step:'',boot:false,auto5:true,bfOn:true};
+const saveUI=()=>{ try{ LS.setItem('gc2|ui5',JSON.stringify({code:$('code').value,sym:$('sym').value,mode:ui.mode,t1:$('t1H').value.slice(0,400000),wk:$('wk').value,ltf:$('ltf').value,extPre:$('extPre').checked,extPost:$('extPost').checked,extV:2,symV:3,tz:$('tz').value,seed:$('seed').value,auto:!!$('auto').checked,bf:!!$('bf').checked})); }catch(e){} };
+const loadUI=()=>{ let cur=null, old=null, done=false; try{ cur=JSON.parse(LS.getItem('gc2|ui5')); }catch(e){} try{ old=JSON.parse(LS.getItem('gc2|ui')); }catch(e){} try{ done=LS.getItem(GC.Prefs.KEY)==='done'; }catch(e){} return GC.Prefs.migrate(cur,old,done); };
+function analyzeCode(){
+const code=$('code').value; let a=GC.IndSrc.analyze(code); const el=$('ana');
+if(!a.ok){ const m=GC.MacdRsiBb.analyze(code), d=GC.IndSrc.analyze(DEFAULT_CODE);
+if(m.ok&&d.ok) a=Object.assign({},d,{kind:'macd',macd:m.params,codeHash:m.codeHash,version:m.version,outputs:m.outputs,states:m.states,notes:m.notes,reasons:[]});
+else if(/\bhist\s*=\s*macd|MACD/.test(code)) a.reasons=a.reasons.concat(['riconoscimento MACD+RSI+BB: '+m.reasons.join('; ')]); }
+if(a.ok&&a.kind==='macd'&&ui.combo) a.codeHash=a.codeHash+'-combo';
+ui.a=a; if($('symInd')) $('symInd').value=a.ok&&a.kind==='macd'?(ui.combo?'combo':'macd'):'delta';
+if(!a.ok){ el.innerHTML='<div class="bad"><b>Adattatore non disponibile.</b> Il codice non corrisponde a una struttura che so riprodurre fedelmente; non simulo risultati.<ul>'+a.reasons.map(r=>'<li>'+esc(r)+'</li>').join('')+'</ul></div>'; return a; }
+const p=a.params, mp=a.macd;
+el.innerHTML=(a.kind==='macd'
+?`<div class="ok"><b>Struttura riconosciuta (sintassi): MACD+RSI+BB</b> (Pine v${a.version||'?'}, impronta ${a.codeHash.slice(0,8)}). Parametri letti dal codice: MACD ${mp.fast}/${mp.slow}/${mp.signal} (${mp.oscMA}/${mp.sigMA}), RSI ${mp.rsiLen} (${mp.rsiLow}/${mp.rsiUp}), Bollinger ${mp.bbLen}×${mp.bbMult} ${esc(mp.bbMA)}. <b>Ingresso delle galassie: '+(ui.combo?'COMBINATO = 50% istogramma + 50% trend (media di DIF e DEA), ciascuno diviso per la propria deviazione standard sulla finestra':'istogramma MACD')+' al posto del delta di volume</b>; bande e forze del motore come sempre (lunghezza ${p.bbLength}, moltiplicatore ${p.bbMult}).</div>`
+:`<div class="ok"><b>Struttura riconosciuta (sintassi)</b> (Pine v${a.version||'?'}, impronta ${a.codeHash.slice(0,8)}). Parametri letti dal codice: lunghezza ${p.bbLength}, moltiplicatore ${p.bbMult}, wick ${p.useWicks?'sì':'no'}, timeframe inferiore ${p.useCustomTF?p.customTF:p.autoLTF} min.</div>`)+
+`<details><summary>Valori prodotti e stati</summary><table><tr><th>Valore</th><th>Natura</th></tr>${a.outputs.map(o=>`<tr><td>${esc(o[0])}</td><td>${esc(o[1])}</td></tr>`).join('')}</table>
+  <table><tr><th>Stato</th><th>Condizione</th></tr>${a.states.map(o=>`<tr><td>${esc(o[0])}</td><td>${esc(o[1])}</td></tr>`).join('')}</table><ul>${a.notes.map(n=>'<li>'+esc(n)+'</li>').join('')}</ul></details>`;
+eqBadge(); return a;
+}
+const eqKey=()=>'gc2|eq|'+ui.a.codeHash+'|'+GC.hash(JSON.stringify([ui.a.params.bbLength,ui.a.params.bbMult,ui.a.params.useWicks]));
+function eqBadge(){
+const el=$('eqbadge'); if(!ui.a||!ui.a.ok){ el.innerHTML=''; return; }
+let rec=null; try{ rec=JSON.parse(LS.getItem(eqKey())); }catch(e){} const seed=$('seed').value, r=rec&&rec.seeds&&rec.seeds[seed];
+if(r&&r.pass) el.innerHTML=`<div class="ok">✔ <b>Equivalenza matematica verificata</b> con un export di TradingView: seed «${esc(seed)}», ${r.n} confronti su ${rec.bars} barre, errore relativo massimo ${r.maxRel.toExponential(1)} (${esc(rec.date)}).</div>`;
+else if(rec&&r){ const other=Object.keys(rec.seeds).find(k=>k!==seed&&rec.seeds[k].pass); el.innerHTML=`<div class="bad">✘ Il seed selezionato («${esc(seed)}») <b>non coincide</b> con l'export di TradingView (errore relativo max ${r.maxRel.toExponential(1)}).${other?` Coincide invece il seed «${esc(other)}»: selezionalo.`:' Nessuna delle due ipotesi di seed coincide: controlla che l\'export parta dalla stessa prima barra del calcolo di TradingView.'}</div>`; }
+else el.innerHTML='<div class="warn"><b>Equivalenza matematica NON verificata.</b> Il codice è riconosciuto sintatticamente, ma il calcolo di EMA e bande non è mai stato confrontato con TradingView: finché non lo fai (sezione «Verifica di equivalenza») le forze E e G non vanno considerate quelle dell\'indicatore originale.</div>';
+}
+function runEquiv(){
+const el=$('eqres'); if(!ui.a||!ui.a.ok){ el.textContent='Codice non riconosciuto.'; return; }
+const p=GC.Series.parseText($('ref').value); if(p.errors.length){ el.innerHTML='<div class="bad">'+esc(p.errors.join('; '))+'</div>'; return; }
+const r=GC.Equiv.compare(p.rows,ui.a.params); if(r.error){ el.innerHTML='<div class="bad">'+esc(r.error)+'</div>'; return; }
+const rec={bars:r.bars,date:new Date().toLocaleString('it-IT'),seeds:{}}; for(const k in r.seeds){ const s=r.seeds[k]; rec.seeds[k]={pass:s.pass,n:s.n,maxRel:s.maxRel}; }
+try{ LS.setItem(eqKey(),JSON.stringify(rec)); }catch(e){}
+el.innerHTML=`<p class="m">${r.bars} barre, bande disponibili dalla barra ${r.L}. Tolleranza: errore relativo ≤ 1e-4 (rispetto a max(|riferimento|,1)) — scelta mia, modificabile nel codice. L'EMA ha memoria lunga: l'export deve partire dalla stessa prima barra usata da TradingView, altrimenti le prime barre divergono per costruzione.</p><table><tr><th>Seed EMA</th><th>confronti</th><th>errore rel. max</th><th>dopo 2L barre</th><th>stati uguali</th><th>esito</th></tr>`+Object.entries(r.seeds).map(([k,s])=>`<tr><td>${k==='sma'?'media semplice delle prime L (sma)':'primo valore (first)'}</td><td>${s.n}</td><td>${s.maxRel.toExponential(2)}</td><td>${s.nLate?s.maxRelLate.toExponential(2):'—'}</td><td>${s.stN?s.stOk+'/'+s.stN:'—'}</td><td>${s.pass?'<b class="g">coincide</b>':'<b class="r">non coincide</b>'}</td></tr>`).join('')+'</table>';
+eqBadge();
+}
+const stamp=()=>new Date().toISOString().replace(/[-:T]/g,'').slice(0,14);
+const freeModel=()=>ui.free?Object.assign({},M,{common:Object.assign({},M.common,{Dmin:-1e6,Dmax:1e6})}):M;
+function DR(obs){ if(!ui.free) return {lo:M.common.Dmin,hi:M.common.Dmax}; const d=(obs||[]).filter(o=>o.status==='ok'&&fin(o.D)).slice(-400).map(o=>o.D); if(!d.length) return {lo:M.common.Dmin,hi:M.common.Dmax}; const lo=Math.min(...d), hi=Math.max(...d), w=Math.max(hi-lo,.2)*1.05, m=(lo+hi)/2; return {lo:m-w/2,hi:m+w/2}; }
+const ZNAME=['molto vicine','vicine','medie','lontane','molto lontane'], zoneBins=rg=>ZNAME.map((nm,i)=>[rg.lo+(rg.hi-rg.lo)*i/5,rg.lo+(rg.hi-rg.lo)*(i+1)/5+(i===4?1e-9:0),nm]);
+function getEngine(tf){
+const a=ui.a, sym=($('sym').value||'SYM').trim().toUpperCase(), extra=ui.mode==='import'?'import':'approx:'+ltfFor(tf)+extTag()+(ui.bar5?':bar'+BAR():''), MM=freeModel(), mt=Object.assign({},MM.common,MM[TK()]);
+const h=GC.Store.cfgHash(a.codeHash,P(),mt,extra), key=GC.Store.key(sym,TK(),h), meta={codeHash:a.codeHash,params:P(),src:extra,model:JSON.stringify(mt)};
+if(ui.key[tf]!==key){
+let txt=null; try{ txt=LS.getItem(key); }catch(e){} const ins=GC.Store.inspect(txt,TK()), others=GC.Store.otherKeys(LS,sym,TK(),h);
+if(ins.status==='corrupt'||ins.status==='incompatible'){ ins.qk=GC.Store.quarantine(LS,key,txt,stamp()); }
+ui.restore[tf]=ins; ui.eng[tf]=GC.Engine(TK(),MM,P(),ins.state); ui.key[tf]=key; ui.saved[tf]=null; ui.shown[tf]=null; ui.notes=ui.notes.filter(n=>n.tf!==tf);
+ui.meta[tf]=(()=>{ try{ return JSON.parse(LS.getItem('gc2m|'+key))||{}; }catch(e){ return {}; } })(); if(ui.meta[tf].lastOk&&!ui.conn.lastOk) ui.conn.lastOk=ui.meta[tf].lastOk; ui.bf=ui.meta[tf].bf||{state:'idle'};
+const st=ins.state;
+if(ins.status==='ok') ui.notes.push({tf,t:`${tf}: storico ripristinato dalla memoria locale (${st.bars.length} barre elaborate, ${st.q.nObs} osservazioni).`,lv:'i'});
+else if(ins.status==='migrated') ui.notes.push({tf,t:`${tf}: stato salvato dalla versione 1.3 migrato in modo sicuro: dinamica e finestra dell'indicatore conservate; le singole barre non erano state salvate, quindi lo storico locale riparte da ora e la ricostruzione completa non è possibile per le barre precedenti.`,lv:'w'});
+else if(ins.status==='corrupt') ui.notes.push({tf,t:`${tf}: lo stato salvato è CORROTTO (${ins.errors.slice(0,2).join('; ')}). Non è stato usato; ${ins.qk?'una copia è conservata in «'+ins.qk+'»':'copia di sicurezza non riuscita (memoria piena?)'}. Si riparte da zero e il file danneggiato sarà sostituito al prossimo salvataggio.`,lv:'e'});
+else if(ins.status==='incompatible') ui.notes.push({tf,t:`${tf}: stato salvato da una versione incompatibile (${ins.errors[0]}). Non è stato usato; ${ins.qk?'copia in «'+ins.qk+'»':'copia non riuscita'}. Si riparte da zero.`,lv:'e'});
+else if(others.length){ let best=null; for(const k of others){ const r=GC.Store.inspect((()=>{ try{ return LS.getItem(k); }catch(e){ return null; } })(),TK()); const s=r.state; if(s&&s.meta&&(!best||(s.saved||0)>(best.saved||0))) best=s; } const d=best?GC.Store.metaDiff(best.meta,meta):null;
+ui.notes.push({tf,t:`${tf}: ${d&&d.length?'cambiati: '+d.join(', '):'configurazione cambiata'} rispetto allo stato salvato → nuovo storico separato (lo storico precedente resta nella memoria locale, non viene cancellato né riutilizzato).`,lv:'w'}); }
+}
+const e=ui.eng[tf]; if(!e.state.meta) e.state.meta=meta; return e;
+}
+function saveMeta(tf){ try{ LS.setItem('gc2m|'+ui.key[tf],JSON.stringify({lastOk:ui.conn.lastOk||null,bf:ui.bf})); }catch(e){} }
+function persist(tf,e){
+const r=GC.Store.saveSafe(LS,ui.key[tf],e.state); ui.persist={ok:r.ok,err:r.err,bytes:r.bytes,at:Date.now(),tf};
+if(r.ok) ui.saved[tf]=true; return r;
+}
+function feed(){
+if(!ui.a||!ui.a.ok){ ui.snap={}; dash(); return; }
+const now=Date.now()/1000;
+for(const tf of TFS){
+const e=getEngine(tf), d=ui.data[tf]; if(!d){ ui.snap[tf]={o:e.last(),q:e.quality(now),prov:null,eng:e,cmp:null}; if(ui.restore[tf]&&ui.restore[tf].state&&!ui.saved[tf]&&ui.restore[tf].status==='migrated') persist(tf,e); runTF(e); continue; }
+const sp=e.split(d.bars,now); let inc=e.dropCoarser(sp.closed), cmp=e.compare(inc);
+if(ui.dl&&ui.dl.backfilled&&e.state.bars.length&&inc.length&&inc[0].t<e.state.bars[0][0]){
+const mg=GC.Store.mergeBars(e.history(),inc); if(mg.corrected===0){ try{ LS.setItem('gc2bak|'+ui.key[tf],e.serialize()); }catch(x){} const ne=GC.Engine.replay(tf,M,P(),mg.bars); ne.state.meta=e.state.meta; ne.state.saved=Date.now(); ui.eng[tf]=ne; persist(tf,ne); ui.notes=ui.notes.filter(n=>n.tf!==tf+'bfr'); ui.notes.push({tf:tf+'bfr',t:`${tf}: storico antecedente (${mg.added} barre) integrato automaticamente nello storico locale con ricostruzione deterministica; copia del vecchio stato in «gc2bak|…».`,lv:'i'}); return feed(); } }
+ui.notes=ui.notes.filter(n=>n.tf!==tf+'upd'); ui.cmp[tf]=cmp;
+const um={correzione:`⚠ CORREZIONE STORICA: ${cmp.differ} barre già elaborate hanno valori diversi nei dati ricevuti. Lo storico locale NON è stato modificato. Se i nuovi dati sono quelli giusti, usa «Applica correzioni e ricostruisci»: la serie viene ricalcolata dallo storico locale con le barre ricevute al posto di quelle diverse.`,piu_vecchi:`i dati ricevuti terminano prima dell'ultima barra già elaborata (${when(e.state.lastT)}): vengono ignorati e lo stato non torna indietro.`,senza_sovrapposizione:`la serie ricevuta non si sovrappone alle barre già elaborate (inizia dopo ${when(e.state.lastT)}): le barre intermedie mancano; un buco oltre ${M.common.maxGapH} h riavvia la dinamica.`};
+if(um[cmp.kind]) ui.notes.push({tf:tf+'upd',t:`${tf}: ${um[cmp.kind]}`,lv:cmp.kind==='correzione'?'e':'w'});
+const t0=e.state.lastT, forming=e.pushSeries(inc.concat(sp.forming?[sp.forming]:[]),now), changed=e.state.lastT!==t0;
+if(changed||!e.state.saved) e.state.saved=Date.now();
+let prov=null; if(forming&&forming.valid) prov=e.peek(forming);
+if(changed||!ui.saved[tf]||!ui.persist.ok) persist(tf,e);
+const live=!!(ui.live&&ui.bar5&&ui.a.kind==='macd'&&prov&&prov.status==='ok'); ui.snap[tf]={o:live?Object.assign({},prov,{live:true}):e.last(),q:e.quality(now),prov,forming,eng:e,cmp,live}; runTF(e);
+}
+dash();
+}
+function rebuild(tf){
+if(!ui.a||!ui.a.ok) return; const e=getEngine(tf), d=ui.data[tf], now=Date.now()/1000, hist=e.history();
+if(!hist.length&&e.state.q.nObs+e.state.q.warm>0&&!confirm('Lo stato salvato proviene dalla 1.3 e non contiene le singole barre: ricostruire userebbe SOLO i dati scaricati ora e scarterebbe la dinamica accumulata. Continuare?')) return;
+if(e.state.trunc>0&&!confirm('Lo storico locale è stato limitato ('+e.state.trunc+' barre più vecchie scartate): la ricostruzione partirebbe dalla prima barra conservata e le bande iniziali potrebbero differire. Continuare?')) return;
+const inc=d?e.dropCoarser(e.split(d.bars,now).closed):[], mg=GC.Store.mergeBars(hist,inc);
+try{ LS.setItem('gc2bak|'+ui.key[tf],e.serialize()); }catch(x){}
+const ne=GC.Engine.replay(tf,M,P(),mg.bars); ne.state.meta=e.state.meta; ne.state.saved=Date.now(); ui.eng[tf]=ne;
+ui.notes=ui.notes.filter(n=>n.tf!==tf+'rb'); ui.notes.push({tf:tf+'rb',t:`${tf}: ricostruzione eseguita su ${mg.bars.length} barre (${mg.corrected} corrette dai dati ricevuti, ${mg.added} nuove, ${mg.same} invariate). Copia del vecchio stato in «gc2bak|…».`,lv:'i'});
+persist(tf,ne); feed();
+}
+function loadImport(){
+if(ui.a&&ui.a.ok&&ui.a.kind==='macd'){ ui.notes=ui.notes.filter(n=>!n.imp); ui.notes.push({imp:1,t:'Con l\'ingresso MACD+RSI+BB servono i prezzi: la modalità «Importa» (solo delta incollato) non è disponibile. Usa la modalità Worker.',lv:'e'}); return; }
+ui.dataRep={}; ui.wk={}; ui.notes=ui.notes.filter(n=>!n.imp);
+for(const tf of TFS){
+const txt=$('t'+tf).value.trim(); if(!txt){ ui.data[tf]=null; continue; }
+const p=GC.Series.parseText(txt); if(p.errors.length){ ui.data[tf]=null; ui.notes.push({imp:1,t:`${tf}: ${p.errors.join('; ')}`,lv:'e'}); continue; }
+const n=GC.Series.normalize(p.rows,STEP[tf],{maxGapSec:M.common.maxGapH*3600}); ui.data[tf]=n; ui.dataRep[tf]=n.report; ui.dl={at:Date.now(),imp:true,defSet:new Set(n.bars.filter(b=>b.valid).map(b=>b.t)),firstT:n.bars.length?n.bars[0].t:null,lastT:n.bars.length?n.bars[n.bars.length-1].t:null,nBars:n.bars.length};
+}
+saveUI(); feed();
+}
+const BAR=()=>ui.bar5?(ui.barSec||300):3600, TK=()=>!ui.bar5?'1H':BAR()===60?'1m':'5m';
+const LTFS={'1m':60,'5m':300,'15m':900}, RANGE={'1m':'7d','5m':'60d','15m':'60d'}, TIMEOUT=15000, BF_RANGE='1y', BF_RETRY_MS=6*3600*1000;
+const LTF_INFO={'5m':'5 minuti: 12 barre per ogni barra 1H; il segno di close−open è valutato su intervalli più brevi, quindi il delta approssimato è più vicino a quello (da 1 minuto) dell\'indicatore originale. Yahoo fornisce solo ~60 giorni di storico a questa granularità.','15m':'15 minuti: 4 barre per ogni barra 1H; granularità più grossolana — un’inversione dentro i 15 minuti non compare nel segno di close−open, quindi il delta si discosta di più da quello dell\'indicatore originale. Anche qui ~60 giorni di storico.'};
+const ltfFor=tf=>ui.bar5?(BAR()===60?'1m':'5m'):$('ltf').value, extOpt=()=>({pre:!!$('extPre').checked,post:!!$('extPost').checked}), extTag=()=>{ const e=extOpt(); return (e.pre?'+pre':'')+(e.post?'+post':''); };
+const mkErr=(kind,msg,extra)=>{ const e=new Error(msg); e.kind=kind; if(extra) Object.assign(e,extra); return e; };
+const ERR_TXT={timeout:'timeout',network:'rete / URL / CORS',http:'risposta HTTP',json:'risposta non JSON',provider:'errore di Yahoo',empty:'nessun dato',symbol:'simbolo diverso',interval:'granularità diversa',length:'serie non allineate',malformed:'risposta malformata',rate:'limite di richieste'};
+async function yahooGet(base,sym,iv,range,ext){
+const hs=GC.VixProxy.hybridSource(sym); if(!hs) return yahooGet1(base,sym,iv,range,ext);
+const pv=await yahooGet1(base,'^VIX',iv,range,ext); let ps=null; try{ ps=await yahooGet1(base,hs,iv,range,ext); }catch(x){ if(x&&x.kind==='rate') throw x; ui.hybNote='IBRIDO non completo: '+hs+' non disponibile ('+(x&&x.message||x)+'): uso solo ^VIX reale, ritardato di circa 15 minuti.'; }
+if(!ps) return pv;
+const bars=GC.VixProxy.hybrid(pv.bars,ps.bars); if(iv!=='60m') ui.hyb={lastRealT:bars.lastRealT,nTail:bars.nTail,anchor:bars.anchor,src:hs}; if(iv!=='60m') ui.hybNote=''; return Object.assign({},pv,{bars});
+}
+async function yahooGet1(base,sym,iv,range,ext){
+const ac=new AbortController(); let timedOut=false; const to=setTimeout(()=>{ timedOut=true; ac.abort(); },TIMEOUT);
+try{
+const pxs=GC.VixProxy.source(sym), qs=pxs||sym; let r, j; const url=base+(base.includes('?')?'&':'?')+`symbol=${encodeURIComponent(qs)}&interval=${iv}&range=${range}`+((ext.pre||ext.post)?'&includePrePost=true':'')+'&_='+Date.now(); ui.lastUrl=url;
+try{ r=await fetch(url,{signal:ac.signal,cache:'no-store'}); if(r.status===429) throw mkErr('rate','il Worker/Yahoo limita le richieste (HTTP 429)',{retryAfter:+r.headers.get('retry-after')||0}); if(!r.ok) throw mkErr('http','il Worker ha risposto HTTP '+r.status); j=await r.json(); }
+catch(x){ if(timedOut) throw mkErr('timeout','il Worker non ha risposto entro '+TIMEOUT/1000+' s'); if(x.kind) throw x; if(x.name==='SyntaxError') throw mkErr('json','la risposta del Worker non è JSON valido'); throw mkErr('network','Worker non raggiungibile (rete assente, URL errato o blocco CORS)'); }
+const pr=GC.Yahoo.parse(j,{sym:qs,iv}); if(!pr.ok) throw mkErr(/too many|rate limit/i.test(pr.msg)?'rate':pr.code,pr.msg); if(pxs) pr.bars=GC.VixProxy.fromBars(pr.bars); return pr;
+} finally{ clearTimeout(to); }
+}
+const needBackfill=()=>{ if(!ui.bfOn||ui.bar5) return false; const e=ui.eng['1H']; const have=e?e.counts().valid:0, L=ui.a.params.bbLength; if(have>=3*L) return false; if(ui.bf.state==='done'||ui.bf.state==='running') return false; if((ui.bf.state==='unavailable'||ui.bf.state==='insufficient')&&Date.now()-(ui.bf.at||0)<GC.Prefs.retryMs(ui.bf.attempts||1)) return false; return true; };
+const toBars=(pr,iv,ivSec,meta,e,now,cp)=>{ const raw=GC.Adapter.approxDelta(pr.bars,ui.bar5&&ivSec===BAR()?ivSec:3600,ivSec,{tzOffsetSec:meta.gmtoffset||0,tz:meta.exchangeTimezoneName||null,sessions:GC.Sessions.fromMeta(meta),ext:e,nowSec:now,sessEnd:cp&&fin(cp.end)?cp.end:null,volMode:'auto'}); ui.volMode=raw.volMode; return {raw,n:GC.Series.normalize(raw,ui.bar5&&ivSec===BAR()?ivSec:3600,{maxGapSec:M.common.maxGapH*3600})}; };
+async function loadWorker(opt){
+opt=opt||{}; const base=$('wk').value.trim(), sym=$('sym').value.trim().toUpperCase(), iv=ltfFor(), e=extOpt();
+if(!sym){ ui.fetchNote='Inserisci il simbolo (per esempio ^VIX oppure QQQ) e premi «Aggiorna ora»: senza simbolo non scarico nulla.'; dash(); return {skipped:true}; }
+if(!/^https:\/\//.test(base)){ ui.fetchNote='Inserisci l\'URL https del tuo Worker (impostazioni avanzate).'; dash(); return {err:true}; }
+if(!ui.a||!ui.a.ok){ ui.fetchNote='Indicatore non riconosciuto: nessun download.'; dash(); return {err:true}; }
+if(ui.busy){ ui.skipped=(ui.skipped||0)+1; if(!opt.auto) ui.fetchNote='Un aggiornamento è già in corso: nuova richiesta ignorata (nessuna richiesta sovrapposta).'; dash(); return {skipped:true}; }
+ui.busy=true; ui.fetchNote=''; ui.step='Connessione al Worker e download delle barre '+iv; ui.conn=Object.assign({},ui.conn,{state:'loading'}); dash();
+try{
+getEngine('1H'); const prFine=await yahooGet(base,sym,iv,RANGE[iv],e), meta=prFine.meta, cp=meta.currentTradingPeriod&&meta.currentTradingPeriod.regular, now=Date.now()/1000;
+ui.conn=Object.assign({},ui.conn,{state:'ok',kind:null,msg:null,rate:false});
+const F=toBars(prFine,iv,LTFS[iv],meta,e,now,cp); let merged=F.n.bars.map(b=>Object.assign({},b,{g:LTFS[iv]})), C=null, backfilled=false;
+if(needBackfill()){
+const att=(ui.bf.attempts||0)+1; ui.bf={state:'running',cfg:ui.key['1H'],attempts:att}; ui.step='Download dello storico orario (60m, '+BF_RANGE+')'; dash();
+try{ const prC=await yahooGet(base,sym,'60m',BF_RANGE,e); C=toBars(prC,'60m',3600,prC.meta,e,Date.now()/1000,prC.meta.currentTradingPeriod&&prC.meta.currentTradingPeriod.regular);
+merged=GC.Series.mergeSources(F.n.bars,C.n.bars,LTFS[iv],3600); backfilled=true; const nc=merged.filter(b=>b.g===3600&&b.valid&&b.closed).length;
+ui.bf={state:'running',at:Date.now(),n:C.n.bars.length,used:nc,cfg:ui.key['1H'],received:prC.bars.length,attempts:att}; }
+catch(x){ ui.bf={state:'unavailable',at:Date.now(),err:x.message,kind:x.kind,cfg:ui.key['1H'],attempts:att}; if(x.kind==='rate') throw x; }
+}
+ui.liveBar=false;
+if(ui.bar5&&ui.live&&ui.a.kind==='macd'){
+const lb=prFine.bars[prFine.bars.length-1]; if(lb&&fin(lb.o)&&fin(lb.c)&&lb.t+BAR()>now&&lb.t<=now&&!merged.some(b=>b.t===lb.t)){ const hi=fin(lb.hi)?lb.hi:Math.max(lb.o,lb.c), lo=fin(lb.lo)?lb.lo:Math.min(lb.o,lb.c); merged.push({t:lb.t,o:0,mx:0,mn:0,l:0,valid:true,closed:false,cov:1,kind:'regular',g:BAR(),px:[lb.o,Math.max(hi,lb.o,lb.c),Math.min(lo,lb.o,lb.c),lb.c]}); ui.liveBar=true; } }
+if(ui.a.kind==='macd'){ const mb=GC.MacdRsiBb.applyToBars(merged,Object.assign({},ui.a.macd,{combo:ui.combo})); ui.macdInfo=mb.info; ui.macdN={valid:mb.nValid,px:mb.nPx}; merged=Array.from(mb); } else { ui.macdInfo=null; ui.macdN=null; }
+ui.step='Elaborazione delle barre '+(ui.bar5?(BAR()===60?'1 min':'5 min'):'1H');
+const lt=prFine.bars.map(b=>b.t), clo=merged.filter(b=>b.closed&&b.valid), fp=GC.hash(merged.filter(b=>b.closed).map(b=>b.valid?[b.t,b.g,b.mx,b.mn,b.l].join(':'):b.t+':x').join(';')), prevFp=ui.dl&&ui.dl.fp;
+ui.notes=ui.notes.filter(x=>!x.imp); ui.dataRep={};
+ui.data['1H']={bars:merged,report:F.n.report}; ui.dataRep['1H']=F.n.report;
+ui.dl={at:Date.now(),iv,rec:F.raw.rec,recC:C?C.raw.rec:null,parse:prFine.stats,align:F.raw.align,nSess:F.raw.nSess,nExt:F.raw.nExt,ext:e,nBars:merged.length,firstT:merged.length?merged[0].t:null,lastT:merged.length?merged[merged.length-1].t:null,ltfFirst:Math.min(...lt),ltfLast:Math.max(...lt),fp,same:fp===prevFp&&!backfilled,defSet:new Set(clo.map(b=>b.t)),nDef:clo.length,nCoarse:merged.filter(b=>b.g===3600).length,backfilled,tzEx:meta.exchangeTimezoneName||'America/New_York'};
+ui.conn=Object.assign({},ui.conn,{state:'ok',at:Date.now(),lastOk:Date.now(),fails:0}); ui.step='';
+saveUI(); feed();
+if(backfilled){ const v=ui.eng['1H'].counts().valid, tgt=3*ui.a.params.bbLength; ui.bf=Object.assign({},ui.bf,{state:v>=tgt?'done':'insufficient',valid:v,target:tgt,at:Date.now()}); }
+saveMeta('1H'); dash();
+}catch(x){ ui.step=''; ui.conn=Object.assign({},ui.conn,{state:'error',kind:x.kind||'unknown',msg:x.message||String(x),at:Date.now(),fails:(ui.conn.fails||0)+1,rate:x.kind==='rate',retryAfter:x.retryAfter||0}); if(ui.bf.state==='running') ui.bf={state:'idle',attempts:ui.bf.attempts}; dash(); }
+finally{ ui.busy=false; schedule(); dash(); }
+return {ok:ui.conn.state==='ok'};
+}
+function schedule(){
+clearTimeout(ui.auto.timer); ui.auto.timer=null; ui.auto.nextAt=null; ui.auto.why=''; if(!ui.auto.on||ui.mode!=='worker') return;
+const pd=GC.Market.pollDelay({nowSec:Date.now()/1000,tz:(ui.dl&&ui.dl.tzEx)||'America/New_York',ext:extOpt(),fails:ui.conn.fails||0,rateLimited:!!ui.conn.rate,settleSec:LTFS[ltfFor()]+120,stepSec:BAR(),live:!!(ui.live&&ui.bar5&&ui.a&&ui.a.kind==='macd')}), delay=Math.max(pd.ms,(ui.conn.retryAfter||0)*1000);
+ui.auto.nextAt=Date.now()+delay; ui.auto.why=pd.why; ui.auto.timer=setTimeout(async()=>{ ui.auto.timer=null; if(document.hidden){ ui.auto.skipped=true; schedule(); return; } if(!ui.busy) await loadWorker({auto:true}); else schedule(); },delay);
+}
+function drawGuide(tf,s){
+const el=$('gd'+tf); if(!el) return; const o=s&&s.o; if(!o||!s.q||s.q.state!=='ok'){ el.innerHTML=''; return; }
+const st=GC.RenderMath.carState(o,ui.cref&&ui.cref[tf]), fl=GC.RenderMath.readFlow(st,o.pressDir); if(!fl){ el.innerHTML=''; return; }
+const at2=ui.atr&&ui.atr[tf], C={verde:'#4be39a',giallo:'#ffc43c',rosso:'#ff5d8f',neutro:'#9aa3c0'}, box=(n,t,badge,col,txt)=>`<div style="flex:1 1 150px;min-width:140px;background:rgba(255,255,255,.05);border-left:4px solid ${col};border-radius:8px;padding:.5em .65em"><div class="m" style="font-size:.7rem">${n} · ${t}</div><div style="font-weight:700;color:${col}">${badge}</div><div class="m" style="font-size:.78rem">${txt}</div></div>`;
+const m=fl.dir>0?['AVANTI',C.verde,'v positiva: allontanamento']:fl.dir<0?['RETROMARCIA',C.giallo,'v negativa: avvicinamento']:['FOLLE',C.neutro,'v quasi nulla: l\'auto è ferma'];
+const p=fl.pedal==='rafforzamento'?['RAFFORZAMENTO',C.verde,'a nello stesso senso di v: il piede spinge l\'acceleratore, il movimento si rafforza']:fl.pedal==='esaurimento'?['ESAURIMENTO',C.rosso,'a contraria a v: stai togliendo gas o frenando, il movimento si sta esaurendo']:fl.pedal==='costante'?['COSTANTE',C.neutro,'a trascurabile: andatura costante']:['FERMA',C.neutro,'senza marcia: guarda verso dove spinge a'];
+const w=fl.wind==='concorde'?['CONCORDE',C.verde,'pressione nello stesso senso della marcia: vento alle spalle']:fl.wind==='discorde'?['DISCORDE',C.rosso,'pressione nel senso opposto alla marcia: vento contrario']:['NEUTRA',C.neutro,'pressione nulla o auto ferma'];
+const lv=fl.level==='rosso'?['MASSIMA ATTENZIONE',C.rosso]:fl.level==='giallo'?['ATTENZIONE',C.giallo]:['ANDATURA SOSTENUTA',C.verde];
+const sum=GC.RenderMath.flowPhrase(fl);
+el.innerHTML=`<div style="margin:.7em 0 .3em;font-weight:600">Come leggerlo, passo per passo</div><div style="display:flex;flex-wrap:wrap;gap:.5em">${box(1,'Marcia (segno di v)',m[0],m[1],m[2])}${box(2,'Pedale (a rispetto a v)',p[0],p[1],p[2]+(at2?' · tendenza di a: '+(at2.state==='cala'?'IN CALO (curva): la spinta sta diminuendo':at2.state==='sale'?'in aumento':'stabile'):''))}${box(3,'Vento (pressione)',w[0],w[1],w[2])}${box(4,'Peso (decelerazione e pressione opposta pesano doppio)',lv[0],lv[1],'punteggio '+fl.score+' su 4: +2 se esaurimento, +2 se vento contrario')}</div><div style="margin:.5em 0 0">${esc(sum)}</div><div class="m" style="font-size:.72rem;margin-top:.25em">Lettura del motore Galaxy sul prezzo del simbolo, con soglie convenzionali non calibrate: non è un segnale operativo.</div>`; }
+function zonesReport(s){
+const e=s&&s.eng; if(!e) return null; const obs=e.state.obs.filter(o=>o.status==='ok'&&fin(o.D)); if(obs.length<2) return null;
+const step=BAR(), fs=s.forming&&fin(s.forming.t)?s.forming.t:obs[obs.length-1].t+step, WIN=900;
+let w=obs.filter(o=>o.t<fs&&o.t>=fs-WIN), ext=false; if(w.length<3){ w=obs.slice(-5); ext=true; }
+if(w.length<2) return null; const Ds=w.map(o=>o.D), n=w.length, rg=DR(obs), bins=zoneBins(rg);
+const zs=bins.map(z=>Ds.filter(d=>d>=z[0]&&d<z[1]).length/n);
+let path=0, flips=0, lastDir=0, lim=0, bear=0, bull=0; for(let i=0;i<n;i++){ if(i) path+=Math.abs(Ds[i]-Ds[i-1]); const dir=w[i].movDir||0; if(dir&&lastDir&&dir!==lastDir) flips++; if(dir) lastDir=dir; if(w[i].lim) lim++; if(fin(w[i].R)){ if(w[i].R<0) bear++; else if(w[i].R>0) bull++; } }
+const mean=a=>a.reduce((x,y)=>x+y,0)/a.length, pv=s.prov&&s.prov.status==='ok'&&fin(s.prov.D)?s.prov:null;
+return {rg,bins,w,n,ext,t0:w[0].t,t1:w[n-1].t+step,fs,zs,min:Math.min(...Ds),max:Math.max(...Ds),d0:Ds[0],d1:Ds[n-1],path,flips,lim,bear,bull,vAvg:mean(w.map(o=>o.v).filter(fin)),E:mean(w.map(o=>o.E).filter(fin)),G:mean(w.map(o=>o.G).filter(fin)),pv,live:!!s.live,step};
+}
+function drawZones(tf,s){
+const el=$('zn'+tf); if(!el) return; const r=zonesReport(s); (ui.zr||(ui.zr={}))[tf]=r; (ui.cref||(ui.cref={}))[tf]=GC.RenderMath.carRefs(s&&s.eng?s.eng.state.obs:[]); (ui.atr||(ui.atr={}))[tf]=GC.RenderMath.accTrend(s&&s.eng?s.eng.state.obs:[],ui.cref[tf],5,s&&s.live?s.o:null); (ui.avg||(ui.avg={}))[tf]=GC.Avg.compute(s&&s.eng?s.eng.state.obs:[],Date.now()/1000,300,3);
+if(!r){ el.innerHTML='<p class="m">Mappa delle zone: servono almeno 2 osservazioni valide.</p>'; return; }
+const hm=t=>new Date(t*1000).toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit',second:r.step<300?'2-digit':undefined}), pc=x=>Math.round(x*100)+'%', top=r.zs.indexOf(Math.max(...r.zs));
+const cells=r.bins.map((z,i)=>`<div style="flex:1;text-align:center;padding:.45em .1em;border-radius:6px;background:rgba(255,196,60,${(.08+.85*r.zs[i]).toFixed(2)});color:${r.zs[i]>.5?'#111':'var(--fg)'}${i===top?';outline:2px solid #ffc43c':''}" title="D ${z[0].toFixed(2)}–${z[1].toFixed(2)}"><div style="font-size:.7rem">${z[2]}</div><b>${pc(r.zs[i])}</b></div>`).join('');
+const range=Math.max(1e-9,r.max-r.min), dir=r.d1>r.d0+0.01?'si sono allontanate':r.d1<r.d0-0.01?'si sono avvicinate':'sono rimaste a distanza simile';
+let cmp=''; if(r.pv){ const dd=r.pv.D-r.d1, w=Math.abs(dd)<0.004?'sostanzialmente ferma':dd>0?'in allontanamento':'in avvicinamento'; cmp=` Candela in formazione${r.live?' (in diretto, provvisoria)':' (provvisoria)'}: D ${r.pv.D.toFixed(3)} (${(dd>=0?'+':'')+dd.toFixed(3)} rispetto all'ultima chiusa) → ${w}${r.pv.lim?', sul limite':''}.`; }
+el.innerHTML=`<div style="margin:.6em 0 .2em;font-weight:600">Mappa delle zone · ultimi 15 minuti prima della candela in formazione</div>
+  <div class="m">${hm(r.t0)} → ${hm(r.t1)} · ${r.n} barre chiuse${r.ext?' (nel periodo di 15 minuti ce n\'erano meno di 3: uso le ultime '+r.n+' barre disponibili)':''}. Distanza D tra le due galassie: più vicine a sinistra, più lontane a destra.</div>
+  <div style="display:flex;gap:4px;margin:.4em 0" role="img" aria-label="Quota di tempo per zona di distanza">${cells}</div>
+  <ul class="m" style="margin:.3em 0 .2em 1.1em;padding:0">
+   <li>Zona più frequentata: <b>${r.bins[top][2]}</b> (${pc(r.zs[top])} delle barre). Intervallo D ${r.min.toFixed(3)}–${r.max.toFixed(3)} (ampiezza ${range.toFixed(3)}).</li>
+   <li>In questo periodo le galassie ${dir}: D ${r.d0.toFixed(3)} → ${r.d1.toFixed(3)}; percorso totale ${r.path.toFixed(3)}, velocità media ${r.vAvg.toFixed(3)} (unità del modello).</li>
+   <li>Cambi di direzione: ${r.flips}${r.flips>=2?' (movimento nervoso)':''}. Barre ferme sul limite: ${r.lim} su ${r.n}.</li>
+   <li>Pressione: ribassista in ${r.bear} barre, rialzista in ${r.bull}; E medio ${r.E.toFixed(2)}, G medio ${r.G.toFixed(2)}.</li>
+  </ul>${cmp?'<div class="m">'+esc(cmp.trim())+'</div>':''}`;
+}
+function readTf(tf,s){
+const o=s.o, e=s.eng, q=s.q; if(!o) return q.state==='warmup'?`${tf}: ${q.why[0]}. Finché le bande non sono definite non esiste una dinamica attendibile.`:`${tf}: nessuna osservazione valida.`;
+const side=l=>l>0?'massimo':'minimo', pr=o.pressDir>0?'rialzista':o.pressDir<0?'ribassista':'equilibrata';
+const mov=o.lim?`sono ferme sul limite fisico ${side(o.lim)} di distanza: il movimento effettivo è nullo, mentre la pressione resta ${o.lim>0?'rialzista':'ribassista'} (le forze spingono ${o.lim>0?'verso l\'esterno':'verso l\'interno'} ma il limite le arresta)`
+:o.movDir>0?'si stanno allontanando':o.movDir<0?'si stanno avvicinando':'sono sostanzialmente ferme (velocità sotto la soglia di neutralità ±'+fe(e.epsV)+'/h)';
+const ratio=o.dsdt>0?Math.abs(o.v)/o.dsdt:null;
+const rel=(o.movDir===0||o.lim)?'':(o.movDir>0&&o.faster?` Il movimento effettivo è circa ${f(ratio,1)}× più rapido dell'espansione strutturale.`:o.movDir<0?` La contrazione avviene mentre la traiettoria strutturale continua ad espandersi (${fe(o.dsdt)}/h): è un movimento relativo, non una contrazione della struttura.`:` Il movimento effettivo è più lento dell'espansione strutturale.`);
+const dev=o.dev>=0?`sopra la traiettoria strutturale di ${f(o.dev)}`:`sotto la traiettoria strutturale di ${f(-o.dev)}`;
+const frc=`Forze: energia oscura E=${f(o.E,2)}, gravità G=${f(o.G,2)} → risultante ${o.R>=0?'+':''}${f(o.R,2)}, pressione ${pr} (stato indicatore: ${o.state.replace('_',' ')}).`;
+const opp=(!o.lim&&o.movDir!==0&&o.pressDir!==0&&o.movDir!==o.pressDir)?' La pressione è opposta al movimento: il moto prosegue per inerzia e sta per rallentare.':'';
+const acc=o.lim?'':o.decel?' Il moto sta rallentando (accelerazione opposta alla velocità).':(o.movDir!==0?' Il moto sta accelerando o mantenendo la velocità.':'');
+const st=q.state==='ok'?'':` ⚠ Dinamica ${q.state}: ${q.why.join('; ')}.`;
+return `${tf}: le galassie ${mov}.${rel} La distanza effettiva (${f(o.D)}) è ${dev}. ${frc}${opp}${acc}${st}`;
+}
+function synth(){ const s=ui.snap['1H']; if(!s||!s.o||s.q.state!=='ok') return null; const l=assessFor(s).level; return l==='ready'||l==='incomplete'?s:null; }
+function mkCards(){
+$('cards').innerHTML=TFS.map(tf=>`<section class="card" id="c${tf}"><header><h3>${tf} <small>movimento rapido</small></h3><span class="chip" id="st${tf}">—</span></header>
+  <canvas id="cv${tf}" width="720" height="560" role="img" aria-label="Cruscotto e auto ${tf}"></canvas><div id="gd${tf}"></div>
+  <details id="more${tf}" style="margin-top:.7em"><summary><b>Dettagli del motore</b> — numeri, storico di D, zone, note</summary><div class="kv" id="kv${tf}"></div><canvas id="hc${tf}" width="720" height="110" role="img" aria-label="Storico distanza ${tf}"></canvas>
+  <p class="read" id="rd${tf}"></p><p class="prov" id="pv${tf}"></p><div id="zn${tf}"></div></details></section>`).join('');
+}
+function kv(tf,s){
+const o=s&&s.o, e=s&&s.eng, mv=o&&(o.lim?'ferma (vincolata)':o.movDir>0?'allontanamento':o.movDir<0?'avvicinamento':'neutrale'), pr=o&&(o.pressDir>0?'rialzista':o.pressDir<0?'ribassista':'equilibrata'), ct=o&&(o.lim?`bloccata sul limite ${o.lim>0?'massimo':'minimo'}`:o.wall?`a contatto col limite ${o.wall>0?'massimo':'minimo'}`:'nessuno');
+const r=[['Distanza effettiva D',o&&f(o.D)],['Distanza strutturale Ds',o&&f(o.Ds)],['Deviazione D−Ds',o&&((o.dev>=0?'+':'')+f(o.dev))],['Velocità effettiva (/h)',o&&fe(o.v)],['Espansione strutt. (/h)',o&&fe(o.dsdt)],['Accelerazione (/h²)',o&&fe(o.a)],['E (energia oscura)',o&&f(o.E,2)],['G (gravità)',o&&f(o.G,2)],['Risultante R=E−G',o&&((o.R>=0?'+':'')+f(o.R,2))],['Movimento effettivo',mv],['Pressione (segno di R)',pr],['Contatto con la barriera',ct],['Stato indicatore',o&&o.state.replace('_',' ')],['Delta last (barra)',o&&fv(o.l)],['Bande (inf / sup)',o&&(fv(o.lower)+' / '+fv(o.upper))],['Ultima barra chiusa',s&&e.state.lastT!=null?when(e.state.lastT):'—'],['Età del dato',s&&s.q.ageH!=null?s.q.ageH.toFixed(1)+' h':'—'],['Osservazioni valide',s&&e.state.q.nObs]];
+$('kv'+tf).innerHTML=r.map(x=>`<div><span>${x[0]}</span><b>${x[1]==null?'—':x[1]}</b></div>`).join('');
+}
+function assessFor(s){
+const e=s.eng, c=e.counts(), lo=e.state.obs[e.state.obs.length-1], q=s.q, cmp=s.cmp;
+return GC.Diag.assess({L:ui.a.params.bbLength,used:c.used,lastOk:!!lo&&lo.status==='ok',hasData:!!ui.data['1H']||c.processed>0||e.state.q.nObs>0,windowLowCov:c.windowLowCov,pendingCorrections:cmp&&cmp.kind==='correzione'?cmp.differ:0,stale:!!(q.stale&&q.ready),ageH:q.ageH,legacy:c.legacy});
+}
+const LV={ready:['g','✔ READY'],warmup:['y','◔ WARMING UP'],incomplete:['o','⚠ READY · dati potenzialmente incompleti'],insufficient:['r','○ Dati insufficienti']};
+const ago=ms=>{ if(ms==null) return '—'; const s=Math.max(0,Math.round((Date.now()-ms)/1000)); return s<90?s+' s fa':s<5400?Math.round(s/60)+' min fa':(s/3600).toFixed(1)+' h fa'; };
+const hhmm=ms=>ms==null?'—':new Date(ms).toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+const sessTxt=()=>{ const e=extOpt(); return 'regolare 9:30–16:00 ET'+(e.pre?' + pre-market 4:00–9:30 ET':'')+(e.post?' + after-hours 16:00–20:00 ET':'')+' (ora italiana: regolare 15:30–22:00, pre-market da 10:00)'; };
+function diag(){
+const el=$('diag'), A=ui.a; if(!A||!A.ok){ el.innerHTML='<div class="bad">Indicatore non riconosciuto: nessuna diagnostica.</div>'; return; }
+const s=ui.snap['1H']; if(!s){ el.innerHTML='<span class="m">In attesa dei dati…</span>'; return; }
+const L=A.params.bbLength, e=s.eng, c=e.counts(), as=assessFor(s), dl=ui.dl, wk=ui.mode==='worker', cn=ui.conn, lv=LV[as.level], ext=extOpt();
+const p=ui.persist, rs=ui.restore['1H'], perT=!p.at&&!(rs&&rs.status==='ok')?'non ancora salvato':p.ok===false?'✘ NON salvato ('+(p.err==='quota'?'memoria piena':'accesso negato')+'): solo in memoria':'✔ salvato'+(p.at?' alle '+hhmm(p.at):'')+(p.bytes?' · '+Math.round(p.bytes/1024)+' KB':'');
+let h='';
+const orr=e.origin(dl&&dl.defSet), ot={scaricate:`tutte le ${orr.n} barre della finestra provengono dal download appena eseguito`,locale:`tutte le ${orr.n} barre della finestra provengono dallo STORICO ACCUMULATO IN LOCALE (il download attuale non le contiene più)`,misto:`${orr.now} barre dal download appena eseguito + ${orr.local} dallo storico accumulato in locale`,locale_v1:`stato migrato dalla 1.3: ${orr.local} barre accumulate in locale (non tracciabili una per una)`,nessuna:'nessuna barra elaborata'}[orr.kind];
+h+=`<p class="m"><b>Origine del warm-up:</b> ${ot}.${c.windowCoarse?` <b>Fonte delle barre della finestra:</b> ${c.windowFine} da barre ${dl&&dl.iv||'fini'} + ${c.windowCoarse} da barre da 60 min (approssimazione ancora più grossolana, solo per le barre più vecchie; vedi nota).`:''}</p>`;
+if(c.windowCoarse) h+=`<div class="warn">${c.windowCoarse} delle ${c.used>=L?L:c.used} barre che sostengono le bande derivano da barre da <b>60 minuti</b>: il segno close−open su un'intera ora nasconde ogni inversione interna, quindi il delta di queste barre è un'approssimazione più grossolana di quella da ${dl&&dl.iv||'15m'}. Serve solo a completare il warm-up con storico altrimenti non disponibile; puoi escluderlo dalle impostazioni avanzate (il warm-up si completerà allora per sola accumulazione).</div>`;
+if(as.reasons.length&&as.level!=='warmup'&&as.level!=='ready') h+=`<div class="warn">${as.reasons.map(esc).join('<br>')}</div>`;
+if(wk&&cn.state==='error') h+=`<div class="bad"><b>Errore di caricamento (${esc(ERR_TXT[cn.kind]||cn.kind)}):</b> ${esc(cn.msg)}. Lo storico locale è intatto e non è stato modificato.${cn.fails>1?' Tentativi falliti di fila: '+cn.fails+'.':''}${ui.auto.on?' L\'aggiornamento automatico riprova con ritardo crescente.':''}</div>`;
+if(wk&&cn.state==='ok'&&dl&&dl.same) h+=`<p class="m">Ultimo download identico al precedente: nessuna barra nuova da elaborare.</p>`;
+const kv=[['Ultimo aggiornamento riuscito',wk?(cn.lastOk?hhmm(cn.lastOk)+' ('+ago(cn.lastOk)+')':'mai'):(dl&&dl.at?hhmm(dl.at)+' (import)':'—')],
+['Barra inferiore più recente',dl&&dl.ltfLast?when(dl.ltfLast):'—'],['Intervallo scaricato (1H)',dl&&dl.firstT?when(dl.firstT)+' → '+when(dl.lastT):'—'],['Storico locale elaborato',c.processed?when(c.firstT)+' → '+when(c.lastT)+' ('+c.processed+' barre)':(c.legacy?'barre non conservate (stato 1.3)':'vuoto')],
+['Persistenza locale',perT],['Barre inferiori selezionate',wk?($('ltf').value+' → 1H'):'— (import del delta originale)'],['Sessioni incluse',wk?sessTxt():'quelle del file importato'],['Allineamento barre 1H',dl&&dl.align||'—'],['Ultima barra chiusa elaborata',c.lastT!=null?when(c.lastT)+(s.q.ageH!=null?' ('+s.q.ageH.toFixed(1)+' h fa)':''):'—']];
+h+=`<div class="kv wide">${kv.map(x=>`<div><span>${x[0]}</span><b>${x[1]}</b></div>`).join('')}</div>`;
+const rec=dl&&dl.rec, row=(a,b,cl)=>`<tr${cl?' class="'+cl+'"':''}><td>${a}</td><td class="n">${b}</td></tr>`;
+let t='';
+if(wk&&rec){ const iv=dl.iv; t+=`<tr><th colspan="2">Barre ${iv} ricevute dal Worker</th></tr>`+row('ricevute',rec.received)+row('timestamp non validi (scartate)',rec.badTs,rec.badTs?'w':'')+row('duplicate identiche (contate una volta)',rec.dup,rec.dup?'w':'')+row('duplicate in conflitto (vale l\'ultima)',rec.conflict,rec.conflict?'w':'')+row('fuori ordine (riordinate)',rec.unsorted,rec.unsorted?'w':'')+row('non ancora concluse (escluse)',rec.unfinished)+row('fuori dalle sessioni scelte (escluse)',rec.outside)+row('con valori nulli (invalidano la barra 1H)',rec.nullRows,rec.nullRows?'w':'')+row('<b>usate per costruire le barre 1H</b>',`<b>${rec.used}</b>`);
+t+=`<tr><th colspan="2">Barre 1H ricostruite</th></tr>`+row('ricostruite',rec.buckets)+row('definitive e valide',rec.definitive)+row('provvisoria (in formazione, mai nel modello)',rec.provisional)+row('scartate (copertura &lt;90% o volume non valido)',rec.rejected,rec.rejected?'w':'')+row('valide con copertura &lt;100% (tolleranza 90%)',rec.lowCov,rec.lowCov?'w':'')+row('buchi interni alla sessione (barre assenti)',rec.absentReg,rec.absentReg?'w':''); }
+if(wk&&dl&&dl.recC){ const r=dl.recC; t+=`<tr><th colspan="2">Storico orario 60m (warm-up)</th></tr>`+row('barre 60m ricevute',r.received)+row('duplicate / conflitti / non valide',r.dup+' / '+r.conflict+' / '+r.badTs,(r.dup+r.conflict+r.badTs)?'w':'')+row('non concluse o fuori sessione (escluse)',r.unfinished+' / '+r.outside)+row('barre 1H ricostruite · definitive valide',r.buckets+' · '+r.definitive)+row('usate nella serie fusa (dopo la precedenza alle barre fini)',dl.nCoarse); }
+t+=`<tr><th colspan="2">Motore (storico locale)</th></tr>`+row('barre 1H elaborate (definitive)',c.processed)+row('di cui valide',c.valid)+row('di cui mancanti/non valide',c.missing,c.missing?'w':'')+row('<b>valide usate per il warm-up (da reset)</b>',`<b>${c.used}</b>`)+row('necessarie',L)+(c.trunc?row('più vecchie scartate per il limite di '+GC.Store.MAXBARS,c.trunc,'w'):'');
+h+=`<details open><summary>Bilancio barre: ricevute → valide → usate dal motore</summary><div class="tw"><table class="bal">${t}</table></div></details>`;
+if(wk) h+=`<details><summary>Barre inferiori: ${esc($('ltf').value)} — differenze di granularità e limiti</summary><p class="m">${esc(LTF_INFO[$('ltf').value]||'')}</p><p class="m"><b>Natura del delta:</b> il segno del volume di ogni barra inferiore è dedotto da close−open (a parità, eredita il segno precedente) — <b>APPROSSIMAZIONE</b>, non il vero volume delta dell'indicatore (che usa i tick/1 minuto di TradingView). Non è mai sostituita in silenzio.</p></details>`;
+setHtml(el,h);
+}
+function galaxyFor(s){
+const e=s.eng, c=e.counts(), as=assessFor(s), lo=e.state.obs[e.state.obs.length-1], cn=ui.conn;
+return GC.Galaxy.state({L:ui.a.params.bbLength,used:c.used,hasData:!!ui.data['1H']||c.processed>0||e.state.q.nObs>0,connErr:cn.state==='error'?cn.msg:null,lastOk:!!lo&&lo.status==='ok',level:as.level,obs:s.o});
+}
+const GCLS={attesa:'i',warmup:'y',pronta:'o',attiva:'g',nessuna:'i',errore:'r'};
+const dur=ms=>{ const s=Math.max(0,Math.round(ms/1000)); return s<90?s+' s':s<5400?Math.round(s/60)+' min':(s/3600).toFixed(1)+' h'; };
+function autoPanel(){
+const el=$('autoDyn'), A=ui.a; if(!el) return; if(!A||!A.ok){ el.innerHTML='<div class="bad"><b>Indicatore non riconosciuto</b>: nessun calcolo (vedi impostazioni avanzate).</div>'; return; }
+const s=ui.snap['1H']; if(!s){ el.innerHTML='<span class="m">Avvio…</span>'; return; }
+const L=A.params.bbLength, e=s.eng, c=e.counts(), as=assessFor(s), gs=galaxyFor(s), cn=ui.conn, dl=ui.dl, wk=ui.mode==='worker', lv=LV[as.level], on=ui.auto.on&&wk;
+const usable=!!(dl&&!dl.imp&&dl.nDef>0);
+const wB=!wk?['i','Connessione: import manuale']:cn.state==='loading'?['y','⟳ Worker: collegamento…']:cn.state==='error'?['r','✘ Worker: NON CONNESSO']:cn.state==='ok'?(usable?['g','✔ Worker: connesso, dati utilizzabili']:['o','⚠ Worker: risponde, ma nessun dato utilizzabile']):['i','Worker: in attesa'];
+const bf=ui.bf, nxtBf=bf.at?Math.max(0,GC.Prefs.retryMs(bf.attempts||1)-(Date.now()-bf.at)):0;
+const bB=!wk?null:!ui.bfOn?['i','Backfill 60m: escluso dalle impostazioni']:bf.state==='running'?['y','⟳ Backfill 60m: IN CORSO']:bf.state==='done'?['g','✔ Backfill 60m: COMPLETATO ('+bf.valid+' barre valide, '+bf.used+' da 60m)']:bf.state==='insufficient'?['o','⚠ Backfill 60m: INSUFFICIENTE ('+bf.valid+'/'+bf.target+' barre) · tentativo '+bf.attempts+', prossimo tra '+dur(nxtBf)]:bf.state==='unavailable'?['o','⚠ Backfill 60m: NON RIUSCITO · tentativo '+bf.attempts+', prossimo tra '+dur(nxtBf)]:c.valid>=3*L?['g','✔ Storico locale già sufficiente (nessun backfill necessario)']:['i','Backfill 60m: in attesa'];
+const dB=!wk||!dl||dl.imp?null:['i','Dati ricevuti: '+dl.rec.received+' barre '+dl.iv+' → '+dl.nDef+' barre 1H definitive valide'], iB=['i','Storico integrato: '+c.processed+' barre 1H elaborate ('+c.valid+' valide)'];
+const eB=(cn.state==='error'&&c.used<=0)?['r','✘ ERROR']:lv;
+const pct=Math.min(100,Math.floor(c.used/L*100)), badge=b=>b?`<span class="chip ${b[0]}">${b[1]}</span>`:'';
+const nAct=gs.code==='attiva'?1:0, perDay=7+(extOpt().pre?6:0)+(extOpt().post?4:0), nxt=on&&ui.auto.nextAt?ui.auto.nextAt-Date.now():null;
+let sum;
+if(!wk) sum='Modalità import manuale: l\'avvio automatico non è in uso.';
+else if(!ui.auto.on) sum='AUTO START è disattivato: l\'app non aggiorna da sola. Riattivalo con la casella qui sopra.';
+else if(cn.state==='loading') sum='<b>Sta lavorando:</b> '+esc(ui.step||'aggiornamento in corso')+'…';
+else if(cn.state==='error') sum='<b>Worker NON CONNESSO</b> ('+esc(ERR_TXT[cn.kind]||cn.kind)+'): riprova da sola'+(nxt!=null?' tra <span id="autocount">'+dur(nxt)+'</span> ('+esc(ui.auto.why)+')':'')+'. Lo storico locale è intatto.';
+else sum='<b>Sta lavorando da sola.</b> Prossimo controllo '+(nxt!=null?'tra <span id="autocount">'+dur(nxt)+'</span>':'—')+(ui.auto.why?' ('+esc(ui.auto.why)+')':'')+'.';
+let h=`<div class="badges"><span class="chip big ${eB[0]}">${eB[1]}${as.level==='warmup'?' '+c.used+'/'+L:''}</span><span class="chip big ${GCLS[gs.code]}" title="${esc(gs.why)}">Galassia 1H: ${esc(gs.label)}</span>${badge(wB)}${badge(dB)}${badge(iB)}${badge(bB)}</div>`;
+h+=`<div class="pbar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${pct}"><i class="${lv[0]}" style="width:${pct}%"></i></div><p class="wu"><b>Warm-up ${pct}%</b> — ${c.used} / ${L} barre 1H valide e chiuse elaborate dal motore${as.missing>0?` · mancano ${as.missing} (≈ ${Math.ceil(as.missing/perDay)} sedute di borsa di nuovi dati, se lo storico scaricabile non basta)`:' · requisito matematico soddisfatto'}.</p><p class="sum">${sum}</p>`;
+const kv=[['Modalità di connessione',wk?'Worker (automatica)':'Import manuale'],['AUTO START',on?'ON':'OFF'],['Galassie attive',nAct+' / 1 (una sola coppia di galassie: 1H)'],['Barre 1H recuperate (ultimo download)',dl&&!dl.imp?dl.nBars+(dl.nCoarse?' ('+(dl.nBars-dl.nCoarse)+' da '+dl.iv+' + '+dl.nCoarse+' da 60m)':''):'—'],['Barre 1H valide (elaborate)',c.used],['Barre necessarie',L],['Stato indicatore',eB[1].replace(/^[^ ]+ /,'')+(eB[1].includes('ERROR')?' — '+(ERR_TXT[cn.kind]||cn.kind):'')],
+['Ultimo aggiornamento riuscito',cn.lastOk?hhmm(cn.lastOk)+' ('+ago(cn.lastOk)+')':'mai'],['Prossimo aggiornamento',on?(nxt!=null?'tra '+dur(nxt)+(ui.auto.why?' · '+ui.auto.why:''):(cn.state==='loading'?'in corso':'—')):'—'],
+['Errori',cn.state==='error'?(ERR_TXT[cn.kind]||cn.kind)+(cn.fails>1?' ×'+cn.fails:''):(bf.state==='unavailable'?'storico 60m non disponibile':'nessuno')],['Galassia: aperture / chiusure',s.eng.state.gal.n+' / '+s.eng.state.gal.closed+(s.eng.state.gal.act?' (aperta dal '+when(s.eng.state.gal.since)+')':'')]];
+h+=`<div class="kv wide">${kv.map(x=>`<div><span>${x[0]}</span><b>${esc(x[1])}</b></div>`).join('')}</div>`;
+if(cn.state==='error') h+=`<div class="bad"><b>${esc(ERR_TXT[cn.kind]||cn.kind)}:</b> ${esc(cn.msg)}.${cn.kind==='rate'?' Attesa lunga per rispettare il limite.':''}</div>`;
+if(bf.state==='insufficient') h+=`<div class="warn"><b>Backfill NON completato:</b> il Worker/Yahoo ha fornito barre orarie ma lo storico valido resta ${bf.valid} su ${bf.target} desiderate. Nessun dato è stato inventato e lo storico già presente non è stato toccato; il warm-up prosegue accumulando barre. Nuovo tentativo tra ${dur(nxtBf)}.</div>`;
+h+='<p class="m">⚠ Gli aggiornamenti avvengono <b>solo con la pagina aperta</b> (browser e computer attivi): a pagina chiusa non viene scaricato nulla. In una scheda in background non si fanno richieste; al ritorno riprende da sola e recupera le barre ancora disponibili su Yahoo.</p>';
+if(bf.state==='unavailable') h+=`<div class="warn"><b>Backfill 60m non riuscito</b> (${esc(bf.err||'')}): nessun dato inventato e lo storico già presente non è stato toccato; il warm-up prosegue accumulando le barre 1H. Nuovo tentativo tra ${dur(nxtBf)}.</div>`;
+setHtml(el,h);
+}
+function updAuto(){ const b=$('autost'); if(!b) return; b.textContent=ui.auto.on?'ON':'OFF'; b.className=ui.auto.on?'on':'off'; }
+function dash(){
+const A=ui.a; $('st').textContent=(ui.fetchNote||'')+(ui.a&&ui.a.ok&&ui.a.kind==='macd'?' ⚠ Barre delle galassie: '+(ui.bar5?(BAR()===60?'1 MINUTO':'5 MINUTI'):'1 ora')+(ui.snap&&ui.snap['1H']&&ui.snap['1H'].live?' · MOVIMENTO IN DIRETTO: le galassie mostrano lo stato PROVVISORIO con la barra in corso (non è nel modello salvato e può cambiare fino alla chiusura).':'')+'. Ingresso delle galassie: '+(ui.combo?'COMBINATO istogramma + DIF/DEA':'ISTOGRAMMA MACD')+' (non il delta di volume): le galassie descrivono il momento del prezzo.'+(ui.macdInfo?' Ultima barra chiusa '+when(ui.macdInfo.t)+': istogramma '+f(ui.macdInfo.hist,4)+', RSI '+f(ui.macdInfo.rsi,1)+', colore '+(GC.MacdRsiBb.LABEL[ui.macdInfo.color]||'—')+'. DIF (MACD) '+f(ui.macdInfo.macd,4)+', DEA (segnale) '+f(ui.macdInfo.signal,4)+(ui.macdInfo.macd>ui.macdInfo.signal?' (DIF sopra DEA)':' (DIF sotto DEA)')+'. RSI+Bollinger: '+(ui.macdInfo.confl==='ipercomprato'?'CONCORDI in IPERCOMPRATO (RSI sopra soglia e prezzo oltre la banda superiore)':ui.macdInfo.confl==='ipervenduto'?'CONCORDI in IPERVENDUTO (RSI sotto soglia e prezzo sotto la banda inferiore)':'non concordi')+'.':'')+(ui.macdN?' Barre con istogramma valido: '+ui.macdN.valid+' su '+ui.macdN.px+' con prezzo (le prime '+(GC.MacdRsiBb.DEF.W-1)+' di ogni serie sono di avvio).':''):'')+(GC.VixEtf.info($('sym').value)?' ⚠ ETF sui future del VIX ('+GC.VixEtf.info($('sym').value).txt+'): ha volume reale ma NON è il VIX (contango, rollover'+(GC.VixEtf.info($('sym').value).lev<0?'; INVERSO: le galassie risultano capovolte rispetto al VIX':GC.VixEtf.info($('sym').value).lev!==1?'; leva giornaliera':'')+').':'')+(GC.VixProxy.hybridSource($('sym').value)?(ui.hybNote?' ⚠ '+ui.hybNote:' ⚠ VIX IBRIDO: ^VIX reale fino alle '+(ui.hyb&&ui.hyb.lastRealT?new Date(ui.hyb.lastRealT*1000).toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit',timeZone:$('tz').value||'Europe/Rome'}):'—')+', poi ricostruito da '+GC.VixProxy.hybridSource($('sym').value)+' ('+(ui.hyb?ui.hyb.nTail:0)+' barre da 15 min, specchio del prezzo). Per quelle barre non è il VIX reale.'):'')+(GC.VixProxy.source($('sym').value)?' ⚠ VIX APPROSSIMATO: ricostruito dai prezzi di '+GC.VixProxy.source($('sym').value)+' (specchio del prezzo, nessuna informazione propria del VIX). Non è il VIX reale.':'')+(ui.volMode==='range'?' ⚠ Questo simbolo non ha volume (indice): il delta usa come pseudo-volume l\'ampiezza high−low di ogni barra, con il segno di close−open. Le galassie descrivono quindi il momento del prezzo, non flussi di volume.':''); if(A&&A.ok) $('ltfinfo').textContent=LTF_INFO[$('ltf').value]||''; autoPanel(); tfRender(); diag(); eqBadge(); updAuto();
+const nt=ui.notes.map(n=>({t:n.t,lv:n.lv||'w'}));
+if(!A||!A.ok){ $('syn').innerHTML='<b>Nessuna lettura:</b> indicatore non riconosciuto.'; $('notes').innerHTML=''; return; }
+for(const tf of TFS){
+const s=ui.snap[tf]; if(!s){ continue; } kv(tf,s);
+const q=s.q, chip=$('st'+tf), as=assessFor(s); const gs=galaxyFor(s); chip.textContent='Galassia: '+gs.label+(gs.code==='warmup'?` ${as.have}/${as.need}`:''); chip.className='chip '+GCLS[gs.code]; chip.title=gs.why;
+$('c'+tf).classList.toggle('dim',q.state!=='ok'||as.level==='warmup'||as.level==='insufficient');
+$('rd'+tf).textContent=readTf(tf,s);
+const pv=s.prov; $('pv'+tf).textContent=pv&&pv.status==='ok'?`Barra in formazione (provvisoria, NON nel modello${s.forming&&s.forming.cov!=null?', copertura delle barre inferiori '+Math.round(s.forming.cov*100)+'%':''}): stato ${pv.state.replace('_',' ')}, E=${f(pv.E,2)} G=${f(pv.G,2)}; se si chiudesse così D sarebbe ${f(pv.D)}.`:(s.forming?'Barra in formazione presente ma senza dati validi o senza bande ancora definite.':'');
+try{ drawZones(tf,s); drawGuide(tf,s); }catch(x){ const z=$('zn'+tf); if(z) z.textContent=''; }
+const rp=ui.dataRep[tf]; if(rp){ const bits=[]; if(rp.dup) bits.push(rp.dup+' duplicate'); if(rp.unsorted) bits.push('ordine corretto'); if(rp.missing) bits.push(rp.missing+' barre senza valori'); if(rp.incoherent) bits.push(rp.incoherent+' incoerenti'); if(rp.gaps.length) bits.push(rp.gaps.length+' buchi anomali'); if(rp.badTs) bits.push(rp.badTs+' timestamp non validi'); if(bits.length) nt.push({t:`${tf} dati: ${bits.join(', ')} (barre senza valori non diventano zero).`,lv:'w'}); }
+if(q.disc.length) nt.push({t:`${tf}: ${q.disc.length} discontinuità (buco > ${M.common.maxGapH} h): la dinamica è ripartita dopo il buco; il warm-up riparte da zero.`,lv:'e'});
+if(q.q.scaleNull) nt.push({t:`${tf}: ${q.q.scaleNull} barre con scala delle bande nulla: forze non definite, dinamica non aggiornata in quelle barre.`,lv:'w'});
+const rc=ui.dl&&ui.dl.rec; if(rc&&ui.mode==='worker'){ const w=(c,t)=>{ if(c) nt.push({t:`${tf} dati: ${t}`,lv:'w'}); };
+w(rc.dup,`${rc.dup} barre ${ui.dl.iv} duplicate (contate una sola volta)`); w(rc.conflict,`${rc.conflict} duplicati in conflitto (vale l'ultima occorrenza)`); w(rc.unsorted,`${rc.unsorted} barre fuori ordine (riordinate)`); w(rc.badTs,`${rc.badTs} timestamp non validi scartati`);
+w(rc.lowCov,`${rc.lowCov} barre 1H definitive con copertura <100% delle barre inferiori (tolleranza 90%): il valore usa solo le barre presenti; potrebbero essere corrette in un download successivo («Applica correzioni»)`); w(rc.rejected,`${rc.rejected} barre 1H scartate per copertura insufficiente o volumi non validi (mai sostituite con zero)`); w(rc.absentReg,`${rc.absentReg} barre 1H assenti dentro la sessione regolare (buchi)`);
+if(rc.stepMismatch) nt.push({t:`${tf} dati: ⚠ le barre ricevute hanno passo ${rc.modeStep} s, diverso dai ${LTFS[ui.dl.iv]} s della granularità scelta: le barre 1H ricostruite NON sono affidabili.`,lv:'e'});
+if((ui.dl.ext.pre||ui.dl.ext.post)&&!ui.dl.nExt) nt.push({t:`${tf} dati: nessuna barra pre/after-market ricevuta: il Worker potrebbe non inoltrare includePrePost (dati solo sessione regolare).`,lv:'w'});
+if(ui.dl.nExt) nt.push({t:`${tf} dati: ${ui.dl.nExt} barre di sessione estesa; barre inferiori assenti = nessuno scambio (ASSUNZIONE dichiarata); l'allineamento con TradingView non è verificato.`,lv:'i'}); }
+drawHist(tf,s);
+}
+const s=synth();
+if(s){ const o=s.o, e=s.eng, lab=o.lim?(o.lim>0?'Ferma sul limite massimo (pressione rialzista)':'Ferma sul limite minimo (pressione ribassista)'):o.movDir>0?'Le galassie si allontanano':o.movDir<0?'Le galassie si avvicinano':'Movimento neutrale', pr=o.pressDir>0?'rialzista':o.pressDir<0?'ribassista':'equilibrata';
+const tx=o.lim?'Il movimento effettivo è vincolato dal limite fisico: la pressione delle forze resta '+(o.lim>0?'rialzista':'ribassista')+', ma la distanza non può cambiare.':o.movDir===0?'La velocità è sotto la soglia di neutralità: nessun movimento rilevante.':(o.movDir>0?'Allontanamento':'Avvicinamento')+(o.faster&&o.movDir>0?', più rapido':' ')+(o.movDir>0&&o.faster?' dell\'espansione strutturale.':o.movDir<0?', mentre la traiettoria strutturale continua ad espandersi (movimento relativo, non contrazione della struttura).':', più lento dell\'espansione strutturale.');
+$('syn').innerHTML=`<div class="big">${esc(lab)}</div><p>${esc(tx)}${o.decel&&!o.lim?' <i>(il moto sta rallentando)</i>':''}${(!o.lim&&o.movDir!==0&&o.pressDir!==0&&o.movDir!==o.pressDir)?' <i>(pressione opposta al movimento: prosegue per inerzia)</i>':''}</p><table><tr><th>v (/h)</th><th>espansione strutt. (/h)</th><th>D−Ds</th><th>pressione</th></tr><tr><td>${fe(o.v)}</td><td>${fe(o.dsdt)}</td><td>${(o.dev>=0?'+':'')+f(o.dev)}</td><td>${pr}</td></tr></table><p class="m">Lettura descrittiva della sola timeframe 1H: non è un segnale operativo.</p>`; const as=assessFor(ui.snap['1H']); if(as.level==='incomplete') $('syn').insertAdjacentHTML('afterbegin','<div class="warn">⚠ Dati potenzialmente incompleti: '+as.reasons.map(esc).join('; ')+'</div>'); }
+else $('syn').innerHTML='<b>Nessuna lettura:</b> dinamica 1H non disponibile o non aggiornata (vedi sotto).';
+$('notes').innerHTML=nt.length?'<ul class="nl">'+nt.map(n=>'<li class="'+n.lv+'">'+esc(n.t)+'</li>').join('')+'</ul>':'<span class="m">Nessuna anomalia segnalata.</span>';
+const cm=ui.cmp['1H']; $('rbcorr').hidden=!(cm&&cm.kind==='correzione');
+}
+const GAL=(()=>{ let s=7; const r=()=>(s=(s*16807)%2147483647)/2147483647, pts=[]; for(let i=0;i<260;i++){ const arm=i%2, u=Math.pow(r(),.7), th=u*5.2+arm*Math.PI+(r()-.5)*.35, rad=u*(1+.08*(r()-.5)); pts.push([th,rad,.6+r()*1.6,.35+r()*.65]); } return pts; })();
+const css=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim(), SK={'--tx':'#dfe6ff','--a':'#5cc8ff','--g':'#35d29a','--r':'#ff6b6b','--y':'#f2c14e','--sky':'#070a18'}, sk=n=>SK[n];
+function drawAdvice(ctx,W){
+const a=ui.advice; if(!a) return; const col={g:'#35d29a',r:'#ff6b6b',y:'#f2c14e',i:'#9aa3c0'}[a.color]||'#9aa3c0', fit=(t,mw,px,b)=>{ let z=px; for(;z>8;z--){ ctx.font=(b?'bold ':'')+z+'px system-ui'; if(ctx.measureText(t).width<=mw) break; } return z; };
+const BH=84+16*Math.max(0,Math.min(4,a.lines.length)-2); ctx.save(); ctx.fillStyle='rgba(7,10,24,.92)'; ctx.fillRect(0,0,W,BH); ctx.fillStyle=col; ctx.globalAlpha=.16; ctx.fillRect(0,0,W,BH); ctx.globalAlpha=1; ctx.fillStyle=col; ctx.fillRect(0,0,5,BH);
+ctx.textAlign='left'; const mw=W-28; let y=26; fit(a.title,mw,24,true); ctx.fillText(a.title,14,y);
+y=45; for(const l of a.lines.slice(0,4)){ fit(l,mw,13); ctx.fillStyle=sk('--tx'); ctx.fillText(l,14,y); y+=15; }
+const w=a.warn.length?'⚠ '+a.warn.join(' · '):''; if(w){ fit(w,mw,11); ctx.fillStyle=sk('--y'); ctx.fillText(w,14,BH-4); } else { fit(a.note,mw,9); ctx.fillStyle='#8a93b4'; ctx.fillText(a.note,14,BH-4); }
+ctx.restore(); }
+function drawZoneStrip(ctx,W,tf,s,curD){
+const r=ui.zr&&ui.zr[tf]; if(!r) return; const cfg={Dmin:r.rg.lo,Dmax:r.rg.hi}, x0=34, x1=W-34, y0=34, h=22, X=d=>x0+(Math.max(cfg.Dmin,Math.min(cfg.Dmax,d))-cfg.Dmin)/(cfg.Dmax-cfg.Dmin)*(x1-x0);
+ctx.save(); ctx.textAlign='left'; ctx.font='10px system-ui'; ctx.fillStyle=sk('--tx'); ctx.globalAlpha=.8; ctx.fillText('zone · ultimi 15 min prima della candela in formazione ('+r.n+' barre'+(r.ext?', finestra estesa':'')+')'+(ui.free?' · scala di D adattiva '+r.rg.lo.toFixed(2)+'…'+r.rg.hi.toFixed(2):''),x0,y0-5); ctx.globalAlpha=1;
+const top=r.zs.indexOf(Math.max(...r.zs));
+for(let i=0;i<r.bins.length;i++){ const a=X(r.bins[i][0]), b=X(Math.min(r.bins[i][1],cfg.Dmax)); ctx.fillStyle='rgba(255,196,60,'+(.07+.85*r.zs[i]).toFixed(2)+')'; ctx.fillRect(a+1,y0,b-a-2,h);
+if(i===top){ ctx.strokeStyle='#ffc43c'; ctx.lineWidth=1.5; ctx.strokeRect(a+1.5,y0+.5,b-a-3,h-1); }
+ctx.fillStyle=r.zs[i]>.5?'#111':sk('--tx'); ctx.textAlign='center'; ctx.font='bold 11px system-ui'; ctx.fillText(Math.round(r.zs[i]*100)+'%',(a+b)/2,y0+15); }
+ctx.strokeStyle='rgba(255,255,255,.35)'; ctx.lineWidth=1; ctx.beginPath(); r.w.forEach((o,i)=>{ const x=X(o.D), y=y0+h/2; if(i) ctx.lineTo(x,y); else ctx.moveTo(x,y); }); ctx.stroke();
+r.w.forEach((o,i)=>{ ctx.globalAlpha=.35+.65*(i+1)/r.n; ctx.fillStyle='#fff'; ctx.beginPath(); ctx.arc(X(o.D),y0+h/2,2.6,0,6.2832); ctx.fill(); }); ctx.globalAlpha=1;
+if(fin(curD)){ const x=X(curD); ctx.fillStyle=r.live?'#ff5d8f':'#ffc43c'; ctx.beginPath(); ctx.moveTo(x,y0+h+2); ctx.lineTo(x-6,y0+h+11); ctx.lineTo(x+6,y0+h+11); ctx.closePath(); ctx.fill(); ctx.strokeStyle=ctx.fillStyle; ctx.lineWidth=1.5; ctx.beginPath(); ctx.moveTo(x,y0-1); ctx.lineTo(x,y0+h+2); ctx.stroke();
+ctx.textAlign='center'; ctx.font='10px system-ui'; ctx.fillText((r.live?'in diretto ':'ora ')+curD.toFixed(3),Math.max(x0+34,Math.min(x1-34,x)),y0+h+22); }
+ctx.restore(); }
+function drawCar(ctx,W,sh,o,time,dt,y0,h,ref){
+if(!o||!ref) return; const st=GC.RenderMath.carState(o,ref); if(!st) return; const cfg=GC.defaultModel.common, x0=34, x1=W-34, gy=y0+h-16, sm=GC.RenderMath.smooth;
+const c=sh.car||(sh.car={dv:0,acc:0,road:0,wh:0,pf:[],spd:0}); c.dv=sm(c.dv,st.dir*st.spd,dt,450); c.acc=sm(c.acc,st.acc,dt,450); c.spd=sm(c.spd,st.spd,dt,450); c.road+=c.dv*dt*.22; c.wh+=c.dv*dt*.03;
+const Dd=fin(sh.D)?sh.D:o.D, X=d=>x0+34+(Math.max(cfg.Dmin,Math.min(cfg.Dmax,d))-cfg.Dmin)/(cfg.Dmax-cfg.Dmin)*(x1-x0-68), px=(x0+x1)/2;
+ctx.save(); ctx.font='10px system-ui'; ctx.textAlign='left'; ctx.fillStyle=sk('--tx'); ctx.globalAlpha=.8; ctx.fillText('motore · auto: strada = velocità · inclinazione e fari = accelerazione · ferma e arancione = contro il limite fisico',x0,y0-4); ctx.globalAlpha=1;
+ctx.fillStyle='rgba(255,255,255,.04)'; ctx.fillRect(x0,y0,x1-x0,h); const at=ui.atr&&ui.atr['1H'], cala=!!(at&&at.state==='cala'); c.curve=sm(c.curve||0,cala?1:0,dt,700);
+const cxm=(x0+x1)/2, lift=x=>c.curve*34*(t=>t*t*(3-2*t))(Math.max(0,Math.min(1,(x-(cxm-150))/300))), road=()=>{ ctx.beginPath(); for(let i=0;i<=48;i++){ const x=x0+(x1-x0)*i/48, y=gy+7-lift(x); i?ctx.lineTo(x,y):ctx.moveTo(x,y); } };
+ctx.lineCap='butt'; ctx.strokeStyle='#2a2f45'; ctx.lineWidth=14; road(); ctx.stroke();
+ctx.strokeStyle='rgba(255,255,255,.55)'; ctx.lineWidth=2; ctx.setLineDash([16,16]); ctx.lineDashOffset=c.road; road(); ctx.stroke(); ctx.setLineDash([]);
+const slope=(lift(cxm+6)-lift(cxm-6))/12, tilt=Math.atan(slope), liftC=lift(cxm);
+for(const p of c.pf){ p.age+=dt; p.x-=c.dv*dt*.22; } c.pf=c.pf.filter(p=>p.age<700); if(st.accel&&c.spd>.05&&Math.random()<.5) c.pf.push({x:px-(st.dir>0?26:-26),y:gy-7,age:0});
+for(const p of c.pf){ ctx.globalAlpha=.5*(1-p.age/700); ctx.fillStyle='#cfd6ee'; ctx.beginPath(); ctx.arc(p.x,p.y-p.age/90,2+p.age/180,0,6.2832); ctx.fill(); } ctx.globalAlpha=1;
+const jit=st.lim?Math.sin(time/22)*1.3:0; ctx.translate(px+jit,gy-liftC); ctx.rotate(-c.acc*.09-tilt);
+ctx.fillStyle=st.lim?'#ff8a5d':'#5db7ff'; ctx.beginPath(); ctx.roundRect?ctx.roundRect(-24,-19,48,12,4):ctx.rect(-24,-19,48,12); ctx.fill();
+ctx.fillStyle='#8fd0ff'; ctx.beginPath(); ctx.moveTo(-12,-19); ctx.lineTo(-7,-28); ctx.lineTo(9,-28); ctx.lineTo(15,-19); ctx.closePath(); ctx.fill(); ctx.fillStyle='#0d1020'; ctx.fillRect(-8,-26,7,6); ctx.fillRect(1,-26,7,6);
+const rear=st.brake?'#ff2d2d':st.reverse?'#ffffff':'#7a2230'; ctx.fillStyle=rear; ctx.fillRect(-26,-17,3,6); if(st.brake||st.reverse){ ctx.globalAlpha=.35; ctx.beginPath(); ctx.arc(-25,-14,8,0,6.2832); ctx.fill(); ctx.globalAlpha=1; }
+ctx.fillStyle='#ffe58a'; ctx.fillRect(23,-17,3,5); if(st.accel||st.dir>0){ ctx.globalAlpha=.18; ctx.beginPath(); ctx.moveTo(26,-16); ctx.lineTo(48,-22); ctx.lineTo(48,-8); ctx.closePath(); ctx.fill(); ctx.globalAlpha=1; }
+for(const wx of [-14,14]){ ctx.save(); ctx.translate(wx,-6); ctx.fillStyle='#10131f'; ctx.beginPath(); ctx.arc(0,0,6.5,0,6.2832); ctx.fill(); ctx.rotate(c.wh); ctx.strokeStyle='#cfd6ee'; ctx.lineWidth=1.5; ctx.beginPath(); ctx.moveTo(-5,0); ctx.lineTo(5,0); ctx.moveTo(0,-5); ctx.lineTo(0,5); ctx.stroke(); ctx.restore(); }
+if(c.curve>.3&&Math.floor(time/280)%2===0){ ctx.fillStyle='#ffb020'; ctx.fillRect(-27,-13,3,3); ctx.fillRect(24,-13,3,3); ctx.globalAlpha=.35; ctx.beginPath(); ctx.arc(-26,-12,6,0,6.2832); ctx.arc(26,-12,6,0,6.2832); ctx.fill(); ctx.globalAlpha=1; }
+ctx.restore();
+if(c.curve>.3){ ctx.save(); ctx.font='bold 11px system-ui'; ctx.textAlign='center'; ctx.fillStyle='#ffb020'; ctx.fillText('curva · la spinta sta calando',cxm,y0+14); ctx.restore(); } }
+function dial(ctx,cx,cy,r,val,title,txt,sub,colNeg,colPos){
+const A=v=>(270+v*120)*Math.PI/180, v=Math.max(-1,Math.min(1,val));
+ctx.save(); ctx.lineCap='round'; ctx.fillStyle='rgba(255,255,255,.05)'; ctx.beginPath(); ctx.arc(cx,cy,r+10,0,6.2832); ctx.fill();
+ctx.lineWidth=10; ctx.strokeStyle='rgba(255,255,255,.12)'; ctx.beginPath(); ctx.arc(cx,cy,r,A(-1),A(1)); ctx.stroke();
+ctx.strokeStyle=v<0?colNeg:colPos; ctx.beginPath(); ctx.arc(cx,cy,r,v<0?A(v):A(0),v<0?A(0):A(v)); ctx.stroke();
+ctx.lineWidth=2; ctx.strokeStyle='rgba(255,255,255,.55)'; ctx.font='9px system-ui'; ctx.fillStyle=sk('--tx'); ctx.textAlign='center';
+for(let i=-4;i<=4;i++){ const a=A(i/4), r1=r-9, r2=r+(i%2?-3:-1); ctx.beginPath(); ctx.moveTo(cx+Math.cos(a)*r1,cy+Math.sin(a)*r1); ctx.lineTo(cx+Math.cos(a)*(r1-(i%2?5:9)),cy+Math.sin(a)*(r1-(i%2?5:9))); ctx.stroke(); }
+ctx.fillText('0',cx,cy-r+30); ctx.fillText('−',cx+Math.cos(A(-1))*(r-24),cy+Math.sin(A(-1))*(r-24)+3); ctx.fillText('+',cx+Math.cos(A(1))*(r-24),cy+Math.sin(A(1))*(r-24)+3);
+const a=A(v); ctx.strokeStyle='#fff'; ctx.lineWidth=3; ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(cx+Math.cos(a)*(r-14),cy+Math.sin(a)*(r-14)); ctx.stroke(); ctx.fillStyle='#fff'; ctx.beginPath(); ctx.arc(cx,cy,6,0,6.2832); ctx.fill();
+ctx.fillStyle=sk('--tx'); ctx.font='bold 12px system-ui'; ctx.fillText(title,cx,cy+r*.55); ctx.font='bold 15px system-ui'; ctx.fillStyle='#fff'; ctx.fillText(txt,cx,cy+r*.55+19); ctx.font='10px system-ui'; ctx.fillStyle=sk('--tx'); ctx.globalAlpha=.85; ctx.fillText(sub,cx,cy+r*.55+33); ctx.restore(); }
+function lamp(ctx,x,y,on,col,txt){ ctx.save(); ctx.fillStyle=on?col:'rgba(255,255,255,.1)'; ctx.beginPath(); ctx.arc(x,y,5,0,6.2832); ctx.fill(); if(on){ ctx.globalAlpha=.3; ctx.beginPath(); ctx.arc(x,y,9,0,6.2832); ctx.fill(); ctx.globalAlpha=1; } ctx.font='10px system-ui'; ctx.textAlign='left'; ctx.fillStyle=on?'#fff':sk('--tx'); ctx.globalAlpha=on?1:.6; ctx.fillText(txt,x+12,y+3.5); ctx.restore(); }
+function drawDash(ctx,W,s,o,sh,y0){
+const c=sh.car; if(!c) return; const st=GC.RenderMath.carState(o,ui.cref&&ui.cref[s.tf||'1H']); if(!st) return; const cy=y0+112, r=82, cx=W/2, P=W/2;
+dial(ctx,150,cy,r,c.dv,'VELOCITÀ','v '+(+o.v).toFixed(3)+' /h',st.dir>0?'avanti · allontanamento':st.dir<0?'retromarcia · avvicinamento':st.lim?'ferma · al limite':'ferma','#ff5d8f','#4be39a');
+dial(ctx,W-150,cy,r,c.acc,'ACCELERAZIONE','a '+(fin(o.a)?(+o.a).toFixed(3):'—')+' /h²',(st.brake?'frena':st.accel?'accelera':'costante')+((ui.atr&&ui.atr['1H']&&ui.atr['1H'].state==='cala')?' · in calo':(ui.atr&&ui.atr['1H']&&ui.atr['1H'].state==='sale')?' · in aumento':''),'#ff5d8f','#4be39a');
+ctx.save(); ctx.textAlign='center'; ctx.fillStyle='rgba(255,255,255,.05)'; ctx.fillRect(cx-100,y0+8,200,2*r+24); ctx.fillStyle='#fff'; ctx.font='bold 40px system-ui'; ctx.fillText(st.lim?'P':st.dir>0?'D':st.dir<0?'R':'N',cx,y0+52); ctx.font='10px system-ui'; ctx.fillStyle=sk('--tx'); ctx.fillText(st.lim?'limite fisico':st.dir>0?'marcia avanti':st.dir<0?'retromarcia':'folle',cx,y0+66);
+ctx.font='bold 13px system-ui'; ctx.fillStyle='#fff'; ctx.fillText('distanza D '+f(o.D),cx,y0+88); ctx.restore();
+lamp(ctx,cx-82,y0+104,st.brake,'#ff2d2d','FRENA'); lamp(ctx,cx+4,y0+104,st.accel,'#4be39a','ACCELERA'); lamp(ctx,cx-82,y0+122,ui.free?(ui.atr&&ui.atr['1H']&&ui.atr['1H'].state==='cala'):st.lim,'#ff8a5d',ui.free?'A IN CALO':'LIMITE'); lamp(ctx,cx+4,y0+122,o.pressDir<0,'#ff5d8f','PRESS. ↓');
+const bw=70, by=y0+148; ctx.save(); ctx.font='11px system-ui'; ctx.textAlign='left'; ctx.fillStyle=sk('--g'); ctx.fillRect(cx-90,by-9,Math.min(o.E,2)/2*bw,7); ctx.fillText('E '+f(o.E,2),cx-90+bw+6,by-2); ctx.fillStyle=sk('--r'); ctx.fillRect(cx-90,by+4,Math.min(o.G,2)/2*bw,7); ctx.fillText('G '+f(o.G,2),cx-90+bw+6,by+11);
+const sT=String(o.state||''), tx=sT==='bull_strong'?['delta OLTRE la banda superiore',sk('--g')]:sT==='bear_strong'?['delta OLTRE la banda inferiore',sk('--r')]:['indicatore dentro le bande',sk('--tx')]; ctx.fillStyle=tx[1]; ctx.textAlign='center'; ctx.font='10px system-ui'; ctx.fillText(tx[0],cx,by+30); ctx.restore(); }
+function drawAvg(ctx,W,sh,dt,y0,h,ref,o){
+const x0=34, x1=W-34, av=ui.avg&&ui.avg['1H'], sm=GC.RenderMath.smooth; ctx.save(); ctx.fillStyle='rgba(255,255,255,.04)'; ctx.fillRect(x0,y0,x1-x0,h); ctx.font='10px system-ui'; ctx.textAlign='left'; ctx.fillStyle=sk('--tx'); ctx.globalAlpha=.8; ctx.fillText('medie degli ultimi 5 minuti · osservazioni chiuse · con segno (deriva netta) e assolute (ritmo)',x0,y0-4); ctx.globalAlpha=1;
+if(!av||!ref){ ctx.fillStyle=sk('--y'); ctx.font='12px system-ui'; ctx.fillText('dati insufficienti per gli ultimi 5 minuti',x0+10,y0+h/2+4); ctx.restore(); return; }
+sh.avV=sm(sh.avV==null?av.v:sh.avV,av.v,dt,500); sh.avA=sm(fin(sh.avA)?sh.avA:(fin(av.a)?av.a:0),fin(av.a)?av.a:0,dt,500);
+const half=(x1-x0)/2, panel=(px,title,val,vAbs,refv,nowv,unit,txt)=>{ const cx=px+half/2, col=val>0?'#4be39a':val<0?'#ff5d8f':'#cfd6ee', f3=n=>(fin(n)?(+n).toFixed(3):'—');
+ctx.textAlign='center'; ctx.fillStyle=sk('--tx'); ctx.font='bold 11px system-ui'; ctx.fillText(title,cx,y0+16); ctx.fillStyle=col; ctx.font='bold 26px system-ui'; ctx.fillText((val>0?'+':val<0?'−':'')+f3(Math.abs(val)),cx,y0+46); ctx.font='10px system-ui'; ctx.fillStyle=sk('--tx'); ctx.fillText(unit,cx+70,y0+46);
+const bw=half-60, bx=px+30, by=y0+56; ctx.fillStyle='rgba(255,255,255,.12)'; ctx.fillRect(bx,by,bw,6); const r=Math.max(-1,Math.min(1,val/refv)); ctx.fillStyle=col; if(r>=0) ctx.fillRect(bx+bw/2,by,bw/2*r,6); else ctx.fillRect(bx+bw/2+bw/2*r,by,-bw/2*r,6); ctx.fillStyle='#fff'; ctx.fillRect(bx+bw/2-1,by-2,2,10);
+ctx.fillStyle='#fff'; ctx.font='11px system-ui'; ctx.fillText(txt,cx,y0+80); ctx.fillStyle=sk('--tx'); ctx.fillText('ritmo (media assoluta) '+f3(vAbs)+' · ora '+f3(nowv)+(Math.abs(nowv)>vAbs*1.2?' · sopra la media':Math.abs(nowv)<vAbs*.8?' · sotto la media':' · in linea'),cx,y0+96); };
+panel(x0,'VELOCITÀ MEDIA · 5 min',sh.avV,av.vAbs,ref.v,o.v,'/h',(sh.avV>0.005*ref.v?'in media allontanamento':sh.avV<-0.005*ref.v?'in media avvicinamento':'in media ferme')+' · '+av.n+' osservazioni'+(av.ext?' · nei 5 minuti ce n\'erano meno di 3: uso le ultime '+av.n:av.partial?' · finestra non completa':''));
+panel(x0+half,'ACCELERAZIONE MEDIA · 5 min',sh.avA,av.aAbs,ref.a,fin(o.a)?o.a:0,'/h²',(sh.avA>0.005*ref.a?'in media la velocità sale':sh.avA<-0.005*ref.a?'in media la velocità scende':'in media costante'));
+ctx.restore(); }
+function scene(tf,dt,time){
+const cv=$('cv'+tf), ctx=cv.getContext('2d'), W=cv.width, H=cv.height, s=ui.snap[tf], o=s&&s.o, cfg=GC.defaultModel.common;
+ctx.clearRect(0,0,W,H); ctx.fillStyle=sk('--sky'); ctx.fillRect(0,0,W,H);
+const sh=ui.shown[tf]||(ui.shown[tf]={D:null,Ds:null}), dim=!o||s.q.state!=='ok';
+{ const zr=ui.zr&&ui.zr[tf], tgt=o&&!dim?GC.RenderMath.tint(o.pressDir,zr?zr.path:NaN):0; sh.bg=GC.RenderMath.smooth(sh.bg==null?0:sh.bg,tgt,dt,2500); const k=Math.abs(sh.bg);
+if(k>.005){ const red=sh.bg<0, rgb=red?'255,80,90':'40,200,120', g=red?ctx.createLinearGradient(0,0,0,H*.85):ctx.createLinearGradient(0,H,0,H*.15); g.addColorStop(0,'rgba('+rgb+','+(k*.5).toFixed(3)+')'); g.addColorStop(1,'rgba('+rgb+',0)'); ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
+ctx.save(); ctx.font='10px system-ui'; ctx.textAlign='right'; ctx.fillStyle='rgba('+rgb+',.9)'; ctx.fillText('sfondo: pressione '+(red?'ribassista':'rialzista/neutra')+' · intensità '+Math.round(k*100)+'% (percorso 15 min)',W-10,18); ctx.restore(); } }
+const tD=o?o.D:cfg.D0; sh.D=GC.RenderMath.smooth(sh.D==null?tD:sh.D,tD,dt,350);
+if(o&&!dim){ drawZoneStrip(ctx,W,tf,s,sh.D); drawCar(ctx,W,sh,o,time,dt,332,80,ui.cref&&ui.cref[tf]); drawDash(ctx,W,Object.assign({tf},s),o,sh,92); drawAvg(ctx,W,sh,dt,424,106,ui.cref&&ui.cref[tf],o);
+ctx.fillStyle=sk('--tx'); ctx.textAlign='center'; ctx.font='12px system-ui'; ctx.fillText('D '+f(o.D)+'  ·  v '+fe(o.v)+'/h'+(o.lim?'  ·  al limite fisico':''),W/2,H-10); }
+if(dim){ ctx.fillStyle=sk('--y'); ctx.font='bold 14px system-ui'; ctx.textAlign='center'; ctx.fillText(!s?'in attesa di dati':s.q.state==='warmup'?'RISCALDAMENTO — dinamica non disponibile':'DINAMICA NON AGGIORNATA',W/2,H/2); }
+if(tf==='1H') drawAdvice(ctx,W);
+}
+function drawHist(tf,s){
+const cv=$('hc'+tf), ctx=cv.getContext('2d'), W=cv.width, H=cv.height; ctx.clearRect(0,0,W,H); ctx.fillStyle=css('--card2'); ctx.fillRect(0,0,W,H);
+const ob=s.eng.state.obs.filter(o=>o.status==='ok').slice(-160); if(ob.length<2){ ctx.fillStyle=css('--mu'); ctx.font='12px system-ui'; ctx.fillText('storico non ancora disponibile',12,24); return; }
+const rg=DR(ob), c={Dmin:rg.lo,Dmax:rg.hi}, y=v=>H-8-(v-c.Dmin)/(c.Dmax-c.Dmin)*(H-16), x=i=>8+i*(W-16)/(ob.length-1);
+const line=(k,col,w)=>{ ctx.strokeStyle=col; ctx.lineWidth=w; ctx.beginPath(); ob.forEach((o,i)=>{ i?ctx.lineTo(x(i),y(o[k])):ctx.moveTo(x(i),y(o[k])); }); ctx.stroke(); };
+line('Ds',css('--a'),1.5); line('D',css('--tx'),2); ctx.fillStyle=css('--mu'); ctx.font='11px system-ui'; ctx.fillText('D (pieno) · Ds (azzurro) — ultime '+ob.length+' osservazioni',10,14);
+}
+let last=performance.now();
+function loop(now){ const dt=Math.min(250,now-last); last=now; for(const tf of TFS) scene(tf,dt,now); requestAnimationFrame(loop); }
+ui.px=new Map(); ui.tf=null;
+function runTF(){} function tfRender(){}
+function init(){
+mkCards(); const first=(()=>{ try{ return !LS.getItem('gc2|ui5')&&!LS.getItem('gc2|ui'); }catch(e){ return true; } })(), mg=loadUI(), sv=mg.prefs;
+try{ ui.combo=LS.getItem('gc2|combo')==='1'; ui.barSec=+LS.getItem('gc2|barsec')||(LS.getItem('gc2|bar5')==='1'?300:0); ui.bar5=ui.barSec>0; ui.live=LS.getItem('gc2|live')==='1'; ui.free=LS.getItem('gc2|free')!=='0'; }catch(e){ ui.combo=false; ui.bar5=false; ui.barSec=0; ui.live=false; ui.free=true; }
+try{ if(first||(LS.getItem('gc2|max1')!=='1'&&ui.bar5&&ui.combo)){ ui.combo=true; ui.bar5=true; ui.barSec=60; ui.live=true; LS.setItem('gc2|combo','1'); LS.setItem('gc2|barsec','60'); LS.setItem('gc2|live','1'); } LS.setItem('gc2|max1','1'); }catch(e){}
+if($('symLive')) $('symLive').checked=!!ui.live; if($('symWall')) $('symWall').checked=!ui.free;
+if($('symBar')) $('symBar').value=ui.bar5?(BAR()===60?'1m':'5m'):'1H';
+$('wk').value=DEFAULT_WORKER; $('code').value=(sv&&sv.code)||(first?MACD_CODE:DEFAULT_CODE); if(sv){ $('sym').value=sv.symV>=3?(sv.sym||''):'VIX+SPY';    $('t1H').value=sv.t1||'';  $('wk').value=sv.wk||DEFAULT_WORKER; $('seed').value=sv.seed||'sma'; $('extPre').checked=sv.extPre!==false; $('extPost').checked=sv.extV>=2?!!sv.extPost:true;    $('ltf').value=(sv.ltf==='5m'||sv.ltf==='15m')?sv.ltf:'15m'; $('tz').value=sv.tz||'Europe/Rome'; ui.mode=sv.mode||'worker'; $('bf').checked=sv.bf!==false; }
+else { ui.mode='worker'; }
+if(first) $('sym').value='VIX~SPY';
+ui.bfOn=$('bf').checked; ui.auto.on=sv?sv.auto!==false:true; $('auto').checked=ui.auto.on;
+if(mg.migrated){ saveUI(); try{ LS.setItem(GC.Prefs.KEY,'done'); }catch(e){} if(mg.changes.length) ui.notes.push({tf:'mig',t:'Impostazioni di una versione precedente migrate una sola volta per garantire l\'avvio automatico: '+mg.changes.join('; ')+'. Da ora le tue scelte vengono rispettate.',lv:'i'}); }
+const setMode=m=>{ ui.mode=m; $('mImp').hidden=m!=='import'; $('mWk').hidden=m!=='worker'; $('modeI').checked=m==='import'; $('modeW').checked=m==='worker'; };
+setMode(ui.mode);
+$('modeI').onchange=()=>{ setMode('import'); saveUI(); schedule(); analyzeCode(); loadImport(); }; $('modeW').onchange=()=>{ setMode('worker'); saveUI(); analyzeCode(); ui.data={'1H':null}; ui.dl=null; feed(); if(ui.auto.on) loadWorker({auto:true}); else schedule(); };
+$('code').oninput=()=>{ clearTimeout(ui.ct); ui.ct=setTimeout(()=>{ const prev=ui.a&&ui.a.ok?(ui.a.kind||'delta')+(ui.a.codeHash||''):null; analyzeCode(); saveUI(); if(ui.mode==='import') loadImport(); else if(ui.a&&ui.a.ok&&((ui.a.kind||'delta')+(ui.a.codeHash||'')!==prev||ui.a.kind==='macd')){ ui.data['1H']=null; feed(); loadWorker({}); } else feed(); },350); };
+$('symBar').onchange=()=>{ const bv=$('symBar').value; ui.bar5=bv!=='1H'; ui.barSec=bv==='1m'?60:bv==='5m'?300:0; try{ LS.setItem('gc2|barsec',String(ui.barSec)); LS.setItem('gc2|bar5',ui.bar5?'1':'0'); }catch(e){} ui.key={}; ui.data={'1H':null}; ui.dl=null; ui.cmp={}; ui.notes=[]; analyzeCode(); feed(); loadWorker({}); };
+$('symWall').onchange=()=>{ ui.free=!$('symWall').checked; try{ LS.setItem('gc2|free',ui.free?'1':'0'); }catch(e){} ui.key={}; ui.data={'1H':null}; ui.dl=null; ui.cmp={}; ui.notes=[]; feed(); loadWorker({}); };
+$('symLive').onchange=()=>{ ui.live=$('symLive').checked; try{ LS.setItem('gc2|live',ui.live?'1':'0'); }catch(e){} ui.data={'1H':null}; feed(); loadWorker({}); };
+$('symInd').onchange=()=>{ const v=$('symInd').value; ui.combo=v==='combo'; try{ LS.setItem('gc2|combo',ui.combo?'1':'0'); }catch(e){} $('code').value=v==='delta'?DEFAULT_CODE:MACD_CODE; $('code').dispatchEvent(new Event('input')); };
+$('symEtf').onchange=()=>{ const v=$('symEtf').value; if(!v) return; $('sym').value=v; $('sym').dispatchEvent(new Event('change')); $('symEtf').value=''; };
+for(const [id,v] of [['symHyb','VIX+SPY'],['symVixA','VIX~SPY'],['symVix','^VIX'],['symQqq','QQQ']]) $(id).onclick=()=>{ $('sym').value=v; $('sym').dispatchEvent(new Event('change')); };
+$('sym').onchange=()=>{ ui.key={}; ui.notes=[]; ui.dl=null; ui.cmp={}; if(ui.mode==='import'){ $('t1H').value=''; ui.data={'1H':null}; ui.dataRep={}; ui.fetchNote='Simbolo cambiato: i dati importati non portano il simbolo, quindi sono stati svuotati. Incolla la serie del nuovo simbolo.'; saveUI(); feed(); } else { saveUI(); loadWorker(); } };
+$('ltf').onchange=$('extPre').onchange=$('extPost').onchange=()=>{ saveUI(); ui.key={}; ui.data={'1H':null}; ui.dl=null; ui.cmp={}; feed(); if(ui.mode==='worker'&&ui.auto.on) loadWorker({auto:true}); };
+$('bf').onchange=()=>{ ui.bfOn=$('bf').checked; saveUI(); dash(); };
+$('tz').onchange=()=>{ saveUI(); dash(); };
+$('apply').onclick=loadImport; $('seed').onchange=()=>{ saveUI(); ui.key={}; eqBadge(); if(ui.mode==='import') loadImport(); else feed(); }; $('cmp').onclick=runEquiv; $('rc1H').onclick=()=>rebuild('1H'); $('load').onclick=()=>{ saveUI(); loadWorker({manual:true}); };
+for(const tf of TFS) $('f'+tf).onchange=ev=>{ const fl=ev.target.files[0]; if(!fl) return; const r=new FileReader(); r.onload=()=>{ $('t'+tf).value=r.result; loadImport(); }; r.readAsText(fl); };
+$('auto').onchange=()=>{ ui.auto.on=$('auto').checked; saveUI(); if(ui.auto.on&&ui.mode==='worker'&&!ui.busy&&!(ui.conn.lastOk&&Date.now()-ui.conn.lastOk<60000)) loadWorker({auto:true}); else schedule(); dash(); };
+document.addEventListener('visibilitychange',()=>{ if(!document.hidden&&ui.auto.on&&ui.mode==='worker'&&!ui.busy&&(ui.auto.skipped||!ui.conn.lastOk)){ ui.auto.skipped=false; loadWorker({auto:true}); } });
+setInterval(()=>{ const c=$('autocount'); if(c&&ui.auto.nextAt) c.textContent=dur(ui.auto.nextAt-Date.now()); },1000);
+$('reset').onclick=()=>{ const e0=ui.eng['1H'], nb=e0?e0.counts().processed:0; if(!confirm('Cancellare DEFINITIVAMENTE lo storico locale di questo simbolo ('+nb+' barre 1H elaborate, tutte le configurazioni)? L\'operazione non si può annullare. Le copie di sicurezza (gc2bak/gc2q) restano.')) return; const sym=$('sym').value.trim().toUpperCase(); const del=[]; for(let i=0;i<LS.length;i++){ const k=LS.key(i); if(k&&(k.indexOf('gc2|'+sym+'|')===0||k.indexOf('gc2m|gc2|'+sym+'|')===0)) del.push(k); } del.forEach(k=>LS.removeItem(k)); ui.key={}; ui.eng={}; ui.notes=[]; ui.restore={}; ui.saved={}; ui.cmp={}; ui.persist={ok:null}; feed(); };
+try{ if(navigator.storage&&navigator.storage.persist) navigator.storage.persist(); }catch(e){}
+analyzeCode(); if(ui.mode==='import') loadImport(); else { ui.data={'1H':null}; feed(); if(ui.auto.on) setTimeout(()=>loadWorker({auto:true,boot:true}),0); }
+setInterval(()=>{ if(ui.a&&ui.a.ok) feed(); },30000);
+requestAnimationFrame(loop);
+}
+window.addEventListener('DOMContentLoaded',init);
+})();</script></body></html>
